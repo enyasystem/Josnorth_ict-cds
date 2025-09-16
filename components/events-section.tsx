@@ -25,12 +25,13 @@ export function EventsSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map((e, idx) => (
             <Reveal key={idx} index={idx} className="animate-fade-in">
-              <article className="bg-emerald-900/30 border border-emerald-800 p-6 rounded-lg">
+              <article className="bg-emerald-900/30 border border-emerald-800 p-6 rounded-lg card-hover">
+                <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt={`${e.title} image`} className="rounded-md mb-3 w-full h-40 object-cover" />
                 <h3 className="text-lg font-semibold text-white">{e.title}</h3>
                 <p className="text-sm text-emerald-200 mt-1">{e.date}</p>
                 <p className="text-emerald-100 mt-3">{e.excerpt}</p>
                 <div className="mt-4">
-                  <Button asChild size="sm" className="bg-emerald-500 hover:bg-emerald-600 text-white">
+                  <Button asChild size="sm" className="bg-emerald-500 hover:bg-emerald-600 text-white button-press">
                     <Link href={`/events`}>View more</Link>
                   </Button>
                 </div>

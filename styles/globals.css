@@ -202,4 +202,74 @@
     from { opacity: 0 }
     to { opacity: 1 }
   }
+
+  /* Additional UI animations */
+  @keyframes bob {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(0); }
+  }
+
+  @keyframes lift {
+    from { transform: translateY(0) scale(1); box-shadow: none; }
+    to { transform: translateY(-6px) scale(1.01); box-shadow: 0 10px 30px rgba(2,6,23,0.6); }
+  }
+
+  .animate-bob {
+    animation: bob 6s ease-in-out infinite;
+  }
+
+  .card-hover {
+    transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms cubic-bezier(.2,.9,.2,1);
+  }
+
+  .card-hover:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 12px 40px rgba(2,6,23,0.5);
+  }
+
+  .nav-underline {
+    position: relative;
+  }
+
+  .nav-underline::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    bottom: -6px;
+    height: 2px;
+    width: 60%;
+    background: linear-gradient(90deg,#34d399,#059669);
+    transition: transform 220ms cubic-bezier(.2,.9,.2,1);
+    transform-origin: center;
+  }
+
+  .nav-underline:hover::after {
+    transform: translateX(-50%) scaleX(1);
+  }
+
+  .button-press:active {
+    transform: translateY(1px) scale(0.998);
+  }
+
+  /* Reveal helper classes used by the Reveal component */
+  .reveal-hidden {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  .reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* When element becomes visible, apply the scale/fade animations if present via className */
+  .reveal-visible.animate-fade-in {
+    animation: fadeIn 480ms cubic-bezier(.2,.9,.2,1) both;
+  }
+
+  .reveal-visible.animate-scale-in {
+    animation: scaleIn 420ms cubic-bezier(.2,.9,.2,1) both;
+  }
 }

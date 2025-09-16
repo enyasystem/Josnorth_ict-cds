@@ -25,11 +25,12 @@ export function ResourcesSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {resources.map((r, idx) => (
             <Reveal key={idx} index={idx} className="animate-fade-in">
-              <article className="bg-emerald-900/30 border border-emerald-800 p-6 rounded-lg">
+              <article className="bg-emerald-900/30 border border-emerald-800 p-6 rounded-lg card-hover">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt={`${r.title} image`} className="rounded-md mb-3 w-full h-40 object-cover" />
                 <h3 className="text-lg font-semibold text-white">{r.title}</h3>
                 <p className="text-emerald-100 mt-3">{r.excerpt}</p>
                 <div className="mt-4">
-                  <Button asChild size="sm" className="bg-emerald-500 hover:bg-emerald-600 text-white">
+                  <Button asChild size="sm" className="bg-emerald-500 hover:bg-emerald-600 text-white button-press">
                     <Link href="/resources">View more</Link>
                   </Button>
                 </div>

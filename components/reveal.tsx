@@ -35,10 +35,14 @@ export function Reveal({ children, index = 0, className = "", rootMargin = "0px"
     return () => observer.disconnect()
   }, [rootMargin, threshold])
 
-  const style = visible ? { animationDelay: `${index * 80}ms` } : { opacity: 0, transform: "translateY(6px)" }
+  const style = { animationDelay: `${index * 80}ms` }
 
   return (
-    <div ref={ref} style={style as any} className={visible ? className : ""}>
+    <div
+      ref={ref}
+      style={style as any}
+      className={`${visible ? "reveal-visible" : "reveal-hidden"} ${visible ? className : ""}`}
+    >
       {children}
     </div>
   )

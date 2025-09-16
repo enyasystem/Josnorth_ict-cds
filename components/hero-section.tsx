@@ -52,7 +52,7 @@ export function HeroSection() {
           </div>
 
           <div className="relative flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-md lg:max-w-xl xl:max-w-2xl">
+            <div className="relative w-full max-w-md lg:max-w-xl xl:max-w-2xl animate-bob">
               <Image
                 src="/ict-hero-illustration.png"
                 alt="ICT Technology Ecosystem - Servers, Databases, and Digital Infrastructure"

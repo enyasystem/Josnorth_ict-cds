@@ -14,6 +14,7 @@ export function TypewriterText({ text, speed = 50, className = "", loop = false,
   const [displayText, setDisplayText] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [prefersReduced, setPrefersReduced] = useState(false)
 
   useEffect(() => {
     // Reset when the text prop changes
@@ -23,7 +24,24 @@ export function TypewriterText({ text, speed = 50, className = "", loop = false,
   }, [text])
 
   useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const handler = () => setPrefersReduced(mq.matches)
+    handler()
+    if (mq.addEventListener) mq.addEventListener('change', handler)
+    else mq.addListener(handler)
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener('change', handler)
+      else mq.removeListener(handler)
+    }
+  }, [])
+
+  useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>
+
+    if (prefersReduced) {
+      setDisplayText(text)
+      return
+    }
 
     if (!isDeleting && currentIndex < text.length) {
       timeout = setTimeout(() => {
@@ -46,7 +64,11 @@ export function TypewriterText({ text, speed = 50, className = "", loop = false,
     }
 
     return () => clearTimeout(timeout)
-  }, [currentIndex, isDeleting, text, speed, loop, delay])
+  }, [currentIndex, isDeleting, text, speed, loop, delay, prefersReduced])
 
-  return <span className={className}>{displayText}</span>
+  return (
+    <span className={className} aria-live="polite">
+      {displayText}
+    </span>
+  )
 }

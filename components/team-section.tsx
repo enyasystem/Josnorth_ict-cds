@@ -1,32 +1,41 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Reveal } from "./reveal"
 
 const devs = [
-  { name: "Alice Johnson", role: "Frontend Developer" },
-  { name: "Mohammed Ali", role: "Backend Developer" },
-  { name: "Grace Lee", role: "Fullstack Developer" },
-  { name: "Emeka Obi", role: "Mobile Developer" },
-  { name: "Lina Yusuf", role: "UI/UX Designer" },
-  { name: "David E", role: "DevOps" },
+  { name: "Alice Johnson", role: "Frontend Developer", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder", bio: "Passionate about UX and building accessible interfaces." },
+  { name: "Mohammed Ali", role: "Backend Developer", img: "https://images.unsplash.com/photo-1531123414780-f55b1f4f6b1a?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder", bio: "APIs, databases and server-side best practices." },
+  { name: "Grace Lee", role: "Fullstack Developer", img: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder", bio: "Fullstack engineer focused on performance and DX." },
+  { name: "Emeka Obi", role: "Mobile Developer", img: "https://images.unsplash.com/photo-1545996124-1c4a4f0f3a3d?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder", bio: "Builds delightful cross-platform mobile apps." },
+  { name: "Lina Yusuf", role: "UI/UX Designer", img: "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder", bio: "Design systems, accessibility and visual language." },
+  { name: "David E", role: "DevOps", img: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder", bio: "CI/CD, infrastructure as code and reliability." },
 ]
 
 const excos = [
-  { name: "Chairman A", role: "Chairman" },
-  { name: "Secretary B", role: "Secretary" },
-  { name: "Treasurer C", role: "Treasurer" },
-  { name: "Publicity D", role: "Publicity Secretary" },
-  { name: "Welfare E", role: "Welfare Officer" },
-  { name: "Events F", role: "Events Coordinator" },
+  { name: "Chairman A", role: "Chairman", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder", bio: "Leads the committee and coordinates activities." },
+  { name: "Secretary B", role: "Secretary", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder", bio: "Keeps records and manages communications." },
+  { name: "Treasurer C", role: "Treasurer", img: "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder", bio: "Handles budgeting and financial records." },
+  { name: "Publicity D", role: "Publicity Secretary", img: "https://images.unsplash.com/photo-1541534401786-0b0c3c7f1f1d?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder", bio: "Manages outreach and publicity." },
+  { name: "Welfare E", role: "Welfare Officer", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder", bio: "Supports member welfare and wellbeing." },
+  { name: "Events F", role: "Events Coordinator", img: "https://images.unsplash.com/photo-1520975913840-8f1b2f8c0557?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder", bio: "Organizes events and logistics." },
 ]
 
 export function TeamSection() {
   const [tab, setTab] = useState<"devs" | "excos">("devs")
+  const [selected, setSelected] = useState<any | null>(null)
 
   const list = tab === "devs" ? devs : excos
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setSelected(null)
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [])
 
   return (
     <section className="py-16 px-6">
@@ -62,18 +71,44 @@ export function TeamSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {list.map((m, idx) => (
             <Reveal key={idx} index={idx} className="animate-scale-in">
-              <article className="bg-emerald-900/30 border border-emerald-800 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold text-white">{m.name}</h3>
-                <p className="text-emerald-200 mt-1">{m.role}</p>
-                <div className="mt-4">
-                  <Button asChild size="sm" className="bg-emerald-500 hover:bg-emerald-600 text-white">
-                    <Link href="/team">View more</Link>
-                  </Button>
+              <article className="bg-emerald-900/30 border border-emerald-800 p-4 rounded-lg card-hover flex gap-4 items-start">
+                <img src={m.img} alt={`${m.name} photo`} className="w-16 h-16 rounded-full object-cover flex-shrink-0" />
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-white">{m.name}</h3>
+                  <p className="text-emerald-200 text-sm">{m.role}</p>
+                  <p className="text-emerald-100 mt-2 text-sm line-clamp-2">{m.bio}</p>
+                  <div className="mt-3 flex items-center gap-2">
+                    <Button size="sm" className="bg-emerald-500 hover:bg-emerald-600 text-white button-press" onClick={() => setSelected(m)}>
+                      View profile
+                    </Button>
+                    <Button asChild size="sm" variant="ghost" className="text-emerald-200">
+                      <Link href="/team">All</Link>
+                    </Button>
+                  </div>
                 </div>
               </article>
             </Reveal>
           ))}
         </div>
+
+        {selected ? (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-black/50" onClick={() => setSelected(null)} />
+            <div className="relative bg-white/5 border border-emerald-800 rounded-lg p-6 w-full max-w-xl mx-4">
+              <button aria-label="Close profile" className="absolute top-3 right-3 text-emerald-200" onClick={() => setSelected(null)}>
+                ✕
+              </button>
+              <div className="flex gap-6 items-start">
+                <img src={selected.img} alt={`${selected.name} photo`} className="w-28 h-28 rounded-lg object-cover" />
+                <div>
+                  <h3 className="text-2xl font-bold text-white">{selected.name}</h3>
+                  <p className="text-emerald-200">{selected.role}</p>
+                  <p className="text-emerald-100 mt-4">{selected.bio}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
     </section>
   )
