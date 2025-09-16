@@ -3,11 +3,11 @@ import { Users, Calendar, FileText, Shield, Globe, Zap } from "lucide-react"
 
 export function FeaturesSection() {
   const features = [
-    {
-      icon: Users,
-      title: "Member Management",
-      description: "Comprehensive biodata management system for all corps members with secure data handling.",
-    },
+    // {
+    //   icon: Users,
+    //   title: "Member Management",
+    //   description: "Comprehensive biodata management system for all corps members with secure data handling.",
+    // },
     {
       icon: Calendar,
       title: "Event Organization",
@@ -23,16 +23,16 @@ export function FeaturesSection() {
       title: "Secure Platform",
       description: "Your data is protected with enterprise-grade security and privacy measures.",
     },
-    {
-      icon: Globe,
-      title: "Community Connect",
-      description: "Connect with fellow corps members and build lasting professional relationships.",
-    },
-    {
-      icon: Zap,
-      title: "Quick Access",
-      description: "Fast, intuitive interface designed for efficient navigation and task completion.",
-    },
+    // {
+    //   icon: Globe,
+    //   title: "Community Connect",
+    //   description: "Connect with fellow corps members and build lasting professional relationships.",
+    // },
+    // {
+    //   icon: Zap,
+    //   title: "Quick Access",
+    //   description: "Fast, intuitive interface designed for efficient navigation and task completion.",
+    // },
   ]
 
   return (

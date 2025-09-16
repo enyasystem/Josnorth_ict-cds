@@ -71,20 +71,19 @@ export function TeamSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {list.map((m, idx) => (
             <Reveal key={idx} index={idx} className="animate-scale-in">
-              <article className="bg-emerald-900/30 border border-emerald-800 p-4 rounded-lg card-hover flex gap-4 items-start">
-                <img src={m.img} alt={`${m.name} photo`} className="w-16 h-16 rounded-full object-cover flex-shrink-0" />
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-white">{m.name}</h3>
-                  <p className="text-emerald-200 text-sm">{m.role}</p>
-                  <p className="text-emerald-100 mt-2 text-sm line-clamp-2">{m.bio}</p>
-                  <div className="mt-3 flex items-center gap-2">
-                    <Button size="sm" className="bg-emerald-500 hover:bg-emerald-600 text-white button-press" onClick={() => setSelected(m)}>
-                      View profile
-                    </Button>
-                    <Button asChild size="sm" variant="ghost" className="text-emerald-200">
-                      <Link href="/team">All</Link>
-                    </Button>
+              <article className="bg-emerald-900/30 border border-emerald-800 p-3 rounded-lg card-hover h-40 overflow-hidden flex flex-col">
+                <div className="flex items-center gap-3">
+                  <img src={m.img} alt={`${m.name} photo`} className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+                  <div>
+                    <h3 className="text-sm font-semibold text-white">{m.name}</h3>
+                    <p className="text-emerald-200 text-xs">{m.role}</p>
                   </div>
+                </div>
+                <p className="text-emerald-100 mt-2 text-xs line-clamp-2 flex-1">{m.bio}</p>
+                <div className="mt-2">
+                  <Button size="sm" className="bg-emerald-500 hover:bg-emerald-600 text-white button-press" onClick={() => setSelected(m)}>
+                    View profile
+                  </Button>
                 </div>
               </article>
             </Reveal>

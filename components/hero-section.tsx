@@ -22,7 +22,15 @@ export function HeroSection() {
             {/* Main Heading */}
             <div className="space-y-4">
               <h1 className="text-5xl lg:text-6xl font-bold text-white leading-tight">
-                <TypewriterText text="NYSC Jos North" speed={120} loop={true} delay={1000} className="typewriter-glow text-emerald-200" />
+                <span className="inline-block">
+                  <TypewriterText
+                    text="NYSC Jos North"
+                    speed={120}
+                    loop={true}
+                    delay={1000}
+                    className="typewriter-glow text-emerald-200 text-[2.2rem] sm:text-[2.6rem] md:text-[3rem] lg:text-[3.5rem]"
+                  />
+                </span>
               </h1>
               <p className="text-xl text-emerald-50 leading-relaxed max-w-lg">
                 Official biodata management platform for NYSC Jos North — register, find resources, and join events.

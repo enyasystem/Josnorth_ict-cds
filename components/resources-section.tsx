@@ -4,12 +4,12 @@ import { Reveal } from "./reveal"
 
 export function ResourcesSection() {
   const resources = [
-    { title: "Biodata Template", excerpt: "Download the official biodata template for NYSC Jos North." },
-    { title: "Event Guidelines", excerpt: "How to prepare and participate in community events." },
-    { title: "Volunteer Guide", excerpt: "How to sign up and help run local events." },
-    { title: "Resource Center", excerpt: "Where to find learning materials and tools." },
-    { title: "Safety Checklist", excerpt: "Best practices for event safety and coordination." },
-    { title: "Mentorship Program", excerpt: "Join a mentor-led skills development circle." },
+    { title: "Biodata Template", excerpt: "Download the official biodata template for NYSC Jos North.", image: "https://images.unsplash.com/photo-1581091012184-7b9c1d9d0d7e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" },
+    { title: "Event Guidelines", excerpt: "How to prepare and participate in community events.", image: "https://images.unsplash.com/photo-1580281657520-9e0d2a2f9a8b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" },
+    { title: "Volunteer Guide", excerpt: "How to sign up and help run local events.", image: "https://images.unsplash.com/photo-1529101091764-c3526daf38fe?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" },
+    { title: "Resource Center", excerpt: "Where to find learning materials and tools.", image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" },
+    { title: "Safety Checklist", excerpt: "Best practices for event safety and coordination.", image: "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" },
+    { title: "Mentorship Program", excerpt: "Join a mentor-led skills development circle.", image: "https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" },
   ]
 
   return (
@@ -24,18 +24,22 @@ export function ResourcesSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {resources.map((r, idx) => (
-            <Reveal key={idx} index={idx} className="animate-fade-in">
-              <article className="bg-emerald-900/30 border border-emerald-800 p-6 rounded-lg card-hover">
-                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt={`${r.title} image`} className="rounded-md mb-3 w-full h-40 object-cover" />
-                <h3 className="text-lg font-semibold text-white">{r.title}</h3>
-                <p className="text-emerald-100 mt-3">{r.excerpt}</p>
-                <div className="mt-4">
-                  <Button asChild size="sm" className="bg-emerald-500 hover:bg-emerald-600 text-white button-press">
-                    <Link href="/resources">View more</Link>
-                  </Button>
-                </div>
-              </article>
-            </Reveal>
+              <Reveal key={idx} index={idx} className="animate-fade-in">
+                <article className="bg-emerald-900/30 border border-emerald-800 p-3 rounded-lg card-hover h-40 overflow-hidden flex flex-col">
+                  <div className="w-full h-20 overflow-hidden rounded-md">
+                    <img src={r.image} alt={`${r.title} image`} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="mt-2 flex-1">
+                    <h3 className="text-sm font-semibold text-white">{r.title}</h3>
+                    <p className="text-emerald-100 mt-1 text-xs line-clamp-2">{r.excerpt}</p>
+                  </div>
+                  <div className="mt-2">
+                    <Button asChild size="sm" className="bg-emerald-500 hover:bg-emerald-600 text-white button-press">
+                      <Link href="/resources">View more</Link>
+                    </Button>
+                  </div>
+                </article>
+              </Reveal>
           ))}
         </div>
       </div>

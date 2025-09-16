@@ -7,6 +7,7 @@ import { Sun, Menu } from "lucide-react"
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12)
@@ -57,10 +58,39 @@ export function Header() {
         </div>
 
         {/* Mobile Menu Button */}
-        <Button variant="ghost" size="icon" className="md:hidden text-white hover:bg-emerald-700">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden text-white hover:bg-emerald-700"
+          onClick={() => setMobileOpen((v) => !v)}
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-menu"
+        >
           <Menu className="h-5 w-5" />
         </Button>
       </nav>
+      {/* Mobile slide-over menu */}
+      <div
+        id="mobile-menu"
+        className={`md:hidden fixed top-16 right-0 w-full max-w-xs h-[calc(100vh-4rem)] bg-emerald-900/95 border-l border-emerald-800 shadow-lg transform transition-transform duration-200 z-50 ${
+          mobileOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+        aria-hidden={!mobileOpen}
+      >
+        <div className="p-4 flex flex-col gap-4">
+          <Link href="/" className="text-emerald-200 hover:text-white px-2 py-1 rounded-md">Home</Link>
+          <Link href="/events" className="text-emerald-200 hover:text-white px-2 py-1 rounded-md">Events</Link>
+          <Link href="/resources" className="text-emerald-200 hover:text-white px-2 py-1 rounded-md">Resources</Link>
+          <div className="flex items-center gap-2 mt-2">
+            <Button variant="ghost" size="icon" className="text-white hover:bg-emerald-700">
+              <Sun className="h-5 w-5" />
+            </Button>
+            <Button asChild className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-[35px] px-4 py-2 shadow-sm">
+              <Link href="/community">Community</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
     </header>
   )
 }

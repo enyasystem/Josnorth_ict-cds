@@ -272,4 +272,39 @@
   .reveal-visible.animate-scale-in {
     animation: scaleIn 420ms cubic-bezier(.2,.9,.2,1) both;
   }
+
+  /* Smooth loader animations */
+  @keyframes loader-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes core-pulse-slow {
+    0% { transform: scale(1); opacity: 1 }
+    50% { transform: scale(1.18); opacity: 0.85 }
+    100% { transform: scale(1); opacity: 1 }
+  }
+
+  .loader-ring-smooth {
+    transform-origin: 50% 50%;
+    animation: loader-spin 1.1s cubic-bezier(.2,.9,.2,1) infinite;
+  }
+
+  .loader-core-smooth {
+    transform-origin: 50% 50%;
+    animation: core-pulse-slow 1.2s ease-in-out infinite;
+  }
+
+  .loader-text-shimmer {
+    background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 75%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shimmer 2.4s linear infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
 }
