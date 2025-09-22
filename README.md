@@ -1,4 +1,6 @@
-# Jos North CDS Website
+# ![CI](https://github.com/enyasystem/josnorthcds/actions/workflows/ci.yml/badge.svg?branch=main)
+
+# Jos North ICT CDS Biodata platform
 
 This repository contains a Next.js website for the Jos North Community Development Service (CDS) project. It's a modern, responsive site built with Next.js 14, TypeScript, Tailwind CSS and a small collection of UI primitives and components.
 
