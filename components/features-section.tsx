@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { Users, Calendar, FileText, Shield, Globe, Zap } from "lucide-react"
+import { Calendar, FileText, Shield } from "lucide-react"
 
 export function FeaturesSection() {
   const features = [
