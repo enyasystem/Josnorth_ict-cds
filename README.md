@@ -130,3 +130,8 @@ Specify a license in `LICENSE` if you plan to publish this repository. If not se
 ## Contact
 
 If you need help with this repository, open an issue or contact the project maintainers.
+
+## Branching Strategy
+
+See `BRANCHING.md` for the project's Git branching workflow, naming conventions, and PR process.
+
