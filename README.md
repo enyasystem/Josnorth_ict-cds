@@ -145,5 +145,8 @@ Contributing
 - Link PR to issues when applicable
 - Follow the branching strategy in `BRANCHING.md`
 
-Questions? Open an issue or ping the maintainers.
+Questions?
+- Open an issue or ping the maintainers.
+
+
 
