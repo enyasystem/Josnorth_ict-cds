@@ -1,4 +1,4 @@
-# ![CI](https://github.com/enyasystem/josnorthcds/actions/workflows/ci.yml/badge.svg?branch=main)
+# [![CI: main](https://github.com/enyasystem/josnorthcds/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/enyasystem/josnorthcds/actions/workflows/ci.yml?query=branch%3Amain) [![CI: develop](https://github.com/enyasystem/josnorthcds/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/enyasystem/josnorthcds/actions/workflows/ci.yml?query=branch%3Adevelop) [![CI: staging](https://github.com/enyasystem/josnorthcds/actions/workflows/ci.yml/badge.svg?branch=staging)](https://github.com/enyasystem/josnorthcds/actions/workflows/ci.yml?query=branch%3Astaging)
 
 # Jos North ICT CDS Biodata platform
 
