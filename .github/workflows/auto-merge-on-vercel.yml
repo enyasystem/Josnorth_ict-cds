@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Auto-merge when Vercel check succeeds
-        uses: actions/github-script@v6This workflow has no runs yet.
+        uses: actions/github-script@v6
         with:
           script: |
             const checkRun = context.payload.check_run;
@@ -38,7 +38,10 @@ jobs:
 
             for (const pr of prs) {
               const prNumber = pr.number;
-              core.info(`Attempting to merge PR #${prNumber} (check: ${checkRun.name})`);
+              const headRef = pr.head.ref;
+              core.info(`Processing PR #${prNumber} (head: ${headRef})`);
+
+              // Try to merge the PR directly
               try {
                 await github.rest.pulls.merge({
                   owner: context.repo.owner,
@@ -47,7 +50,32 @@ jobs:
                   merge_method: 'merge'
                 });
                 core.info(`Merged PR #${prNumber}`);
+                continue;
               } catch (err) {
-                core.error(`Could not merge PR #${prNumber}: ${err.message}`);
+                core.info(`Initial merge failed for PR #${prNumber}: ${err.message}`);
+              }
+
+              // If merge failed, try to update the PR branch by merging main into it, then retry
+              try {
+                core.info(`Attempting to update branch ${headRef} by merging 'main' into it...`);
+                await github.rest.repos.merge({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  base: headRef,
+                  head: 'main'
+                });
+
+                core.info(`Branch ${headRef} updated from main — retrying PR merge...`);
+
+                await github.rest.pulls.merge({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber,
+                  merge_method: 'merge'
+                });
+
+                core.info(`Merged PR #${prNumber} after updating branch`);
+              } catch (err2) {
+                core.error(`Could not auto-update/merge PR #${prNumber}: ${err2.message}`);
               }
             }
