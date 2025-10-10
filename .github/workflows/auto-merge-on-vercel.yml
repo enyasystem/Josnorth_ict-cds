@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Auto-merge when Vercel check succeeds
-        uses: actions/github-script@v6
+        uses: actions/github-script@v6This workflow has no runs yet.
         with:
           script: |
             const checkRun = context.payload.check_run;

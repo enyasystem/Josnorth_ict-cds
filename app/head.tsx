@@ -15,7 +15,7 @@ export default function Head() {
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="NYSC Jos North — Biodata Platform" />
-      <meta name="twitter:description" content="Official biodata management platform for NYSC Jos North — register, find resources, and join events." />
+      <meta name="twitter:description" content="Official biodata management platform for NYSC Jos North — register, find resources, and join events..." />
     </>
   )
 }
