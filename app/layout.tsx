@@ -1,26 +1,27 @@
-import type { Metadata } from 'next'
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
-import { Analytics } from '@vercel/analytics/next'
-import './globals.css'
+import type { Metadata } from "next";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { Analytics } from "@vercel/analytics/next";
+import "./globals.css";
+import { AppProvider } from "@/contexts/app-provider";
 
 export const metadata: Metadata = {
-  title: 'Jos North ICT CDS - Biodata Platform',
-  description: 'Jos North ICT CDS Biodata Management Platform',
-  generator: 'Enya Elvis',
-}
+  title: "Jos North ICT CDS - Biodata Platform",
+  description: "Jos North ICT CDS Biodata Management Platform",
+  generator: "Enya Elvis",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-        {children}
+        <AppProvider>{children}</AppProvider>
         <Analytics />
       </body>
     </html>
-  )
+  );
 }
