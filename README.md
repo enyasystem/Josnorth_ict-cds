@@ -148,7 +148,7 @@ Contributing
 - Follow the branching strategy in `BRANCHING.md`
 
 Questions?
-- Open an issue or ping the maintainers.
+- Open an issue or ping the maintainers
 
 
 
