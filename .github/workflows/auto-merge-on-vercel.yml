@@ -3,6 +3,7 @@ name: Auto-merge on Vercel success
 on:
   check_run:
     types: [completed]
+  workflow_dispatch: {}
 
 permissions:
   pull-requests: write
