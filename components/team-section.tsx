@@ -22,7 +22,7 @@ export function TeamSection() {
   const isLoading = tab === "devs" ? devsLoading : execsLoading;
 
   return (
-    <section className="py-16 px-6">
+    <section className="py-24 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-white">Team</h2>

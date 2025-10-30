@@ -30,14 +30,15 @@ export function EventsSection() {
 
   const events = response?.data || [];
 
+export function EventsSection() {
   return (
-    <section className="py-16 px-6">
+    <section className="py-24 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-white">Upcoming Events</h2>
-          <Button asChild variant="ghost" className="text-emerald-200">
-            <Link href="/events">View all events</Link>
-          </Button>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-emerald-50 mb-4 text-balance">Upcoming Events</h2>
+          <p className="text-xl text-emerald-100 max-w-2xl mx-auto text-pretty">
+            Stay updated with upcoming events, workshops, and community outreach programs
+          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -81,6 +82,17 @@ export function EventsSection() {
                   </article>
                 </Reveal>
               ))}
+        </div>
+
+        <div className="text-center">
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className="border-emerald-600 text-emerald-100 hover:bg-emerald-800/50 bg-transparent"
+          >
+            <Link href="/events">View All Events</Link>
+          </Button>
         </div>
       </div>
     </section>

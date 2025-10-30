@@ -5,7 +5,7 @@ export function StatsSection() {
     { number: "500+", label: "Active Corps Members" },
     { number: "50+", label: "Events Organized" },
     { number: "25+", label: "Resources Available" },
-    // { number: "99%", label: "Platform Uptime" },
+    { number: "99%", label: "Platform Uptime" },
   ]
 
   return (
@@ -18,9 +18,9 @@ export function StatsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
-            <Card key={index} className="bg-emerald-800/30 border-emerald-700 text-center w-full max-w-xs">
+            <Card key={index} className="bg-emerald-800/30 border-emerald-700 text-center">
               <CardContent className="p-8">
                 <div className="text-4xl font-bold text-emerald-400 mb-2">{stat.number}</div>
                 <div className="text-emerald-50 font-medium">{stat.label}</div>

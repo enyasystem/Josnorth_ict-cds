@@ -1,48 +1,157 @@
-import Link from "next/link"
+"use client"
 import { Button } from "@/components/ui/button"
-import { Reveal } from "./reveal"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from "next/link"
+import { useEffect, useState } from "react"
+
+const resources = [
+  {
+    id: 1,
+    title: "Biodata Template",
+    description: "Download the official biodata template for NYSC Jos North.",
+    icon: "📄",
+    type: "Template",
+    downloads: 234,
+  },
+  {
+    id: 2,
+    title: "Event Guidelines",
+    description: "How to prepare and participate in community events.",
+    icon: "📖",
+    type: "Guide",
+    downloads: 156,
+  },
+  {
+    id: 3,
+    title: "Volunteer Guide",
+    description: "How to sign up and help run local events.",
+    icon: "👥",
+    type: "Guide",
+    downloads: 189,
+  },
+  {
+    id: 4,
+    title: "Resource Center",
+    description: "Where to find learning materials and tools.",
+    icon: "🎓",
+    type: "Directory",
+    downloads: 98,
+  },
+  {
+    id: 5,
+    title: "Safety Checklist",
+    description: "Best practices for event safety and coordination.",
+    icon: "🛡️",
+    type: "Checklist",
+    downloads: 145,
+  },
+  {
+    id: 6,
+    title: "Mentorship Program",
+    description: "Join a mentor-led skills development circle.",
+    icon: "👥",
+    type: "Program",
+    downloads: 203,
+  },
+]
 
 export function ResourcesSection() {
-  const resources = [
-    { title: "Biodata Template", excerpt: "Download the official biodata template for NYSC Jos North.", image: "https://images.unsplash.com/photo-1581091012184-7b9c1d9d0d7e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" },
-    { title: "Event Guidelines", excerpt: "How to prepare and participate in community events.", image: "https://images.unsplash.com/photo-1580281657520-9e0d2a2f9a8b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" },
-    { title: "Volunteer Guide", excerpt: "How to sign up and help run local events.", image: "https://images.unsplash.com/photo-1529101091764-c3526daf38fe?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" },
-    { title: "Resource Center", excerpt: "Where to find learning materials and tools.", image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" },
-    { title: "Safety Checklist", excerpt: "Best practices for event safety and coordination.", image: "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" },
-    { title: "Mentorship Program", excerpt: "Join a mentor-led skills development circle.", image: "https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" },
-  ]
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
 
   return (
-    <section className="py-16 px-6 bg-emerald-900/10">
+    <section className="py-24 px-6 bg-background">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-white">Resources</h2>
-          <Button asChild variant="ghost" className="text-emerald-200">
-            <Link href="/resources">All resources</Link>
-          </Button>
+        <div
+          className="text-center mb-16"
+          style={{
+            animation: isVisible ? "fadeInUp 0.8s ease-out" : "none",
+          }}
+        >
+          <h2 className="text-4xl font-bold text-foreground mb-4 text-balance">Resources</h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
+            Access guides, forms, and documentation curated specifically for corps members
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {resources.map((r, idx) => (
-              <Reveal key={idx} index={idx} className="animate-fade-in">
-                <article className="bg-emerald-900/30 border border-emerald-800 p-3 rounded-lg card-hover h-40 overflow-hidden flex flex-col">
-                  <div className="w-full h-20 overflow-hidden rounded-md">
-                    <img src={r.image} alt={`${r.title} image`} className="w-full h-full object-cover" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {resources.map((resource, index) => {
+            return (
+              <Card
+                key={resource.id}
+                className="bg-card border border-border hover:border-primary hover:shadow-lg transition-all duration-300 group overflow-hidden"
+                style={{
+                  animation: isVisible ? `fadeInUp 0.8s ease-out ${0.1 + index * 0.08}s both` : "none",
+                }}
+              >
+                <div className="h-1 bg-gradient-to-r from-primary to-accent" />
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="p-3 bg-secondary rounded-lg group-hover:bg-secondary/80 transition-all text-2xl">
+                      {resource.icon}
+                    </div>
+                    <span className="text-xs font-bold text-primary bg-secondary px-3 py-1 rounded-full">
+                      {resource.type}
+                    </span>
                   </div>
-                  <div className="mt-2 flex-1">
-                    <h3 className="text-sm font-semibold text-white">{r.title}</h3>
-                    <p className="text-emerald-100 mt-1 text-xs line-clamp-2">{r.excerpt}</p>
+                  <CardTitle className="text-foreground text-lg group-hover:text-primary transition-colors">
+                    {resource.title}
+                  </CardTitle>
+                  <CardDescription className="text-muted-foreground">{resource.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-primary text-sm font-medium">
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                        />
+                      </svg>
+                      {resource.downloads}
+                    </div>
+                    <button className="text-primary hover:text-primary/80 flex items-center gap-1 font-semibold group/btn transition-all">
+                      Access
+                      <svg
+                        className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
                   </div>
-                  <div className="mt-2">
-                    <Button asChild size="sm" className="bg-emerald-500 hover:bg-emerald-600 text-white button-press">
-                      <Link href="/resources">View more</Link>
-                    </Button>
-                  </div>
-                </article>
-              </Reveal>
-          ))}
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+
+        <div className="text-center">
+          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Link href="/resources">View All Resources</Link>
+          </Button>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </section>
   )
 }

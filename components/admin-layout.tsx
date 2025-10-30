@@ -23,6 +23,11 @@ interface AdminLayoutProps {
   children: React.ReactNode;
 }
 
+/**
+ * AdminLayout now reuses the main site's `PageLayout` so the header/footer
+ * and overall look-and-feel match the public site. The admin-specific
+ * sidebar remains inside the page layout's main area.
+ */
 export function AdminLayout({ children }: AdminLayoutProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -135,6 +140,28 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             })}
           </nav>
         </aside>
+
+        {/* Mobile overlay - appears when sidebar is open on small screens and closes the sidebar when clicked */}
+        {sidebarOpen && (
+          <div
+            className="md:hidden fixed inset-0 bg-black/40"
+            style={{ zIndex: 40 }}
+            onClick={() => setSidebarOpen(false)}
+            aria-hidden
+          />
+        )}
+
+        {/* Floating reopen button for small screens when sidebar is closed */}
+        {!sidebarOpen && (
+          <button
+            className="md:hidden fixed top-4 left-4 p-2 rounded-md bg-white shadow-lg"
+            style={{ zIndex: 60 }}
+            onClick={() => setSidebarOpen(true)}
+            aria-label="Open sidebar"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+        )}
 
         {/* Main Content */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8 w-full lg:w-auto overflow-x-hidden">
