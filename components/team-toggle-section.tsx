@@ -149,11 +149,15 @@ export function TeamToggleSection() {
               <CardContent>
                 {activeTab === "dev" && "skills" in member && (
                   <div className="flex flex-wrap gap-1 justify-center mb-3">
-                    {member.skills.map((skill, idx) => (
-                      <span key={idx} className="text-xs bg-secondary text-primary px-2 py-1 rounded-full font-medium">
-                        {skill}
-                      </span>
-                    ))}
+                    {(() => {
+                      const skills = (member as any).skills as string[] | undefined
+                      if (!Array.isArray(skills)) return null
+                      return skills.map((skill: string, idx: number) => (
+                        <span key={idx} className="text-xs bg-secondary text-primary px-2 py-1 rounded-full font-medium">
+                          {skill}
+                        </span>
+                      ))
+                    })()}
                   </div>
                 )}
                 <div className="flex justify-center gap-3">
