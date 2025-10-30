@@ -46,14 +46,15 @@ export default function ManageResourcesPage() {
   };
 
   const getCategoryBadge = (category: string) => {
+    // Use the admin green palette for all category badges to keep UI consistent.
     const colors: Record<string, string> = {
-      document: "bg-blue-600",
-      link: "bg-purple-600",
-      video: "bg-red-600",
+      document: "bg-green-600",
+      link: "bg-green-500",
+      video: "bg-green-700",
       tool: "bg-green-600",
     };
     return (
-      <Badge className={colors[category] || "bg-gray-600"}>
+      <Badge className={colors[category] || "bg-green-600"}>
         {getCategoryIcon(category)}
         <span className="ml-1 capitalize">{category}</span>
       </Badge>
@@ -69,7 +70,7 @@ export default function ManageResourcesPage() {
             <h1 className="text-3xl font-bold text-white mb-2">
               Manage Resources
             </h1>
-            <p className="text-green-200">
+            <p className="text-green-700">
               Upload and manage learning resources
             </p>
           </div>
@@ -88,7 +89,7 @@ export default function ManageResourcesPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <Card className="bg-green-800/30 border-green-700/30">
             <CardContent className="p-6">
-              <div className="text-green-200 text-sm">Total Resources</div>
+              <div className="text-green-700 text-sm">Total Resources</div>
               <div className="text-3xl font-bold text-white mt-2">
                 {resources.length}
               </div>
@@ -96,7 +97,7 @@ export default function ManageResourcesPage() {
           </Card>
           <Card className="bg-green-800/30 border-green-700/30">
             <CardContent className="p-6">
-              <div className="text-green-200 text-sm">Documents</div>
+              <div className="text-green-700 text-sm">Documents</div>
               <div className="text-3xl font-bold text-white mt-2">
                 {resources.filter((r) => r.category === "document").length}
               </div>
@@ -104,7 +105,7 @@ export default function ManageResourcesPage() {
           </Card>
           <Card className="bg-green-800/30 border-green-700/30">
             <CardContent className="p-6">
-              <div className="text-green-200 text-sm">Links</div>
+              <div className="text-green-700 text-sm">Links</div>
               <div className="text-3xl font-bold text-white mt-2">
                 {resources.filter((r) => r.category === "link").length}
               </div>
@@ -112,7 +113,7 @@ export default function ManageResourcesPage() {
           </Card>
           <Card className="bg-green-800/30 border-green-700/30">
             <CardContent className="p-6">
-              <div className="text-green-200 text-sm">Videos</div>
+              <div className="text-green-700 text-sm">Videos</div>
               <div className="text-3xl font-bold text-white mt-2">
                 {resources.filter((r) => r.category === "video").length}
               </div>
@@ -157,7 +158,7 @@ export default function ManageResourcesPage() {
                           </h3>
                           {getCategoryBadge(resource.category)}
                         </div>
-                        <p className="text-green-100 text-sm line-clamp-2 mb-2">
+                        <p className="text-green-700 text-sm line-clamp-2 mb-2">
                           {resource.description}
                         </p>
                         {resource.tags && resource.tags.length > 0 && (
@@ -165,7 +166,7 @@ export default function ManageResourcesPage() {
                             {resource.tags.map((tag, idx) => (
                               <span
                                 key={idx}
-                                className="text-xs bg-green-900/40 text-green-300 px-2 py-1 rounded"
+                                className="text-xs bg-green-900/40 text-green-700 px-2 py-1 rounded"
                               >
                                 {tag}
                               </span>
@@ -179,7 +180,7 @@ export default function ManageResourcesPage() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="border-blue-600 text-blue-400 hover:bg-blue-700 hover:text-white"
+                          className="border-green-600 text-green-800 hover:bg-green-700 hover:text-white"
                           asChild
                         >
                           <a
@@ -194,10 +195,10 @@ export default function ManageResourcesPage() {
                       )}
                       <ResourceFormDialog
                         trigger={
-                          <Button
+                            <Button
                             size="sm"
                             variant="outline"
-                            className="border-green-600 text-green-200 hover:bg-green-700 hover:text-white"
+                            className="border-green-600 text-green-800 hover:bg-green-700 hover:text-white"
                           >
                             <Edit className="w-4 h-4 mr-1" />
                             Edit
@@ -221,7 +222,7 @@ export default function ManageResourcesPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-green-300 text-center py-8">
+              <p className="text-green-700 text-center py-8">
                 No resources found. Add your first resource!
               </p>
             )}

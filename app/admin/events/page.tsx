@@ -60,7 +60,7 @@ export default function ManageEventsPage() {
             <h1 className="text-3xl font-bold text-white mb-2">
               Manage Events
             </h1>
-            <p className="text-green-200">Create and manage events</p>
+            <p className="text-green-700">Create and manage events</p>
           </div>
               <EventFormDialog
             trigger={
@@ -77,7 +77,7 @@ export default function ManageEventsPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <Card className="bg-green-800/30 border-green-700/30">
             <CardContent className="p-6">
-              <div className="text-green-200 text-sm">Total Events</div>
+              <div className="text-green-700 text-sm">Total Events</div>
               <div className="text-3xl font-bold text-white mt-2">
                 {events.length}
               </div>
@@ -85,7 +85,7 @@ export default function ManageEventsPage() {
           </Card>
           <Card className="bg-green-800/30 border-green-700/30">
             <CardContent className="p-6">
-              <div className="text-green-200 text-sm">Published</div>
+              <div className="text-green-700 text-sm">Published</div>
               <div className="text-3xl font-bold text-white mt-2">
                 {events.filter((e) => e.status === "published").length}
               </div>
@@ -93,7 +93,7 @@ export default function ManageEventsPage() {
           </Card>
           <Card className="bg-green-800/30 border-green-700/30">
             <CardContent className="p-6">
-              <div className="text-green-200 text-sm">Drafts</div>
+              <div className="text-green-700 text-sm">Drafts</div>
               <div className="text-3xl font-bold text-white mt-2">
                 {events.filter((e) => e.status === "draft").length}
               </div>
@@ -101,7 +101,7 @@ export default function ManageEventsPage() {
           </Card>
           <Card className="bg-green-800/30 border-green-700/30">
             <CardContent className="p-6">
-              <div className="text-green-200 text-sm">Cancelled</div>
+              <div className="text-green-700 text-sm">Cancelled</div>
               <div className="text-3xl font-bold text-white mt-2">
                 {events.filter((e) => e.status === "cancelled").length}
               </div>
@@ -144,10 +144,10 @@ export default function ManageEventsPage() {
                           </h3>
                             {getStatusBadge(event.status)}
                         </div>
-                          <p className="text-green-100 text-sm line-clamp-2 mb-2">
+                          <p className="text-green-700 text-sm line-clamp-2 mb-2">
                           {event.description}
                         </p>
-                          <div className="flex items-center gap-4 text-green-300 text-xs">
+                          <div className="flex items-center gap-4 text-green-700 text-xs">
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
                             {new Date(event.date).toLocaleDateString()}
@@ -166,7 +166,7 @@ export default function ManageEventsPage() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="border-green-600 text-green-400 hover:bg-green-700 hover:text-white"
+                          className="border-green-600 text-green-800 hover:bg-green-700 hover:text-white"
                           onClick={() => handlePublish(event.id)}
                           disabled={publishEvent.isPending}
                         >
@@ -179,7 +179,7 @@ export default function ManageEventsPage() {
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-green-600 text-green-200 hover:bg-green-700 hover:text-white"
+                            className="border-green-600 text-green-800 hover:bg-green-700 hover:text-white"
                           >
                             <Edit className="w-4 h-4 mr-1" />
                             Edit
@@ -203,7 +203,7 @@ export default function ManageEventsPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-green-300 text-center py-8">
+                          <p className="text-green-700 text-center py-8">
                 No events found. Create your first event!
               </p>
             )}

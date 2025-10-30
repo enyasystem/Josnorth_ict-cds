@@ -27,7 +27,7 @@ export default function ManageExcosPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white mb-2">Manage Excos</h1>
-            <p className="text-green-200">
+            <p className="text-green-700">
               Manage executive committee members
             </p>
           </div>
@@ -47,7 +47,7 @@ export default function ManageExcosPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="bg-green-800/30 border-green-700/30">
             <CardContent className="p-6">
-              <div className="text-green-200 text-sm">Total Excos</div>
+              <div className="text-green-700 text-sm">Total Excos</div>
               <div className="text-3xl font-bold text-white mt-2">
                 {excos.length}
               </div>
@@ -87,16 +87,16 @@ export default function ManageExcosPage() {
                         <h3 className="text-white font-semibold">
                           {exco.name}
                         </h3>
-                        <p className="text-green-200 text-sm">{exco.role}</p>
+                        <p className="text-green-700 text-sm">{exco.role}</p>
                         <div className="flex items-center gap-4 mt-1">
                           {exco.email && (
-                            <span className="text-green-300 text-xs flex items-center gap-1">
+                            <span className="text-green-700 text-xs flex items-center gap-1">
                               <Mail className="w-3 h-3" />
                               {exco.email}
                             </span>
                           )}
                           {exco.phone && (
-                            <span className="text-green-300 text-xs flex items-center gap-1">
+                            <span className="text-green-700 text-xs flex items-center gap-1">
                               <Phone className="w-3 h-3" />
                               {exco.phone}
                             </span>
@@ -110,7 +110,7 @@ export default function ManageExcosPage() {
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-green-600 text-green-200 hover:bg-green-700 hover:text-white"
+                            className="border-green-600 text-green-800 hover:bg-green-700 hover:text-white"
                           >
                             <Edit className="w-4 h-4 mr-1" />
                             Edit
@@ -135,7 +135,7 @@ export default function ManageExcosPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-green-300 text-center py-8">
+              <p className="text-green-700 text-center py-8">
                 No exco members found
               </p>
             )}

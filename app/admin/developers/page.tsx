@@ -29,7 +29,7 @@ export default function ManageDevelopersPage() {
             <h1 className="text-3xl font-bold text-white mb-2">
               Manage Developers
             </h1>
-            <p className="text-green-200">Manage development team members</p>
+            <p className="text-green-700">Manage development team members</p>
           </div>
           <TeamMemberFormDialog
             trigger={
@@ -47,7 +47,7 @@ export default function ManageDevelopersPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="bg-green-800/30 border-green-700/30">
             <CardContent className="p-6">
-              <div className="text-green-200 text-sm">Total Developers</div>
+              <div className="text-green-700 text-sm">Total Developers</div>
               <div className="text-3xl font-bold text-white mt-2">
                 {developers.length}
               </div>
@@ -85,10 +85,10 @@ export default function ManageDevelopersPage() {
                       />
                       <div>
                         <h3 className="text-white font-semibold">{dev.name}</h3>
-                        <p className="text-green-200 text-sm">{dev.role}</p>
+                        <p className="text-green-700 text-sm">{dev.role}</p>
                         <div className="flex items-center gap-4 mt-1">
                           {dev.email && (
-                            <span className="text-green-300 text-xs flex items-center gap-1">
+                            <span className="text-green-700 text-xs flex items-center gap-1">
                               <Mail className="w-3 h-3" />
                               {dev.email}
                             </span>
@@ -98,7 +98,7 @@ export default function ManageDevelopersPage() {
                               href={dev.social.github}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-green-300 text-xs flex items-center gap-1 hover:text-green-200"
+                              className="text-green-700 text-xs flex items-center gap-1 hover:text-green-700"
                             >
                               <Github className="w-3 h-3" />
                               GitHub
@@ -109,7 +109,7 @@ export default function ManageDevelopersPage() {
                               href={dev.social.linkedin}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-green-300 text-xs flex items-center gap-1 hover:text-green-200"
+                              className="text-green-700 text-xs flex items-center gap-1 hover:text-green-700"
                             >
                               <Linkedin className="w-3 h-3" />
                               LinkedIn
@@ -124,7 +124,7 @@ export default function ManageDevelopersPage() {
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-green-600 text-green-200 hover:bg-green-700 hover:text-white"
+                            className="border-green-600 text-green-800 hover:bg-green-700 hover:text-white"
                           >
                             <Edit className="w-4 h-4 mr-1" />
                             Edit
@@ -149,7 +149,7 @@ export default function ManageDevelopersPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-green-300 text-center py-8">
+              <p className="text-green-700 text-center py-8">
                 No developers found
               </p>
             )}

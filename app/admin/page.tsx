@@ -85,7 +85,6 @@ export default function AdminDashboard() {
                     <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
                       <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <div className="flex items-center text-green-600 text-sm">
                     <div className="flex items-center text-green-700 text-sm">
                       <TrendingUp className="w-4 h-4 mr-1" />
                       {stat.trend}
