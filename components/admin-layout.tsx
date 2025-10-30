@@ -1,14 +1,26 @@
-"use client"
+"use client";
 
-import React, { useEffect, useState } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { BarChart3, Users, Settings, Calendar, FileText, Palette, ExternalLink, LogOut, Menu, ChevronLeft } from "lucide-react"
-import { PageLayout } from "@/components/page-layout"
+import type React from "react";
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import {
+  BarChart3,
+  Users,
+  Settings,
+  Calendar,
+  FileText,
+  Palette,
+  ExternalLink,
+  LogOut,
+  Menu,
+  X,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface AdminLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /**
@@ -17,120 +29,116 @@ interface AdminLayoutProps {
  * sidebar remains inside the page layout's main area.
  */
 export function AdminLayout({ children }: AdminLayoutProps) {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // sidebar open state - responsive behavior
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true)
-
-  useEffect(() => {
-    // default: keep sidebar open on desktop, closed on small screens
-    if (typeof window !== "undefined") {
-      setSidebarOpen(window.innerWidth >= 768)
-
-      const toggleHandler = () => setSidebarOpen((v) => !v)
-      window.addEventListener("toggle-admin-sidebar", toggleHandler as EventListener)
-
-      return () => {
-        window.removeEventListener("toggle-admin-sidebar", toggleHandler as EventListener)
-      }
-    }
-    return
-  }, [])
+  const navItems = [
+    { href: "/admin", icon: BarChart3, label: "Dashboard" },
+    { href: "/admin/excos", icon: Users, label: "Manage Excos" },
+    { href: "/admin/developers", icon: Settings, label: "Manage Developers" },
+    { href: "/admin/events", icon: Calendar, label: "Manage Events" },
+    { href: "/admin/resources", icon: FileText, label: "Manage Resources" },
+    { href: "/admin/settings", icon: Palette, label: "UI Settings" },
+  ];
 
   const isActive = (href: string) => {
-    if (href === "/admin") return pathname === "/admin" || pathname === "/admin/"
-    return pathname?.startsWith(href)
-  }
+    if (href === "/admin") {
+      return pathname === "/admin";
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
-    <PageLayout showDecorations={false}>
-      <div className="min-h-[calc(100vh-120px)] flex">
-        {/* Sidebar (now using landing-page color variables). It's responsive and can be toggled. */}
-        <aside
-          className={
-            `p-6 border-r transition-transform duration-200 fixed md:static left-0 top-0 h-full ` +
-            // On small screens: when closed, slide fully out (-translate-x-full). On md+ keep it visible but compact (md:translate-x-0 + md:w-20).
-            `${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"} ` +
-            `${sidebarOpen ? "md:w-72" : "md:w-20"}`
-          }
-          // higher z so the sidebar sits above the overlay but below the header
-          style={{
-            zIndex: 50,
-            backgroundColor: "var(--color-sidebar)",
-            borderColor: "var(--color-sidebar-border)",
-            color: "var(--color-sidebar-foreground)",
-          }}
-        >
-          {/* collapse button for desktop */}
-          <div className="flex items-start justify-end md:justify-end mb-4">
-            <button
-              className="hidden md:inline-flex items-center justify-center p-2 rounded-md hover:bg-muted transition-colors"
-              onClick={() => setSidebarOpen((v) => !v)}
-              aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
-              title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+    <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-teal-800 to-emerald-900">
+      {/* Admin Header */}
+      <header className="px-4 sm:px-6 py-4 border-b border-emerald-700/30">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden text-emerald-200 hover:text-white hover:bg-emerald-700"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              {sidebarOpen ? <ChevronLeft className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-            </button>
-          </div>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: "var(--color-sidebar-primary)" }}>
-              <span style={{ color: "var(--color-sidebar-primary-foreground)", fontWeight: 700 }}>A</span>
-            </div>
-            <div>
-              <h3 className={`font-semibold ${sidebarOpen ? "block" : "hidden"}`} style={{ color: "var(--color-sidebar-foreground)" }}>
-                Admin Panel
-              </h3>
-              <p className={`text-sm ${sidebarOpen ? "block" : "hidden"}`} style={{ color: "var(--color-sidebar-accent-foreground, var(--color-sidebar-foreground))" }}>
-                NYSC Jos North
-              </p>
-            </div>
-          </div>
+              {mobileMenuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
+            </Button>
 
-          {/* make nav grow so bottom actions stick to bottom */}
-          <nav className="space-y-2 flex-1">
-            {[
-              { href: "/admin", label: "Dashboard", icon: BarChart3 },
-              { href: "/admin/excos", label: "Manage Excos", icon: Users },
-              { href: "/admin/developers", label: "Manage Developers", icon: Settings },
-              { href: "/admin/events", label: "Manage Events", icon: Calendar },
-              { href: "/admin/resources", label: "Manage Resources", icon: FileText },
-              { href: "/admin/settings", label: "UI Settings", icon: Palette },
-            ].map((item) => {
-              const Icon = item.icon
-              const active = isActive(item.href)
+            <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold">P</span>
+            </div>
+            <div className="hidden sm:block">
+              <h1 className="text-white font-bold text-lg">Admin Panel</h1>
+              <p className="text-emerald-200 text-sm">NYSC Jos North</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="text-emerald-200 hover:text-white hover:bg-emerald-700 cursor-pointer hidden sm:flex"
+            >
+              <Link href="/" className="flex items-center gap-2">
+                <ExternalLink className="w-4 h-4" />
+                <span className="hidden md:inline">Back to site</span>
+              </Link>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-emerald-200 hover:text-white hover:bg-emerald-700 cursor-pointer"
+            >
+              <LogOut className="w-4 h-4 sm:mr-2" />
+              <span className="hidden sm:inline">Sign out</span>
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <div className="flex relative">
+        {/* Mobile Sidebar Overlay */}
+        {mobileMenuOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+
+        {/* Sidebar */}
+        <aside
+          className={cn(
+            "fixed lg:static inset-y-0 left-0 z-50 w-72 sm:w-80 bg-emerald-800/95 lg:bg-emerald-800/30 border-r border-emerald-700/30 min-h-[calc(100vh-80px)] transform transition-transform duration-300 lg:transform-none",
+            mobileMenuOpen
+              ? "translate-x-0"
+              : "-translate-x-full lg:translate-x-0"
+          )}
+        >
+          <nav className="p-4 sm:p-6 space-y-2">
+            {navItems.map((item) => {
+              const Icon = item.icon;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  aria-current={active ? "page" : undefined}
-                  className={`flex items-center gap-3 ${sidebarOpen ? 'px-4 py-3' : 'px-2 py-3 justify-center'} rounded-lg`}
-                  style={{
-                    backgroundColor: active ? "var(--color-sidebar-primary)" : "transparent",
-                    color: active ? "var(--color-sidebar-primary-foreground)" : "var(--color-sidebar-foreground)",
-                  }}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={cn(
+                    "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors cursor-pointer",
+                    isActive(item.href)
+                      ? "bg-emerald-700/50 text-white"
+                      : "text-emerald-200 hover:bg-emerald-700/30 hover:text-white"
+                  )}
                 >
                   <Icon className="w-5 h-5" />
-                  <span className={`${sidebarOpen ? 'inline' : 'hidden'}`}>{item.label}</span>
+                  {item.label}
                 </Link>
-              )
+              );
             })}
           </nav>
-
-          <div className={`mt-6 ${sidebarOpen ? '' : 'flex flex-col items-center'}`}>
-            <Button asChild variant="ghost" className={`${sidebarOpen ? 'w-full' : 'p-2'}`} style={{ color: "var(--color-sidebar-foreground)" }}>
-              <Link href="/" className={`${sidebarOpen ? 'flex items-center gap-2' : 'flex items-center justify-center'}`}>
-                <ExternalLink className="w-4 h-4" />
-                <span className={`${sidebarOpen ? 'inline' : 'sr-only'}`}>Back to site</span>
-              </Link>
-            </Button>
-
-            <Button variant="ghost" className={`${sidebarOpen ? 'w-full mt-2' : 'mt-3 p-2'}`} style={{ color: "var(--color-sidebar-foreground)" }}>
-              <span className="flex items-center justify-center">
-                <LogOut className="w-4 h-4" />
-                <span className={`${sidebarOpen ? 'ml-2 inline' : 'sr-only'}`}>Sign out</span>
-              </span>
-            </Button>
-          </div>
         </aside>
 
         {/* Mobile overlay - appears when sidebar is open on small screens and closes the sidebar when clicked */}
@@ -156,8 +164,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         )}
 
         {/* Main Content */}
-        <main className="flex-1 p-8">{children}</main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 w-full lg:w-auto overflow-x-hidden">
+          {children}
+        </main>
       </div>
-    </PageLayout>
-  )
+    </div>
+  );
 }

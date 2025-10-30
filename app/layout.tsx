@@ -1,26 +1,27 @@
-import type { Metadata } from 'next'
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
-import { Analytics } from '@vercel/analytics/next'
-import './globals.css'
-import Providers from '@/components/providers/providers'
+import type { Metadata } from "next";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { Analytics } from "@vercel/analytics/next";
+import "./globals.css";
+import { AppProvider } from "@/contexts/app-provider";
 
 export const metadata: Metadata = {
-  title: 'ICT CDS - Jos North',
-  description: 'The official website for the Jos North chapter of the ICT Community Development Society (CDS), dedicated to promoting technology and innovation in the region.',
-}
+  title: "Jos North ICT CDS - Biodata Platform",
+  description: "Jos North ICT CDS Biodata Management Platform",
+  generator: "Enya Elvis",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={`font-sans antialiased ${GeistSans.variable} ${GeistMono.variable}`}>
-        <Providers>{children}</Providers>
+      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
+        <AppProvider>{children}</AppProvider>
         <Analytics />
       </body>
     </html>
-  )
+  );
 }

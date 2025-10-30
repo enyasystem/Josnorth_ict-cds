@@ -15,13 +15,13 @@ export default function SettingsPage() {
         {/* Header */}
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">UI Settings</h1>
-          <p className="text-green-200">
+          <p className="text-emerald-200">
             Customize the appearance of your platform
           </p>
         </div>
 
         {/* General Settings */}
-        <Card className="bg-green-800/30 border-green-700/30 backdrop-blur-sm">
+        <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Globe className="w-5 h-5" />
@@ -30,23 +30,23 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="siteName" className="text-green-200">
+              <Label htmlFor="siteName" className="text-emerald-200">
                 Site Name
               </Label>
               <Input
                 id="siteName"
                 defaultValue="NYSC Jos North ICT CDS"
-                className="bg-green-900/30 border-green-700/30 text-white"
+                className="bg-emerald-900/30 border-emerald-700/30 text-white"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="siteDescription" className="text-green-200">
+              <Label htmlFor="siteDescription" className="text-emerald-200">
                 Site Description
               </Label>
               <Textarea
                 id="siteDescription"
                 defaultValue="Jos North ICT CDS Biodata Management Platform"
-                className="bg-green-900/30 border-green-700/30 text-white"
+                className="bg-emerald-900/30 border-emerald-700/30 text-white"
                 rows={3}
               />
             </div>
@@ -54,7 +54,7 @@ export default function SettingsPage() {
         </Card>
 
         {/* Branding */}
-        <Card className="bg-green-800/30 border-green-700/30 backdrop-blur-sm">
+        <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Image className="w-5 h-5" />
@@ -63,30 +63,30 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="logo" className="text-green-200">
+              <Label htmlFor="logo" className="text-emerald-200">
                 Logo URL
               </Label>
               <Input
                 id="logo"
                 placeholder="https://example.com/logo.png"
-                className="bg-green-900/30 border-green-700/30 text-white"
+                className="bg-emerald-900/30 border-emerald-700/30 text-white"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="favicon" className="text-green-200">
+              <Label htmlFor="favicon" className="text-emerald-200">
                 Favicon URL
               </Label>
               <Input
                 id="favicon"
                 placeholder="https://example.com/favicon.ico"
-                className="bg-green-900/30 border-green-700/30 text-white"
+                className="bg-emerald-900/30 border-emerald-700/30 text-white"
               />
             </div>
           </CardContent>
         </Card>
 
         {/* Theme Colors */}
-        <Card className="bg-green-800/30 border-green-700/30 backdrop-blur-sm">
+        <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Palette className="w-5 h-5" />
@@ -96,7 +96,7 @@ export default function SettingsPage() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="primaryColor" className="text-green-200">
+                <Label htmlFor="primaryColor" className="text-emerald-200">
                   Primary Color
                 </Label>
                 <div className="flex gap-2">
@@ -108,12 +108,12 @@ export default function SettingsPage() {
                   />
                   <Input
                     defaultValue="#10b981"
-                    className="bg-green-900/30 border-green-700/30 text-white flex-1"
+                    className="bg-emerald-900/30 border-emerald-700/30 text-white flex-1"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="secondaryColor" className="text-green-200">
+                <Label htmlFor="secondaryColor" className="text-emerald-200">
                   Secondary Color
                 </Label>
                 <div className="flex gap-2">
@@ -125,12 +125,12 @@ export default function SettingsPage() {
                   />
                   <Input
                     defaultValue="#14b8a6"
-                    className="bg-green-900/30 border-green-700/30 text-white flex-1"
+                    className="bg-emerald-900/30 border-emerald-700/30 text-white flex-1"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="accentColor" className="text-green-200">
+                <Label htmlFor="accentColor" className="text-emerald-200">
                   Accent Color
                 </Label>
                 <div className="flex gap-2">
@@ -142,12 +142,12 @@ export default function SettingsPage() {
                   />
                   <Input
                     defaultValue="#eab308"
-                    className="bg-green-900/30 border-green-700/30 text-white flex-1"
+                    className="bg-emerald-900/30 border-emerald-700/30 text-white flex-1"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="backgroundColor" className="text-green-200">
+                <Label htmlFor="backgroundColor" className="text-emerald-200">
                   Background Color
                 </Label>
                 <div className="flex gap-2">
@@ -159,7 +159,7 @@ export default function SettingsPage() {
                   />
                   <Input
                     defaultValue="#064e3b"
-                    className="bg-green-900/30 border-green-700/30 text-white flex-1"
+                    className="bg-emerald-900/30 border-emerald-700/30 text-white flex-1"
                   />
                 </div>
               </div>
@@ -168,39 +168,39 @@ export default function SettingsPage() {
         </Card>
 
         {/* Social Links */}
-        <Card className="bg-green-800/30 border-green-700/30 backdrop-blur-sm">
+        <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-white">Social Media Links</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="facebook" className="text-green-200">
+              <Label htmlFor="facebook" className="text-emerald-200">
                 Facebook
               </Label>
               <Input
                 id="facebook"
                 placeholder="https://facebook.com/your-page"
-                className="bg-green-900/30 border-green-700/30 text-white"
+                className="bg-emerald-900/30 border-emerald-700/30 text-white"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="twitter" className="text-green-200">
+              <Label htmlFor="twitter" className="text-emerald-200">
                 Twitter
               </Label>
               <Input
                 id="twitter"
                 placeholder="https://twitter.com/your-handle"
-                className="bg-green-900/30 border-green-700/30 text-white"
+                className="bg-emerald-900/30 border-emerald-700/30 text-white"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="instagram" className="text-green-200">
+              <Label htmlFor="instagram" className="text-emerald-200">
                 Instagram
               </Label>
               <Input
                 id="instagram"
                 placeholder="https://instagram.com/your-profile"
-                className="bg-green-900/30 border-green-700/30 text-white"
+                className="bg-emerald-900/30 border-emerald-700/30 text-white"
               />
             </div>
           </CardContent>
@@ -208,7 +208,7 @@ export default function SettingsPage() {
 
         {/* Save Button */}
         <div className="flex justify-end">
-          <Button className="bg-green-600 hover:bg-green-700 text-white">
+          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
             <Save className="w-4 h-4 mr-2" />
             Save Changes
           </Button>

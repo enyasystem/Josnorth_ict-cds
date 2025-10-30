@@ -1,42 +1,34 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar, MapPin, Users } from "lucide-react"
-import Link from "next/link"
+"use client";
 
-const upcomingEvents = [
-  {
-    id: 1,
-    title: "Community Cleanup",
-    date: "Sep 28, 2025",
-    description: "Join us to clean up local parks and community spaces.",
-    location: "Jos North Community",
-    attendees: 45,
-  },
-  {
-    id: 2,
-    title: "Skills Workshop",
-    date: "Oct 10, 2025",
-    description: "Practical workshops on digital skills and CV building.",
-    location: "NYSC Secretariat",
-    attendees: 32,
-  },
-  {
-    id: 3,
-    title: "Health Outreach",
-    date: "Nov 5, 2025",
-    description: "Free basic health screenings for community members.",
-    location: "Primary Health Center",
-    attendees: 28,
-  },
-  {
-    id: 4,
-    title: "Career Fair",
-    date: "Dec 2, 2025",
-    description: "Meet local employers and learn about opportunities.",
-    location: "Jos Convention Center",
-    attendees: 67,
-  },
-]
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Reveal } from "./reveal";
+import { useEvents } from "@/lib/hooks/useEvents";
+import { Skeleton } from "@/components/ui/skeleton";
+
+export function EventsSection() {
+  const {
+    data: response,
+    isLoading,
+    error,
+  } = useEvents({
+    status: "published",
+    limit: 6,
+  });
+
+  if (error) {
+    return (
+      <section className="py-16 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-red-400">
+            Failed to load events. Please try again later.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  const events = response?.data || [];
 
 export function EventsSection() {
   return (
@@ -49,34 +41,47 @@ export function EventsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {upcomingEvents.map((event) => (
-            <Card
-              key={event.id}
-              className="bg-emerald-900/20 border-emerald-700/30 hover:bg-emerald-900/30 transition-colors"
-            >
-              <CardHeader>
-                <div className="flex items-center gap-2 text-emerald-300 text-sm mb-2">
-                  <Calendar className="h-4 w-4" />
-                  {event.date}
-                </div>
-                <CardTitle className="text-emerald-50 text-lg">{event.title}</CardTitle>
-                <CardDescription className="text-emerald-200">{event.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-emerald-300 text-sm">
-                    <MapPin className="h-4 w-4" />
-                    {event.location}
-                  </div>
-                  <div className="flex items-center gap-2 text-emerald-300 text-sm">
-                    <Users className="h-4 w-4" />
-                    {event.attendees} attending
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {isLoading
+            ? Array.from({ length: 6 }).map((_, idx) => (
+                <Skeleton
+                  key={idx}
+                  className="h-40 rounded-lg bg-emerald-900/30"
+                />
+              ))
+            : events.map((e, idx) => (
+                <Reveal key={e.id} index={idx} className="animate-fade-in">
+                  <article className="bg-emerald-900/30 border border-emerald-800 p-3 rounded-lg card-hover h-40 overflow-hidden flex flex-col">
+                    <div className="w-full h-20 overflow-hidden rounded-md">
+                      <img
+                        src={e.image}
+                        alt={`${e.title} image`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="mt-2 flex-1">
+                      <h3 className="text-sm font-semibold text-white">
+                        {e.title}
+                      </h3>
+                      <p className="text-emerald-200 text-xs mt-1">
+                        {new Date(e.date).toLocaleDateString()}
+                      </p>
+                      <p className="text-emerald-100 mt-1 text-xs line-clamp-2">
+                        {e.excerpt}
+                      </p>
+                    </div>
+                    <div className="mt-2">
+                      <Button
+                        asChild
+                        size="sm"
+                        className="bg-emerald-500 hover:bg-emerald-600 text-white button-press"
+                      >
+                        <Link href={`/events/${e.id}`}>View more</Link>
+                      </Button>
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
         </div>
 
         <div className="text-center">
@@ -91,5 +96,5 @@ export function EventsSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
