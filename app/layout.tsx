@@ -5,9 +5,8 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Jos North ICT CDS - Biodata Platform',
-  description: 'Jos North ICT CDS Biodata Management Platform',
-  generator: 'Enya Elvis',
+  title: 'ICT CDS - Jos North',
+  description: 'The official website for the Jos North chapter of the ICT Community Development Society (CDS), dedicated to promoting technology and innovation in the region.',
 }
 
 export default function RootLayout({
@@ -17,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className={`font-sans antialiased ${GeistSans.variable} ${GeistMono.variable}`}>
         {children}
         <Analytics />
       </body>

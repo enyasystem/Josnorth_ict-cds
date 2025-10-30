@@ -1,4 +1,5 @@
-# Jos North CDS Website
+# [![CI: develop](https://github.com/enyasystem/josnorthcds/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/enyasystem/josnorthcds/actions/workflows/ci.yml?query=branch%3Adevelop) [![Auto-merge on Vercel success](https://github.com/enyasystem/Josnorth_ict-cds/actions/workflows/auto-merge-on-vercel.yml/badge.svg?branch=main)](https://github.com/enyasystem/Josnorth_ict-cds/actions/workflows/auto-merge-on-vercel.yml)
+# Jos North ICT CDS Biodata platform
 
 This repository contains a Next.js website for the Jos North Community Development Service (CDS) project. It's a modern, responsive site built with Next.js 14, TypeScript, Tailwind CSS and a small collection of UI primitives and components.
 
@@ -40,93 +41,113 @@ npm run start
 ```
 
 Notes: The project uses the `scripts` defined in `package.json` which map to Next.js commands (`dev`, `build`, `start`, `lint`).
+<!-- Frontend developer-style README: concise, scannable, and actionable -->
 
-## Project Structure
+# Jos North CDS — Frontend
 
-- `app/` - Next.js app directory with route-based components and pages
-- `components/` - Reusable React components and UI primitives
-- `public/` - Static assets (images, logos, illustrations)
-- `styles/` - Global CSS and Tailwind entrypoints
-- `hooks/` - Custom hooks used across components
-- `lib/` - Utility functions
-- `package.json` - Project metadata, dependencies and scripts
+A modern, responsive Next.js site for the Jos North Community Development Service (CDS).
 
-Key files:
-- `app/page.tsx` - Homepage
-- `components/events-section.tsx` - Events listing section (current file being edited)
-- `components/admin-layout.tsx` - Layout used for admin pages
+Quick links
+- Code: `app/`, `components/`, `public/`
+- Live deploy: (configure your hosting provider)
+- Branching workflow: `BRANCHING.md`
+- License: `LICENSE` (MIT)
 
-## Scripts
-- `npm run dev` — Starts the Next.js development server
-- `npm run build` — Builds the app for production
-- `npm run start` — Starts the Next.js production server
-- `npm run lint` — Runs Next.js linting
+Why this repo
+- Fast static + SSR pages with Next.js 14
+- TypeScript-first, Tailwind CSS for utility-driven styles
+- Component-first structure (see `components/`) to keep UI predictable and testable
 
-## Technologies & Libraries
-- Next.js 14
-- React 18
-- TypeScript
-- Tailwind CSS v4
-- Radix UI components
-- Lucide Icons
-- date-fns
-- Recharts
-- Sonner (toast notifications)
+Getting started (developer)
 
-## Environment Variables
+Prerequisites
+- Node.js 18+ (recommended)
+- npm
 
-If the project requires environment variables (e.g., API keys, analytics), create a `.env.local` file at the project root and add variables there. Example:
+Install
 
-```
-# .env.local
-NEXT_PUBLIC_API_URL=https://api.example.com
+```bash
+npm install
 ```
 
-Do not commit secrets to the repository.
+Run locally
 
-## Deployment
+```bash
+npm run dev
+```
 
-This project can be deployed to platforms that support Next.js (Vercel, Netlify with adapter, or your custom server). For Vercel:
+Build
 
-1. Connect your GitHub repository to Vercel
-2. Use the `main` branch as the production branch
-3. Vercel will detect Next.js and run `npm run build` during deployment
+```bash
+npm run build
+```
 
-If deploying to a custom server, run `npm run build` and then `npm run start` on the server.
+Start (production)
 
-## Contributing
+```bash
+npm run start
+```
 
-Contributions are welcome. Suggested additions:
-- Add a `CONTRIBUTING.md` with contribution guidelines
-- Add a `CODE_OF_CONDUCT.md`
-- Add GitHub Actions for CI (`lint`, `type-check`, `build`) and pull-request checks
+Project layout (important folders)
 
-Before opening a PR, run linters and TypeScript checks locally.
+- `app/` — routes and page-level components
+- `components/` — shared presentational and layout components
+- `public/` — static images and assets
+- `styles/` — global and Tailwind entry
+- `hooks/` — reusable hooks
+- `lib/` — utilities and helpers
 
-## Suggestions / Next Steps
-- Add `README` badges for build/CI, license, and dependencies
-- Add unit / integration tests (Jest, React Testing Library)
-- Add accessibility (a11y) checks in CI
-- Add a LICENSE file (e.g., MIT) if you intend to open source the project
+NPM scripts (most-used)
 
-## How to Contribute
+- `npm run dev` — dev server
+- `npm run build` — production build
+- `npm run start` — production server
+- `npm run lint` — linting
 
-- Fork the repository and create a feature branch from `main`.
-- Open a pull request describing the change and link any related issue.
-- Run linters and TypeScript checks locally before submitting.
-- Keep PRs focused and small for easier review.
+Branch summary (short)
 
-## Recommended CI
+- `main` — production-ready, protected
+- `develop` — integration branch for completed features
+- `staging` — optional pre-production for QA
+- `feature/*` — feature branches (branch off `develop`)
+- `release/*` — release prep (created from `develop`)
+- `hotfix/*` — urgent fixes (created from `main`)
 
-- Run `npm run lint` and `npm run build` on every PR.
-- Add TypeScript type-checking step: `npm --silent run tsc --noEmit`.
-- Add tests step (once tests are added) using `npm test`.
-- Optionally run an accessibility audit (axe) and Lighthouse checks for pages.
+For details and rules, see `BRANCHING.md`.
 
-## License
+Recommended local workflow (fast)
 
-Specify a license in `LICENSE` if you plan to publish this repository. If not set, assume all rights reserved.
+```bash
+git checkout develop
+git pull
+git checkout -b feature/<short-desc>
+# implement
+git add -A
+git commit -m "feat: add events section"
+git push -u origin feature/<short-desc>
+# open PR to develop
+```
 
-## Contact
+Testing & CI (suggested)
 
-If you need help with this repository, open an issue or contact the project maintainers.
+- Run `npm run lint` and `npm run build` on PRs
+- Add `npm --silent run tsc --noEmit` to CI steps
+- Add tests (Jest + React Testing Library) and run `npm test`
+
+Access & deploy notes
+
+- Vercel: connect the repo and use `main` as production branch. Vercel automatically runs `npm run build`.
+- Custom server: run `npm run build` then `npm run start`.
+
+Contributing
+
+- Keep PRs small and focused
+- Add screenshots or steps to reproduce for visual changes
+- Link PR to issues when applicable
+- Follow the branching strategy in `BRANCHING.md`
+
+Questions?
+- Open an issue or ping the maintainers
+
+
+

@@ -4,31 +4,32 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  /* Updated color system from teal to green theme */
+  --background: #ffffff;
+  --foreground: #1a202c;
+  --card: #ffffff;
+  --card-foreground: #1a202c;
+  --popover: #ffffff;
+  --popover-foreground: #1a202c;
+  --primary: #16a34a;
+  --primary-foreground: #ffffff;
+  --secondary: #f0fdf4;
+  --secondary-foreground: #15803d;
+  --muted: #d1d5db;
+  --muted-foreground: #6b7280;
+  --accent: #22c55e;
+  --accent-foreground: #ffffff;
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: #e5e7eb;
+  --input: #f3f4f6;
+  --ring: #16a34a;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
+  --radius: 0.5rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -123,9 +124,73 @@
     @apply text-foreground;
   }
 
-  /* Ensure html and body inherit full height for gradient */
   html,
   body {
     @apply min-h-screen;
   }
 }
+
+/* Design tokens (small centralized variables) */
+:root {
+  --token-primary: #16a34a;
+  --token-primary-600: #15803d;
+  --token-bg: #ffffff;
+  --token-foreground: #1a202c;
+  --token-card: #ffffff;
+  --token-radius-sm: 6px;
+  --token-radius-md: 12px;
+  --token-radius-lg: 20px;
+  --token-shadow-sm: 0 6px 18px rgba(6, 95, 70, 0.06);
+  --token-shadow-md: 0 18px 50px rgba(6, 95, 70, 0.08);
+}
+
+/* Prefer reduced motion global helper */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .parallax,
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Scroll reveal & parallax helpers */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px) scale(0.995);
+  transition: opacity 0.7s cubic-bezier(.2,.9,.2,1), transform 0.7s cubic-bezier(.2,.9,.2,1);
+  will-change: opacity, transform;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.reveal[data-variant="fade"] { transform: translateY(0) scale(0.995); }
+.reveal[data-variant="fade-up"] { transform: translateY(12px) scale(0.995); }
+.reveal.in-view[data-variant="fade-up"] { transform: translateY(0) scale(1); }
+.reveal[data-variant="slide-left"] { transform: translateX(18px); opacity: 0; }
+.reveal.in-view[data-variant="slide-left"] { transform: translateX(0); opacity: 1; }
+.reveal[data-variant="zoom-in"] { transform: scale(0.96); opacity: 0; }
+.reveal.in-view[data-variant="zoom-in"] { transform: scale(1); opacity: 1; }
+
+.parallax { will-change: transform; }
+
+/* small helper for staggered children inside reveal */
+.reveal .reveal-child { opacity: 0; transform: translateY(10px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.in-view .reveal-child { opacity: 1; transform: translateY(0); }
+
+/* Profile card (static) styles and hover lift */
+.profile-card { transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms cubic-bezier(.2,.9,.2,1); }
+.profile-card:hover, .profile-card:focus-within { transform: translateY(-6px) scale(1.01); box-shadow: var(--token-shadow-md); }
+
+/* social icons under avatar */
+.profile-socials { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+.profile-socials a { width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 9999px; background: rgba(255,255,255,0.9); box-shadow: 0 4px 14px rgba(6,95,70,0.06); transition: transform 160ms ease, background 160ms ease; }
+.profile-socials a:hover { transform: translateY(-3px); background: white; }
+.profile-socials svg { width: 18px; height: 18px; color: var(--token-primary-600); }
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-card, .profile-socials a { transition: none !important; transform: none !important; }
+}
+
