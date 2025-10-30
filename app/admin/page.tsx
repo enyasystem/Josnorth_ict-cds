@@ -70,8 +70,8 @@ export default function AdminDashboard() {
       <div className="space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Admin Dashboard</h1>
-          <p className="text-emerald-200">Real-time overview of NYSC Jos North portal activities</p>
+          <h1 className="text-3xl font-bold text-green-800 mb-2">Admin Dashboard</h1>
+            <p className="text-green-700">Real-time overview of NYSC Jos North portal activities</p>
         </div>
 
         {/* Statistics Cards */}
@@ -79,21 +79,22 @@ export default function AdminDashboard() {
           {stats.map((stat, index) => {
             const Icon = stat.icon
             return (
-              <Card key={index} className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
+              <Card key={index} className="bg-green-50 border border-green-100">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-emerald-600 rounded-lg flex items-center justify-center">
+                    <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
                       <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <div className="flex items-center text-emerald-300 text-sm">
+                    <div className="flex items-center text-green-600 text-sm">
+                    <div className="flex items-center text-green-700 text-sm">
                       <TrendingUp className="w-4 h-4 mr-1" />
                       {stat.trend}
                     </div>
                   </div>
                   <div className="space-y-1">
-                    <div className="text-3xl font-bold text-white">{stat.value}</div>
-                    <div className="text-sm text-emerald-200">{stat.title}</div>
-                    <div className="text-xs text-emerald-300">{stat.subtitle}</div>
+                    <div className="text-3xl font-bold text-green-800">{stat.value}</div>
+                    <div className="text-sm text-green-700">{stat.title}</div>
+                    <div className="text-xs text-green-700">{stat.subtitle}</div>
                   </div>
                 </CardContent>
               </Card>
@@ -102,9 +103,9 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recent Activity */}
-        <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
+        <Card className="bg-green-50 border border-green-100">
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
+            <CardTitle className="text-green-800 flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
               Recent Activity
             </CardTitle>
@@ -113,16 +114,16 @@ export default function AdminDashboard() {
             {recentActivity.map((activity, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between py-3 border-b border-emerald-700/20 last:border-0"
+                className="flex items-center justify-between py-3 border-b border-green-100 last:border-0"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                  <div>
-                    <p className="text-white font-medium">{activity.action}</p>
-                    <p className="text-emerald-200 text-sm">{activity.details}</p>
-                  </div>
-                </div>
-                <span className="text-emerald-300 text-sm">{activity.time}</span>
+                      <div className="w-2 h-2 bg-green-300 rounded-full"></div>
+                      <div>
+                        <p className="text-green-800 font-medium">{activity.action}</p>
+                        <p className="text-green-700 text-sm">{activity.details}</p>
+                      </div>
+                    </div>
+                    <span className="text-green-700 text-sm">{activity.time}</span>
               </div>
             ))}
           </CardContent>
@@ -131,15 +132,15 @@ export default function AdminDashboard() {
         {/* Quick Actions and Platform Management */}
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Quick Actions */}
-          <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
+          <Card className="bg-green-50 border border-green-100">
             <CardHeader>
-              <CardTitle className="text-white">Quick Actions</CardTitle>
+              <CardTitle className="text-green-800">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {quickActions.map((action, index) => {
                 const Icon = action.icon
                 return (
-                  <Button key={index} className="w-full justify-start bg-emerald-700 hover:bg-emerald-600 text-white">
+                  <Button key={index} className="w-full justify-start bg-green-600 hover:bg-green-500 text-white">
                     <Icon className="w-4 h-4 mr-2" />
                     {action.label}
                   </Button>
@@ -149,9 +150,9 @@ export default function AdminDashboard() {
           </Card>
 
           {/* Platform Management */}
-          <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
+          <Card className="bg-green-50 border border-green-100">
             <CardHeader>
-              <CardTitle className="text-white">Platform Management</CardTitle>
+              <CardTitle className="text-green-800">Platform Management</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {platformManagement.map((item, index) => {
@@ -160,7 +161,7 @@ export default function AdminDashboard() {
                   <Button
                     key={index}
                     variant="outline"
-                    className="w-full justify-start border-emerald-600 text-emerald-200 hover:bg-emerald-700 hover:text-white bg-transparent"
+                    className="w-full justify-start border-green-600 text-green-800 hover:bg-green-100 hover:text-green-900 bg-transparent"
                   >
                     <Icon className="w-4 h-4 mr-2" />
                     {item.label}
@@ -172,9 +173,9 @@ export default function AdminDashboard() {
         </div>
 
         {/* Footer */}
-        <div className="flex justify-between items-center pt-8 border-t border-emerald-700/30">
-          <p className="text-emerald-300 text-sm">© 2025 NYSC Jos North — Admin</p>
-          <p className="text-emerald-300 text-sm">Admin tools and logs</p>
+        <div className="flex justify-between items-center pt-8 border-t border-green-100">
+          <p className="text-green-600 text-sm">© 2025 NYSC Jos North — Admin</p>
+          <p className="text-green-600 text-sm">Admin tools and logs</p>
         </div>
       </div>
     </AdminLayout>
