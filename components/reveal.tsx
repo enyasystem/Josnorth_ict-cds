@@ -8,6 +8,9 @@ interface RevealProps {
   className?: string
   rootMargin?: string
   threshold?: number
+  // allow callers to pass variant/style without breaking existing usages
+  variant?: string
+  style?: React.CSSProperties
 }
 
 export function Reveal({ children, index = 0, className = "", rootMargin = "0px", threshold = 0.12 }: RevealProps) {

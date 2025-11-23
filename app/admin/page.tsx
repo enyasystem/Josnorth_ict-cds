@@ -221,14 +221,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Footer */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 pt-6 sm:pt-8 border-t border-emerald-700/30">
-          <p className="text-emerald-300 text-xs sm:text-sm text-center sm:text-left">
-            © 2025 NYSC Jos North — Admin
-          </p>
-          <p className="text-emerald-300 text-xs sm:text-sm text-center sm:text-right">
-            Admin tools and logs
-          </p>
-        </div>
+       
       </div>
     </AdminLayout>
   );

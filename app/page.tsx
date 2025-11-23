@@ -1,22 +1,21 @@
 "use client"
 
+import React, { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
 import { Logo } from "@/components/logo"
+import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
+import ProfileCard from "@/components/profile-card"
+import ScrollChoreographer from "@/components/ui/scroll-choreo"
+import Parallax from "@/components/ui/parallax"
 import { AnimatedParticles } from "@/components/animated-particles"
 import HeroParticles from "@/components/hero/hero-particles"
-import Reveal from "@/components/ui/reveal"
-import Parallax from "@/components/ui/parallax"
-import ScrollChoreographer from "@/components/ui/scroll-choreo"
-import ProfileCard from "@/components/profile-card"
-import { useState, useEffect } from "react"
+import { Reveal } from "@/components/reveal"
+import { Typewriter } from "@/components/typewriter"
 import { useDevelopers, useExcos } from "@/lib/hooks/useTeam"
 import { useEvents } from "@/lib/hooks/useEvents"
 import { useResources } from "@/lib/hooks/useResources"
-import { Skeleton } from "@/components/ui/skeleton"
 import type { TeamMember, Event as EventType, Resource as ResourceType } from "@/lib/types/api"
-import { Typewriter } from "@/components/typewriter"
-
 export default function App() {
   const [view, setView] = useState("excos")
   const [isScrolled, setIsScrolled] = useState(false)
@@ -90,24 +89,7 @@ export default function App() {
       y: 0,
       boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
     },
-    hover: {
-      scale: 1.08,
-      rotateX: 5,
-      rotateY: -5,
-      y: -20,
-      boxShadow: "0 30px 60px rgba(22, 163, 74, 0.3), 0 0 40px rgba(22, 163, 74, 0.2)",
-      transition: {
-        duration: 0.4,
-      },
-    },
-  }
-
-  const profileCardHoverVariants = {
-    rest: {
-      scale: 1,
-      y: 0,
-      boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
-    },
+    
     hover: {
       scale: 1.12,
       y: -25,
@@ -133,6 +115,60 @@ export default function App() {
       },
     },
   }
+
+  // Mobile menu state & behaviors
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  // menuVisible keeps the menu mounted while exit animation plays
+  const [menuVisible, setMenuVisible] = useState(false)
+  const closeTimerRef = useRef<number | null>(null)
+
+  function openMenu() {
+    if (closeTimerRef.current) {
+      window.clearTimeout(closeTimerRef.current)
+      closeTimerRef.current = null
+    }
+    setMenuVisible(true)
+    // small delay to allow mount before transition if needed
+    requestAnimationFrame(() => setMobileMenuOpen(true))
+  }
+
+  function closeMenu() {
+    setMobileMenuOpen(false)
+    // wait for animation to finish before unmounting
+    closeTimerRef.current = window.setTimeout(() => {
+      setMenuVisible(false)
+      closeTimerRef.current = null
+    }, 300)
+  }
+
+  // Close mobile menu on Escape and lock body scroll when open
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setMobileMenuOpen(false)
+    }
+
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden"
+      window.addEventListener("keydown", onKey)
+    } else {
+      document.body.style.overflow = ""
+    }
+
+    return () => {
+      document.body.style.overflow = ""
+      window.removeEventListener("keydown", onKey)
+    }
+  }, [mobileMenuOpen])
+
+  // cleanup any pending timers on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) {
+        window.clearTimeout(closeTimerRef.current)
+        closeTimerRef.current = null
+      }
+    }
+  }, [])
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -201,10 +237,78 @@ export default function App() {
             Resources
           </a>
         </div>
-        <Button className="bg-green-600 text-white font-bold px-5 py-2 rounded-full hover:bg-green-500 transition">
+
+        {/* Mobile toggler */}
+        <div className="md:hidden">
+          <button
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
+            onClick={() => (menuVisible ? closeMenu() : openMenu())}
+            className="p-2 rounded-md text-green-900 bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
+          >
+            {mobileMenuOpen ? (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
+        </div>
+
+        <Button className="hidden md:inline-flex bg-green-600 text-white font-bold px-5 py-2 rounded-full hover:bg-green-500 transition">
           Join Us
         </Button>
       </motion.nav>
+
+      {/* Mobile menu overlay (backdrop + right panel) */}
+      {menuVisible && (
+        <div id="mobile-menu" role="dialog" aria-modal="true" className="fixed inset-0 z-50 md:hidden">
+          {/* Backdrop */}
+          <div
+            onClick={closeMenu}
+            className={`absolute inset-0 bg-black/30 transition-opacity duration-300 ${mobileMenuOpen ? "opacity-100" : "opacity-0"}`}
+          />
+
+          {/* Right slide-in panel */}
+              <aside
+                className={`absolute right-0 top-16 w-72 sm:w-80 bg-white shadow-2xl ring-1 ring-black/5 transform transition-transform duration-300 ${
+                  mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+                } rounded-2xl overflow-hidden flex flex-col max-h-[72vh] pb-6`}
+                style={{ right: '1rem' }}
+              >
+                <div className="p-3 flex items-center justify-end">
+              <button
+                aria-label="Close menu"
+                onClick={closeMenu}
+                className="p-2 rounded-md text-green-900 bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="px-6 pt-2">
+              <nav className="flex flex-col items-start space-y-3 text-lg font-semibold text-green-900">
+                <a href="#home" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Home</a>
+                <a href="#profiles" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Excos & Devs</a>
+                <a href="#events" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Events</a>
+                <a href="#resources" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Resources</a>
+
+                <div className="mt-3 w-full flex justify-center">
+                  <a href="/join" onClick={closeMenu}>
+                    <Button className="bg-green-600 text-white font-semibold px-6 py-3 rounded-full hover:bg-green-500 transition">Join Us</Button>
+                  </a>
+                </div>
+              </nav>
+            </div>
+
+          </aside>
+        </div>
+      )}
 
       {/* Hero Section */}
       <section
@@ -403,22 +507,13 @@ export default function App() {
                 </div>
               ))
             ) : (
-              <div className="p-2">
+              <div className="col-span-full text-center">
                 <p className="text-gray-600">No profiles available.</p>
               </div>
             )}
           </motion.div>
-
-          <div className="mt-8 flex justify-center">
-            <Button className="bg-green-600 text-white font-semibold px-6 py-3 rounded-full hover:bg-green-500 transition">
-              View all profiles
-            </Button>
-          </div>
         </Reveal>
-      </section>
 
-      {/* Events Section */}
-      <section id="events" className="py-24 bg-white text-center relative">
         <Reveal variant="fade-up">
           <motion.h2
             variants={fadeUp}
