@@ -8,32 +8,53 @@ import type {
 
 export const eventsApi = {
   // Get all events (with optional filters)
-  getAll: (params?: {
+  getAll: async (params?: {
     page?: number;
     limit?: number;
     status?: "draft" | "published" | "cancelled";
     sort?: string;
-  }) =>
-    apiRequest<PaginatedResponse<Event>>("/events", {
-      params,
-    }),
+  }) => {
+    const resp: any = await apiRequest<any>("/v1/events", { params })
+    const results: Event[] = resp?.results ?? []
+    const count: number = resp?.count ?? results.length
+    const page = params?.page ?? 1
+    const limit = params?.limit ?? (results.length || count || 1)
+    const totalPages = Math.max(1, Math.ceil(count / (limit || 1)))
+    return {
+      success: true,
+      data: results,
+      pagination: {
+        page,
+        limit,
+        total: count,
+        totalPages,
+      },
+    } as PaginatedResponse<Event>
+  },
 
   // Get single event
-  getById: (id: string) => apiRequest<{ data: Event }>(`/events/${id}`),
+  getById: async (id: string) => {
+    const resp: any = await apiRequest<any>(`/v1/events/${id}`)
+    return { data: resp }
+  },
 
   // Create event (admin only)
-  create: (data: CreateEventData) =>
-    apiRequest<{ data: Event }>("/events", {
+  create: async (data: CreateEventData) => {
+    const resp: any = await apiRequest<any>("/v1/events", {
       method: "POST",
       data,
-    }),
+    })
+    return { data: resp }
+  },
 
   // Update event (admin only)
-  update: (id: string, data: Partial<CreateEventData>) =>
-    apiRequest<{ data: Event }>(`/events/${id}`, {
+  update: async (id: string, data: Partial<CreateEventData>) => {
+    const resp: any = await apiRequest<any>(`/v1/events/${id}`, {
       method: "PATCH",
       data,
-    }),
+    })
+    return { data: resp }
+  },
 
   // Delete event (admin only)
   delete: (id: string) =>
@@ -42,14 +63,18 @@ export const eventsApi = {
     }),
 
   // Publish event
-  publish: (id: string) =>
-    apiRequest<{ data: Event }>(`/events/${id}/publish`, {
+  publish: async (id: string) => {
+    const resp: any = await apiRequest<any>(`/v1/events/${id}/publish`, {
       method: "POST",
-    }),
+    })
+    return { data: resp }
+  },
 
   // Cancel event
-  cancel: (id: string) =>
-    apiRequest<{ data: Event }>(`/events/${id}/cancel`, {
+  cancel: async (id: string) => {
+    const resp: any = await apiRequest<any>(`/v1/events/${id}/cancel`, {
       method: "POST",
-    }),
+    })
+    return { data: resp }
+  },
 };
