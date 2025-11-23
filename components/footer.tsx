@@ -1,5 +1,8 @@
 "use client"
 
+import { TbBrandX } from 'react-icons/tb'
+import { SiTiktok } from 'react-icons/si'
+
 export function Footer() {
   return (
     <footer className="relative z-10 mt-auto px-6 py-16 border-t border-border bg-foreground text-white">
@@ -96,15 +99,12 @@ export function Footer() {
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white/60 text-sm">&copy; 2025 NYSC Jos North CDS. All rights reserved.</p>
           <div className="flex gap-4">
-            <a href="#" className="text-white/60 hover:text-accent transition-colors">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7a10.6 10.6 0 01-9.5 5M9 19c1 0 1-1 1-1" />
-              </svg>
+            <a href="#" className="text-white/60 hover:text-accent transition-colors" aria-label="X">
+              <TbBrandX className="w-5 h-5" />
             </a>
-            <a href="#" className="text-white/60 hover:text-accent transition-colors">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.731-2.004 1.438-.103.25-.129.599-.129.948v5.419h-3.554s.05-8.736 0-9.646h3.554v1.364c.429-.659 1.191-1.599 2.896-1.599 2.117 0 3.704 1.385 3.704 4.362v5.519zM5.337 9.432c-1.144 0-1.915-.758-1.915-1.707 0-.955.771-1.71 1.958-1.71 1.187 0 1.914.757 1.938 1.71 0 .949-.751 1.707-1.981 1.707zm1.581 11.02H3.715V9.806h3.203v10.646zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
-              </svg>
+
+            <a href="#" className="text-white/60 hover:text-accent transition-colors" aria-label="TikTok">
+              <SiTiktok className="w-5 h-5" />
             </a>
           </div>
         </div>
