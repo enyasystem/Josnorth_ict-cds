@@ -1,189 +1,141 @@
 "use client";
 
-"use client";
-
+import { useState } from "react";
 import { PageLayout } from "@/components/page-layout";
 import dynamic from "next/dynamic";
 const FloatingNav = dynamic(() => import("@/components/floating-nav"), {
   ssr: false,
 });
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Github, Linkedin, Mail, MapPin, Calendar, Award } from "lucide-react";
 import { useDevelopers, useExcos } from "@/lib/hooks/useTeam";
+import { useProfiles } from "@/lib/hooks/useProfiles";
 import { Skeleton } from "@/components/ui/skeleton";
+import ProfileCard from "@/components/profile-card";
+import type { TeamMember } from "@/lib/types/api";
+import { Reveal } from "@/components/reveal";
+import { motion } from "framer-motion";
 
 export default function TeamPage() {
-  const { data: devResp, isLoading: devLoading } = useDevelopers();
-  const { data: excosResp, isLoading: excosLoading } = useExcos();
+  const [view, setView] = useState("excos");
+  const { data: developersData, isLoading: devLoading } = useDevelopers();
+  const { data: excosData, isLoading: excosLoading } = useExcos();
+  const { data: profilesData, isLoading: profilesLoading } = useProfiles();
 
-  const developers = devResp?.data ?? [];
-  const excos = excosResp?.data ?? [];
-  const teamsFallback = excosResp?.teams ?? devResp?.teams ?? [];
+  const developers: TeamMember[] = developersData?.data ?? [];
+  const excos: TeamMember[] = excosData?.data ?? [];
+  const profiles: TeamMember[] = profilesData?.data ?? [];
 
-  let teamCards: React.ReactNode;
+  // Prefer profiles endpoint for the Meet Our Team section when available
+  const currentList =
+    profiles.length > 0 ? profiles : view === "excos" ? excos : developers;
+  const currentLoading =
+    profiles.length > 0
+      ? profilesLoading
+      : view === "excos"
+      ? excosLoading
+      : devLoading;
 
-  if (devLoading) {
-    teamCards = Array.from({ length: 3 }).map((_, i) => (
-      <Skeleton key={i} className="h-64 rounded-lg" />
-    ));
-  } else if (developers.length > 0) {
-    teamCards = developers.map((member: any) => {
-      return (
-        <Card
-          key={member.id}
-          className="bg-white border-green-100 hover:border-green-200 transition-all duration-300 hover:scale-105 hover:shadow-lg group"
-        >
-          <CardHeader>
-            <div className="flex items-center gap-4 mb-4">
-              <img
-                src={member.img || member.avatar || "/placeholder.svg"}
-                alt={member.name}
-                className="w-16 h-16 rounded-full border-2 border-green-100 group-hover:border-green-200 transition-colors"
-              />
-              <div>
-                <CardTitle className="text-green-800 text-lg">
-                  {member.name}
-                </CardTitle>
-                <CardDescription className="text-green-700 font-medium">
-                  {member.role}
-                </CardDescription>
-              </div>
-            </div>
-            <CardDescription className="text-gray-600 text-sm leading-relaxed">
-              {member.description}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex flex-wrap gap-1">
-                {(member.skills || []).map((skill: string, index: number) => (
-                  <span
-                    key={index}
-                    className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-
-              <div className="space-y-2 text-sm text-gray-700">
-                <div className="flex items-center gap-2">
-                  <Award className="h-4 w-4 text-green-600" />
-                  {member.experience} experience
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-green-600" />
-                  {member.location}
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-green-600" />
-                  Joined {member.joinDate}
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <p className="text-xs font-medium text-green-700">
-                  Key Achievements:
-                </p>
-                {(member.achievements || []).map(
-                  (achievement: string, index: number) => (
-                    <p key={index} className="text-xs text-gray-600">
-                      • {achievement}
-                    </p>
-                  )
-                )}
-              </div>
-
-              <div className="flex justify-center gap-3 pt-3 border-t border-green-100">
-                <button className="p-2 text-green-600 hover:text-green-800 hover:bg-green-100 rounded-full transition-colors cursor-pointer">
-                  <Github className="h-4 w-4" />
-                </button>
-                <button className="p-2 text-green-600 hover:text-green-800 hover:bg-green-100 rounded-full transition-colors cursor-pointer">
-                  <Linkedin className="h-4 w-4" />
-                </button>
-                <button className="p-2 text-green-600 hover:text-green-800 hover:bg-green-100 rounded-full transition-colors cursor-pointer">
-                  <Mail className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      );
-    });
-  } else if (teamsFallback.length > 0) {
-    teamCards = teamsFallback.map((team: any) => {
-      return (
-        <Card
-          key={team.id}
-          className="bg-white border-green-100 transition-all duration-300 group"
-        >
-          <CardHeader>
-            <div className="flex items-center gap-4 mb-4">
-              <div>
-                <CardTitle className="text-green-800 text-lg">
-                  {team.name}
-                </CardTitle>
-                <CardDescription className="text-green-700 font-medium">
-                  {team.slug}
-                </CardDescription>
-              </div>
-            </div>
-            <CardDescription className="text-gray-600 text-sm leading-relaxed">
-              {team.description}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2 text-sm text-gray-700">
-              {Array.isArray(team.members) && team.members.length > 0 ? (
-                team.members.map((m: any) => (
-                  <div key={m.id} className="py-2 border-b border-green-50">
-                    <div className="font-medium text-green-800">{m.name}</div>
-                    <div className="text-xs text-gray-600">{m.role}</div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-sm text-gray-600">No members yet.</div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      );
-    });
-  } else {
-    teamCards = (
-      <p className="text-center col-span-full text-gray-600">
-        No team members found.
-      </p>
-    );
-  }
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
   return (
     <PageLayout showHeader={false}>
       <FloatingNav />
       <div className="pt-28 px-6 py-8 bg-green-50">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl lg:text-5xl font-bold text-green-800 mb-6 text-balance">
-              Meet Our Team
-            </h1>
-            <p className="text-xl text-green-600 mb-8 max-w-3xl mx-auto text-pretty">
-              The dedicated developers, designers, and engineers building the
-              future of NYSC Jos North digital platform. Our diverse team brings
-              together expertise in modern web technologies, user experience
-              design, and scalable infrastructure.
-            </p>
-          </div>
+          <Reveal variant="fade-up">
+            <div className="text-center mb-16">
+              <h1 className="text-4xl lg:text-5xl font-bold text-green-800 mb-6 text-balance">
+                Meet Our Team
+              </h1>
+              <p className="text-xl text-green-600 mb-8 max-w-3xl mx-auto text-pretty">
+                The dedicated developers, designers, and engineers building the
+                future of NYSC Jos North digital platform. Our diverse team
+                brings together expertise in modern web technologies, user
+                experience design, and scalable infrastructure.
+              </p>
+            </div>
+          </Reveal>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {teamCards}
-          </div>
+          {profiles.length === 0 && (
+            <div className="flex justify-center mb-6 space-x-4">
+              <Button
+                onClick={() => setView("excos")}
+                className={`${
+                  view === "excos"
+                    ? "bg-green-600 text-white"
+                    : "bg-green-100 text-green-700"
+                } px-6 py-2 rounded-full transition`}
+              >
+                Excos
+              </Button>
+              <Button
+                onClick={() => setView("devs")}
+                className={`${
+                  view === "devs"
+                    ? "bg-green-600 text-white"
+                    : "bg-green-100 text-green-700"
+                } px-6 py-2 rounded-full transition`}
+              >
+                Developers
+              </Button>
+            </div>
+          )}
+
+          <Reveal
+            variant="fade-up"
+            stagger={80}
+            className="px-8 max-w-6xl mx-auto"
+          >
+            <motion.div
+              key={view}
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16"
+            >
+              {currentLoading ? (
+                Array.from({ length: 6 }).map((_, i) => (
+                  <div className="p-2" key={`skeleton-${i}`}>
+                    <Skeleton className="h-44 rounded-lg" />
+                  </div>
+                ))
+              ) : currentList.length > 0 ? (
+                currentList.map((member) => (
+                  <div className="p-2" key={member.id}>
+                    <ProfileCard
+                      name={member.name}
+                      role={member.role}
+                      img={
+                        member.img ||
+                        `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                          member.name
+                        )}`
+                      }
+                      bio={member.bio}
+                      socials={{
+                        github: member.social?.github,
+                        linkedin: member.social?.linkedin,
+                        x: member.social?.twitter,
+                      }}
+                    />
+                  </div>
+                ))
+              ) : (
+                <div className="col-span-full text-center">
+                  <p className="text-gray-600">No profiles available.</p>
+                </div>
+              )}
+            </motion.div>
+          </Reveal>
 
           <div className="text-center bg-green-50 rounded-lg p-8 border border-green-100">
             <h3 className="text-2xl font-bold text-green-800 mb-4">
