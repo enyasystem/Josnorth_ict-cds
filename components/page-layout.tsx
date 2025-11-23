@@ -19,10 +19,13 @@ export function PageLayout({ children, showDecorations = true, showHeader = true
         </div>
       )}
 
-      {typeof window !== 'undefined' && (
-        // allow pages to hide the default header when they render their own
-        showHeader && <Header />
-      )}
+      {/* Render a header container that will be hydrated by the client-only `Header`.
+          Use `suppressHydrationWarning` so React doesn't throw when the server
+          markup (which doesn't include the client header) differs during hydration.
+          Pages can still hide the header by passing `showHeader={false}`. */}
+      <div suppressHydrationWarning>
+        {showHeader && <Header />}
+      </div>
       <main className="relative z-10 flex-1">{children}</main>
       <Footer />
     </div>
