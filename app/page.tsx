@@ -10,12 +10,29 @@ import Parallax from "@/components/ui/parallax"
 import ScrollChoreographer from "@/components/ui/scroll-choreo"
 import ProfileCard from "@/components/profile-card"
 import { useState, useEffect } from "react"
+import { useDevelopers, useExcos } from "@/lib/hooks/useTeam"
+import { useEvents } from "@/lib/hooks/useEvents"
+import { useResources } from "@/lib/hooks/useResources"
+import { Skeleton } from "@/components/ui/skeleton"
+import type { TeamMember, Event as EventType, Resource as ResourceType } from "@/lib/types/api"
 import { Typewriter } from "@/components/typewriter"
 
 export default function App() {
   const [view, setView] = useState("excos")
   const [isScrolled, setIsScrolled] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
+  const { data: developersData, isLoading: devLoading } = useDevelopers()
+  const { data: excosData, isLoading: excosLoading } = useExcos()
+  const { data: eventsData, isLoading: eventsLoading } = useEvents({ limit: 3, status: "published" })
+  const { data: resourcesData, isLoading: resourcesLoading } = useResources({ limit: 3 })
+
+  const developers: TeamMember[] = developersData?.data ?? []
+  const excos: TeamMember[] = excosData?.data ?? []
+  const events: EventType[] = eventsData?.data ?? []
+  const resources: ResourceType[] = resourcesData?.data ?? []
+
+  const currentList = view === "excos" ? excos : developers
+  const currentLoading = view === "excos" ? excosLoading : devLoading
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -31,6 +48,9 @@ export default function App() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  // Data is fetched via React Query hooks above (useDevelopers, useExcos, useEvents, useResources)
+  // These provide caching, loading and error states. No manual fetch required here.
 
   const fadeUp = {
     hidden: { opacity: 0, y: 60 },
@@ -364,16 +384,29 @@ export default function App() {
             viewport={{ once: true }}
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
           >
-            {[1, 2, 3].map((i) => (
-              <div className="p-2" key={i}>
-                <ProfileCard
-                  name={view === "excos" ? `Exco Member ${i}` : `Developer ${i}`}
-                  role={view === "excos" ? "Exco" : "Developer"}
-                  img={`https://randomuser.me/api/portraits/${view === "excos" ? "women" : "men"}/${i + 10}.jpg`}
-                  bio={view === "excos" ? "Leading community projects and events." : "Building digital solutions for impact."}
-                />
+            {currentLoading ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <div className="p-2" key={`skeleton-${i}`}>
+                  <Skeleton className="h-44 rounded-lg" />
+                </div>
+              ))
+            ) : currentList.length > 0 ? (
+              currentList.slice(0, 6).map((member) => (
+                <div className="p-2" key={member.id}>
+                  <ProfileCard
+                    name={member.name}
+                    role={member.role}
+                    img={member.img || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}`}
+                    bio={member.bio}
+                    socials={{ github: member.social?.github, linkedin: member.social?.linkedin, x: member.social?.twitter }}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="p-2">
+                <p className="text-gray-600">No profiles available.</p>
               </div>
-            ))}
+            )}
           </motion.div>
 
           <div className="mt-8 flex justify-center">
@@ -404,49 +437,51 @@ export default function App() {
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto px-8"
         >
-          {[
-            { title: "Tech Workshop", desc: "Learn cutting-edge technologies and best practices" },
-            { title: "Networking Event", desc: "Connect with industry professionals and peers" },
-            { title: "Hackathon 2025", desc: "Build innovative solutions and showcase your skills" },
-          ].map((event, i) => (
-            <Reveal key={i} variant="fade-up" style={{ transitionDelay: `${i * 80}ms` }}>
-              <motion.div
-                variants={itemVariants}
-                initial="rest"
-                whileHover={{
-                  scale: 1.08,
-                  rotateX: 5,
-                  rotateY: -5,
-                  y: -20,
-                  boxShadow: "0 30px 60px rgba(22, 163, 74, 0.3), 0 0 40px rgba(22, 163, 74, 0.2)",
-                  transition: { duration: 0.4, ease: "easeInOut" },
-                }}
-                className="bg-green-50 p-6 rounded-3xl overflow-hidden cursor-pointer relative"
-                style={{ perspective: "1000px" }}
-              >
-              <motion.div
-                variants={imageHoverVariants}
-                initial="rest"
-                whileHover="hover"
-                className="overflow-hidden rounded-2xl"
-              >
-                <img
-                  src={
-                    event.title === "Tech Workshop"
-                      ? "/skills-training-workshop.jpg"
-                      : event.title === "Networking Event"
-                      ? "/community-engagement-event.jpg"
-                      : "/software-development-innovation.jpg"
-                  }
-                  alt={event.title}
-                  className="w-full h-56 object-cover"
-                />
-              </motion.div>
-              <h3 className="text-2xl font-semibold text-green-800 mb-2 mt-4">{event.title}</h3>
-              <p className="text-gray-600 mb-4">{event.desc}</p>
-              </motion.div>
-            </Reveal>
-          ))}
+          {eventsLoading ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <Reveal key={`event-skel-${i}`} variant="fade-up" style={{ transitionDelay: `${i * 80}ms` }}>
+                <Skeleton className="h-56 rounded-2xl" />
+              </Reveal>
+            ))
+          ) : events.length > 0 ? (
+            events.map((ev, i) => (
+              <Reveal key={ev.id || i} variant="fade-up" style={{ transitionDelay: `${i * 80}ms` }}>
+                <motion.div
+                  variants={itemVariants}
+                  initial="rest"
+                  whileHover={{
+                    scale: 1.08,
+                    rotateX: 5,
+                    rotateY: -5,
+                    y: -20,
+                    boxShadow: "0 30px 60px rgba(22, 163, 74, 0.3), 0 0 40px rgba(22, 163, 74, 0.2)",
+                    transition: { duration: 0.4, ease: "easeInOut" },
+                  }}
+                  className="bg-green-50 p-6 rounded-3xl overflow-hidden cursor-pointer relative"
+                  style={{ perspective: "1000px" }}
+                >
+                <motion.div
+                  variants={imageHoverVariants}
+                  initial="rest"
+                  whileHover="hover"
+                  className="overflow-hidden rounded-2xl"
+                >
+                  <img
+                    src={ev.image || "/skills-training-workshop.jpg"}
+                    alt={ev.title}
+                    className="w-full h-56 object-cover"
+                  />
+                </motion.div>
+                <h3 className="text-2xl font-semibold text-green-800 mb-2 mt-4">{ev.title}</h3>
+                <p className="text-gray-600 mb-4">{ev.excerpt ?? ev.description ?? "Event details coming soon."}</p>
+                </motion.div>
+              </Reveal>
+            ))
+          ) : (
+            <div className="col-span-full text-center">
+              <p className="text-gray-600">No upcoming events available.</p>
+            </div>
+          )}
         </motion.div>
 
         <motion.div
@@ -484,52 +519,54 @@ export default function App() {
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto px-8"
         >
-          {[
-            { title: "Learning Guides", desc: "Comprehensive tutorials and documentation for skill development" },
-            { title: "Project Templates", desc: "Ready-to-use templates to kickstart your projects" },
-            { title: "Community Forum", desc: "Connect, share ideas, and get support from members" },
-          ].map((resource, i) => (
-            <Reveal key={i} variant="fade-up" style={{ transitionDelay: `${i * 80}ms` }}>
-              <motion.div
-                variants={itemVariants}
-                initial="rest"
-                whileHover={{
-                  scale: 1.08,
-                  rotateX: 5,
-                  rotateY: -5,
-                  y: -20,
-                  boxShadow: "0 30px 60px rgba(22, 163, 74, 0.3), 0 0 40px rgba(22, 163, 74, 0.2)",
-                  transition: { duration: 0.4, ease: "easeInOut" },
-                }}
-                className="bg-white p-8 rounded-3xl overflow-hidden cursor-pointer relative"
-                style={{ perspective: "1000px" }}
-              >
-              <motion.div
-                variants={imageHoverVariants}
-                initial="rest"
-                whileHover="hover"
-                className="overflow-hidden rounded-2xl"
-              >
-                <img
-                  src={
-                    resource.title === "Learning Guides"
-                      ? "/digital-platform-interface-technology.jpg"
-                      : resource.title === "Project Templates"
-                      ? "/team-collaboration.png"
-                      : "/community-development.png"
-                  }
-                  alt={resource.title}
-                  className="w-full h-48 object-cover"
-                />
-              </motion.div>
-              <h3 className="text-2xl font-semibold text-green-800 mb-3 mt-4">{resource.title}</h3>
-              <p className="text-gray-600 mb-4">{resource.desc}</p>
-              <Button className="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-500 transition">
-                Access
-              </Button>
-              </motion.div>
-            </Reveal>
-          ))}
+          {resourcesLoading ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <Reveal key={`res-skel-${i}`} variant="fade-up" style={{ transitionDelay: `${i * 80}ms` }}>
+                <Skeleton className="h-48 rounded-2xl" />
+              </Reveal>
+            ))
+          ) : resources.length > 0 ? (
+            resources.map((res, i) => (
+              <Reveal key={res.id || i} variant="fade-up" style={{ transitionDelay: `${i * 80}ms` }}>
+                <motion.div
+                  variants={itemVariants}
+                  initial="rest"
+                  whileHover={{
+                    scale: 1.08,
+                    rotateX: 5,
+                    rotateY: -5,
+                    y: -20,
+                    boxShadow: "0 30px 60px rgba(22, 163, 74, 0.3), 0 0 40px rgba(22, 163, 74, 0.2)",
+                    transition: { duration: 0.4, ease: "easeInOut" },
+                  }}
+                  className="bg-white p-8 rounded-3xl overflow-hidden cursor-pointer relative"
+                  style={{ perspective: "1000px" }}
+                >
+                <motion.div
+                  variants={imageHoverVariants}
+                  initial="rest"
+                  whileHover="hover"
+                  className="overflow-hidden rounded-2xl"
+                >
+                  <img
+                    src={res.thumbnail || res.fileUrl || res.url || "/digital-platform-interface-technology.jpg"}
+                    alt={res.title}
+                    className="w-full h-48 object-cover"
+                  />
+                </motion.div>
+                <h3 className="text-2xl font-semibold text-green-800 mb-3 mt-4">{res.title}</h3>
+                <p className="text-gray-600 mb-4">{res.description}</p>
+                <a href={res.url ?? res.fileUrl ?? "#"} target="_blank" rel="noreferrer">
+                  <Button className="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-500 transition">Access</Button>
+                </a>
+                </motion.div>
+              </Reveal>
+            ))
+          ) : (
+            <div className="col-span-full text-center">
+              <p className="text-gray-600">No resources available.</p>
+            </div>
+          )}
         </motion.div>
 
         <motion.div

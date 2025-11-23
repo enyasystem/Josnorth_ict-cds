@@ -16,9 +16,12 @@ export const apiClient = axios.create({
 // Request interceptor to add auth token
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("auth_token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("auth_token");
+      if (token) {
+        if (!config.headers) config.headers = {} as any;
+        (config.headers as any).Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
@@ -32,10 +35,12 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized - clear token and redirect
-      localStorage.removeItem("auth_token");
-      localStorage.removeItem("user");
-      window.location.href = "/login";
+      if (typeof window !== "undefined") {
+        // Handle unauthorized - clear token and redirect
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("user");
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   }
