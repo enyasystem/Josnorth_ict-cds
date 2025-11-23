@@ -51,7 +51,9 @@ export const teamApi = {
       return resultsArr
     }
     const members: TeamMember[] = extractMembers(resp)
-    return { data: members ?? [] }
+    // Also return the raw teams array (if present) so callers can render team containers
+    const teams = resp?.results ?? []
+    return { data: members ?? [], teams }
   },
 
   // Get excos only (filtered by query param)
@@ -65,7 +67,8 @@ export const teamApi = {
       return resultsArr
     }
     const members: TeamMember[] = extractMembers(resp)
-    return { data: members ?? [] }
+    const teams = resp?.results ?? []
+    return { data: members ?? [], teams }
   },
 
   // Get single team member

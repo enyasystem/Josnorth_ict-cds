@@ -17,6 +17,7 @@ export default function TeamPage() {
 
   const developers = devResp?.data ?? []
   const excos = excosResp?.data ?? []
+  const teamsFallback = (excosResp?.teams ?? devResp?.teams) ?? []
 
   let teamCards: React.ReactNode
 
@@ -88,6 +89,36 @@ export default function TeamPage() {
                   <Mail className="h-4 w-4" />
                 </button>
               </div>
+            </div>
+          </CardContent>
+        </Card>
+      )
+    })
+  } else if (teamsFallback.length > 0) {
+    teamCards = teamsFallback.map((team: any) => {
+      return (
+        <Card key={team.id} className="bg-white border-green-100 transition-all duration-300 group">
+          <CardHeader>
+            <div className="flex items-center gap-4 mb-4">
+              <div>
+                <CardTitle className="text-green-800 text-lg">{team.name}</CardTitle>
+                <CardDescription className="text-green-700 font-medium">{team.slug}</CardDescription>
+              </div>
+            </div>
+            <CardDescription className="text-gray-600 text-sm leading-relaxed">{team.description}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2 text-sm text-gray-700">
+              {Array.isArray(team.members) && team.members.length > 0 ? (
+                team.members.map((m: any) => (
+                  <div key={m.id} className="py-2 border-b border-green-50">
+                    <div className="font-medium text-green-800">{m.name}</div>
+                    <div className="text-xs text-gray-600">{m.role}</div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-sm text-gray-600">No members yet.</div>
+              )}
             </div>
           </CardContent>
         </Card>
