@@ -15,6 +15,8 @@ export default function NewExcoPage() {
   const router = useRouter()
   const createMember = useCreateTeamMember()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [debugInfo, setDebugInfo] = useState<{ request?: any; response?: any }>({})
+  const isDev = process.env.NODE_ENV !== 'production'
 
   const {
     register,
@@ -29,6 +31,19 @@ export default function NewExcoPage() {
   const onSubmit = async (data: CreateTeamMemberData) => {
     setErrorMessage(null)
     console.log('Submitting exco data', data)
+    // capture request info for local debugging
+    try {
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('auth_token')
+        const headers = {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        }
+        setDebugInfo({ request: { headers, payload: data } })
+      }
+    } catch (e) {
+      // ignore debug capture failures
+    }
     try {
       await createMember.mutateAsync(data)
       console.log('Create successful')
@@ -57,6 +72,13 @@ export default function NewExcoPage() {
       const headerSnippet = respHeaders ? JSON.stringify(respHeaders) : undefined
 
       setErrorMessage(`Server error (${status || 'unknown'}): ${detail}${headerSnippet ? '\nHeaders: ' + headerSnippet : ''}`)
+
+      // capture response for local debugging
+      try {
+        setDebugInfo((prev) => ({ ...prev, response: { status, data: respData, headers: respHeaders } }))
+      } catch (e) {
+        // ignore
+      }
     }
   }
 
@@ -75,6 +97,7 @@ export default function NewExcoPage() {
             {errorMessage}
           </div>
         )}
+        
         <div className="space-y-2">
           <Label htmlFor="name">Full name *</Label>
           <Input
