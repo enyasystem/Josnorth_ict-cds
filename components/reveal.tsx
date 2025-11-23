@@ -11,9 +11,10 @@ interface RevealProps {
   // allow callers to pass variant/style without breaking existing usages
   variant?: string
   style?: React.CSSProperties
+  stagger?: number
 }
 
-export function Reveal({ children, index = 0, className = "", rootMargin = "0px", threshold = 0.12 }: RevealProps) {
+export function Reveal({ children, index = 0, className = "", rootMargin = "0px", threshold = 0.12, variant, style: styleProp, stagger = 80 }: RevealProps) {
   const ref = useRef<HTMLDivElement | null>(null)
   const [visible, setVisible] = useState(false)
 
@@ -38,13 +39,15 @@ export function Reveal({ children, index = 0, className = "", rootMargin = "0px"
     return () => observer.disconnect()
   }, [rootMargin, threshold])
 
-  const style = { animationDelay: `${index * 80}ms` }
+  const animStyle = { animationDelay: `${index * (stagger ?? 80)}ms` }
+  const combinedStyle = { ...(styleProp as any), ...animStyle }
 
   return (
     <div
       ref={ref}
-      style={style as any}
-      className={`${visible ? "reveal-visible" : "reveal-hidden"} ${visible ? className : ""}`}
+      style={combinedStyle as any}
+      data-variant={variant}
+      className={`reveal ${visible ? "in-view" : ""} ${className}`}
     >
       {children}
     </div>

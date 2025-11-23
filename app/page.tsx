@@ -360,7 +360,7 @@ export default function App() {
             className="relative text-5xl md:text-7xl font-extrabold mb-6 text-green-900 max-w-4xl leading-tight drop-shadow-sm z-10"
           >
             <div className="flex flex-wrap justify-center gap-2 md:gap-3">
-              {['Empowering', 'Corps', 'Members', 'Through....'].map((word, i) => (
+              {['Empowering', 'Corps', 'Members', 'Through'].map((word, i) => (
                 <motion.span
                   key={i}
                   custom={i}
