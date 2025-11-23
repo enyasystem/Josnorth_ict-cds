@@ -1,14 +1,31 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
-import { usePathname } from "next/navigation"
+import { useState, useRef, useEffect } from "react"
+import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Menu, Plus, Bell, Search, User, Settings } from "lucide-react"
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [addOpen, setAddOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [notificationsOpen, setNotificationsOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
   const pathname = usePathname()
+  const router = useRouter()
+  const addRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    function onDoc(e: MouseEvent) {
+      if (!addRef.current) return
+      if (e.target && !addRef.current.contains(e.target as Node)) {
+        setAddOpen(false)
+        setSearchOpen(false)
+      }
+    }
+    document.addEventListener("click", onDoc)
+    return () => document.removeEventListener("click", onDoc)
+  }, [])
 
   const isAdminRoute = pathname?.startsWith("/admin")
 
@@ -26,6 +43,13 @@ export function Header() {
     { href: "/admin/excos", label: "Excos" },
     { href: "/admin/developers", label: "Developers" },
     { href: "/admin/settings", label: "Settings" },
+  ]
+
+  const addOptions = [
+    { href: "/admin/events/new", label: "Create New Event" },
+    { href: "/admin/resources/new", label: "Upload Resource" },
+    { href: "/admin/excos/new", label: "Add New Exco" },
+    { href: "/admin/developers/new", label: "Add New Developer" },
   ]
 
   const isActiveLink = (href: string) => {
@@ -79,24 +103,113 @@ export function Header() {
           </div>
 
           <div className="hidden md:flex items-center gap-2">
-            <Button variant="ghost" className="px-3 py-2 flex items-center gap-2">
-              <Plus className="w-4 h-4" />
-              Add
-            </Button>
-            <Button variant="outline" className="px-3 py-2 flex items-center gap-2">
-              <Search className="w-4 h-4" />
-              Search
-            </Button>
+            <div className="relative" ref={addRef}>
+              <Button
+                variant="ghost"
+                className="px-3 py-2 flex items-center gap-2"
+                onClick={() => {
+                  setAddOpen((v) => !v)
+                  setSearchOpen(false)
+                }}
+                aria-expanded={addOpen}
+                aria-haspopup="menu"
+              >
+                <Plus className="w-4 h-4" />
+                Add
+              </Button>
+
+              {addOpen && (
+                <div className="absolute right-0 mt-2 w-44 bg-white border border-border rounded-md shadow-lg z-50">
+                  {addOptions.map((opt) => (
+                    <button
+                      key={opt.href}
+                      className="w-full text-left px-3 py-2 hover:bg-muted text-sm"
+                      onClick={() => {
+                        setAddOpen(false)
+                        router.push(opt.href)
+                      }}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="relative">
+              <Button
+                variant="outline"
+                className="px-3 py-2 flex items-center gap-2"
+                onClick={() => {
+                  setSearchOpen((v) => !v)
+                  setAddOpen(false)
+                }}
+                aria-expanded={searchOpen}
+              >
+                <Search className="w-4 h-4" />
+                Search
+              </Button>
+              {searchOpen && (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    setSearchOpen(false)
+                    router.push(`/admin?search=${encodeURIComponent(searchQuery)}`)
+                  }}
+                >
+                  <input
+                    autoFocus
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="absolute right-0 mt-2 w-64 px-3 py-2 border rounded-md bg-white z-50"
+                    placeholder="Search admin..."
+                  />
+                </form>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="p-2 rounded-md hover:bg-muted" aria-label="Notifications">
-              <Bell className="w-5 h-5" />
-            </button>
-            <button className="p-2 rounded-md hover:bg-muted" aria-label="Settings">
+            <div className="relative">
+              <button
+                className="p-2 rounded-md hover:bg-muted"
+                aria-label="Notifications"
+                onClick={() => {
+                  setNotificationsOpen((v) => !v)
+                }}
+              >
+                <Bell className="w-5 h-5" />
+              </button>
+
+              {notificationsOpen && (
+                <div className="absolute right-0 mt-2 w-64 bg-white border border-border rounded-md shadow-lg z-50 p-3">
+                  <p className="text-sm text-muted-foreground">No notifications</p>
+                </div>
+              )}
+            </div>
+
+            <button
+              className="p-2 rounded-md hover:bg-muted"
+              aria-label="Settings"
+              onClick={() => router.push('/admin/settings')}
+            >
               <Settings className="w-5 h-5" />
             </button>
-            <button className="flex items-center gap-2 p-1 rounded-md hover:bg-muted">
+
+            <button
+              className="flex items-center gap-2 p-1 rounded-md hover:bg-muted"
+              onClick={async () => {
+                try {
+                  await fetch('/api/auth/signout', { method: 'POST' })
+                } catch (e) {
+                  // best effort signout
+                }
+                try {
+                  localStorage?.removeItem('authToken')
+                } catch (e) {}
+                router.push('/')
+              }}
+            >
               <User className="w-5 h-5" />
               <span className="hidden md:inline text-sm">Admin</span>
             </button>

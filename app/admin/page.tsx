@@ -13,9 +13,11 @@ import {
   List,
 } from "lucide-react";
 import { useAdminStats, useRecentActivities } from "@/lib/hooks/useAdmin";
+import { useRouter } from "next/navigation"
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AdminDashboard() {
+  const router = useRouter()
   const { data: statsResponse, isLoading: statsLoading } = useAdminStats();
   const { data: activitiesResponse, isLoading: activitiesLoading } =
     useRecentActivities(5);
@@ -71,10 +73,10 @@ export default function AdminDashboard() {
       <div className="space-y-6 sm:space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-green-800 mb-2">
             Admin Dashboard
           </h1>
-          <p className="text-sm sm:text-base text-emerald-200">
+          <p className="text-sm sm:text-base text-green-600">
             Real-time overview of NYSC Jos North portal activities
           </p>
         </div>
@@ -85,7 +87,7 @@ export default function AdminDashboard() {
             ? Array.from({ length: 4 }).map((_, idx) => (
                 <Skeleton
                   key={idx}
-                  className="h-32 rounded-lg bg-emerald-900/30"
+                  className="h-32 rounded-lg bg-green-50"
                 />
               ))
             : statsCards.map((stat, index) => {
@@ -93,26 +95,26 @@ export default function AdminDashboard() {
                 return (
                   <Card
                     key={index}
-                    className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm"
+                    className="bg-green-50 border border-green-100 rounded-2xl shadow-sm"
                   >
                     <CardContent className="p-4 sm:p-6">
                       <div className="flex items-center justify-between mb-3 sm:mb-4">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-600 rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-600 rounded-lg flex items-center justify-center">
                           <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                         </div>
-                        <div className="flex items-center text-emerald-300 text-xs sm:text-sm">
-                          <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                        <div className="flex items-center text-green-500 text-xs sm:text-sm">
+                          <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1 text-green-500" />
                           {stat.trend}
                         </div>
                       </div>
                       <div className="space-y-1">
-                        <div className="text-2xl sm:text-3xl font-bold text-white">
+                        <div className="text-2xl sm:text-3xl font-bold text-green-800">
                           {stat.value}
                         </div>
-                        <div className="text-xs sm:text-sm text-emerald-200">
+                        <div className="text-xs sm:text-sm text-green-700">
                           {stat.title}
                         </div>
-                        <div className="text-xs text-emerald-300">
+                        <div className="text-xs text-green-600">
                           {stat.subtitle}
                         </div>
                       </div>
@@ -123,10 +125,10 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recent Activity */}
-        <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
+        <Card className="bg-green-50 border border-green-100 rounded-2xl shadow-sm">
           <CardHeader className="px-4 sm:px-6">
-            <CardTitle className="text-white flex items-center gap-2 text-base sm:text-lg">
-              <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
+            <CardTitle className="text-green-800 flex items-center gap-2 text-base sm:text-lg">
+              <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
               Recent Activity
             </CardTitle>
           </CardHeader>
@@ -136,7 +138,7 @@ export default function AdminDashboard() {
                 {Array.from({ length: 3 }).map((_, idx) => (
                   <Skeleton
                     key={idx}
-                    className="h-16 w-full bg-emerald-900/20"
+                    className="h-16 w-full bg-green-50"
                   />
                 ))}
               </div>
@@ -144,26 +146,26 @@ export default function AdminDashboard() {
               recentActivity.map((activity) => (
                 <div
                   key={activity.id}
-                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 py-3 border-b border-emerald-700/20 last:border-0"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 py-3 border-b border-green-100 last:border-0"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-emerald-400 rounded-full flex-shrink-0"></div>
+                    <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0"></div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-white font-medium text-sm sm:text-base truncate">
+                      <p className="text-green-800 font-medium text-sm sm:text-base truncate">
                         {activity.action}
                       </p>
-                      <p className="text-emerald-200 text-xs sm:text-sm truncate">
+                      <p className="text-green-600 text-xs sm:text-sm truncate">
                         {activity.details}
                       </p>
                     </div>
                   </div>
-                  <span className="text-emerald-300 text-xs sm:text-sm sm:ml-4 flex-shrink-0">
+                  <span className="text-green-600 text-xs sm:text-sm sm:ml-4 flex-shrink-0">
                     {activity.time}
                   </span>
                 </div>
               ))
             ) : (
-              <p className="text-emerald-300 text-center py-4 text-sm">
+              <p className="text-green-600 text-center py-4 text-sm">
                 No recent activity
               </p>
             )}
@@ -175,17 +177,25 @@ export default function AdminDashboard() {
           {/* Quick Actions */}
           <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
             <CardHeader className="px-4 sm:px-6">
-              <CardTitle className="text-white text-base sm:text-lg">
+              <CardTitle className="text-green-800 text-base sm:text-lg">
                 Quick Actions
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 sm:space-y-3 px-4 sm:px-6">
               {quickActions.map((action, index) => {
                 const Icon = action.icon;
+                // map labels to routes
+                const routeMap: Record<string, string> = {
+                  "Create New Event": "/admin/events/new",
+                  "Upload Resource": "/admin/resources/new",
+                  "Add New Exco": "/admin/excos/new",
+                }
+                const href = routeMap[action.label] ?? "/admin"
                 return (
                   <Button
                     key={index}
-                    className="w-full justify-start bg-emerald-700 hover:bg-emerald-600 text-white text-sm sm:text-base h-auto py-2.5 sm:py-3"
+                    onClick={() => router.push(href)}
+                    className="w-full justify-start bg-green-600 hover:bg-green-500 text-white text-sm sm:text-base h-auto py-2.5 sm:py-3 rounded-lg"
                   >
                     <Icon className="w-4 h-4 mr-2 flex-shrink-0" />
                     <span className="truncate">{action.label}</span>
@@ -198,18 +208,25 @@ export default function AdminDashboard() {
           {/* Platform Management */}
           <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
             <CardHeader className="px-4 sm:px-6">
-              <CardTitle className="text-white text-base sm:text-lg">
+              <CardTitle className="text-green-800 text-base sm:text-lg">
                 Platform Management
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 sm:space-y-3 px-4 sm:px-6">
               {platformManagement.map((item, index) => {
                 const Icon = item.icon;
+                const mapRoutes: Record<string, string> = {
+                  "Customize UI": "/admin/settings",
+                  "Manage Team": "/admin/excos",
+                  "Manage Resources": "/admin/resources",
+                }
+                const href = mapRoutes[item.label] ?? "/admin"
                 return (
                   <Button
                     key={index}
                     variant="outline"
-                    className="w-full justify-start border-emerald-600 text-emerald-200 hover:bg-emerald-700 hover:text-white bg-transparent text-sm sm:text-base h-auto py-2.5 sm:py-3"
+                    onClick={() => router.push(href)}
+                    className="w-full justify-start border border-green-200 text-green-700 hover:bg-green-600 hover:text-white bg-transparent text-sm sm:text-base h-auto py-2.5 sm:py-3 rounded-lg"
                   >
                     <Icon className="w-4 h-4 mr-2 flex-shrink-0" />
                     <span className="truncate">{item.label}</span>
@@ -220,7 +237,6 @@ export default function AdminDashboard() {
           </Card>
         </div>
 
-        {/* Footer */}
        
       </div>
     </AdminLayout>

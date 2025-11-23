@@ -26,14 +26,12 @@ export default function ManageExcosPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">Manage Excos</h1>
-            <p className="text-emerald-200">
-              Manage executive committee members
-            </p>
+            <h1 className="text-3xl font-bold text-green-800 mb-2">Manage Excos</h1>
+            <p className="text-green-600">Manage executive committee members</p>
           </div>
           <TeamMemberFormDialog
             trigger={
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+              <Button className="bg-green-600 hover:bg-green-500 text-white rounded-lg">
                 <Plus className="w-4 h-4 mr-2" />
                 Add New Exco
               </Button>
@@ -45,10 +43,10 @@ export default function ManageExcosPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="bg-emerald-800/30 border-emerald-700/30">
+          <Card className="bg-green-50 border border-green-100 rounded-2xl shadow-sm">
             <CardContent className="p-6">
-              <div className="text-emerald-200 text-sm">Total Excos</div>
-              <div className="text-3xl font-bold text-white mt-2">
+              <div className="text-green-600 text-sm">Total Excos</div>
+              <div className="text-3xl font-bold text-green-800 mt-2">
                 {excos.length}
               </div>
             </CardContent>
@@ -56,9 +54,9 @@ export default function ManageExcosPage() {
         </div>
 
         {/* Excos List */}
-        <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
+        <Card className="bg-green-50 border border-green-100 rounded-2xl shadow-sm">
           <CardHeader>
-            <CardTitle className="text-white">Executive Members</CardTitle>
+            <CardTitle className="text-green-800">Executive Members</CardTitle>
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -66,7 +64,7 @@ export default function ManageExcosPage() {
                 {Array.from({ length: 3 }).map((_, idx) => (
                   <Skeleton
                     key={idx}
-                    className="h-24 w-full bg-emerald-900/20"
+                    className="h-24 w-full bg-green-50"
                   />
                 ))}
               </div>
@@ -75,7 +73,7 @@ export default function ManageExcosPage() {
                 {excos.map((exco) => (
                   <div
                     key={exco.id}
-                    className="flex items-center justify-between p-4 rounded-lg bg-emerald-900/20 border border-emerald-700/20"
+                    className="flex items-center justify-between p-4 rounded-lg bg-green-50 border border-green-100"
                   >
                     <div className="flex items-center gap-4">
                       <img
@@ -84,19 +82,17 @@ export default function ManageExcosPage() {
                         className="w-16 h-16 rounded-full object-cover"
                       />
                       <div>
-                        <h3 className="text-white font-semibold">
-                          {exco.name}
-                        </h3>
-                        <p className="text-emerald-200 text-sm">{exco.role}</p>
+                        <h3 className="text-green-800 font-semibold">{exco.name}</h3>
+                        <p className="text-green-600 text-sm">{exco.role}</p>
                         <div className="flex items-center gap-4 mt-1">
                           {exco.email && (
-                            <span className="text-emerald-300 text-xs flex items-center gap-1">
+                            <span className="text-green-600 text-xs flex items-center gap-1">
                               <Mail className="w-3 h-3" />
                               {exco.email}
                             </span>
                           )}
                           {exco.phone && (
-                            <span className="text-emerald-300 text-xs flex items-center gap-1">
+                            <span className="text-green-600 text-xs flex items-center gap-1">
                               <Phone className="w-3 h-3" />
                               {exco.phone}
                             </span>
@@ -110,7 +106,7 @@ export default function ManageExcosPage() {
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-emerald-600 text-emerald-200 hover:bg-emerald-700 hover:text-white"
+                            className="border border-green-200 text-green-700 hover:bg-green-600 hover:text-white rounded-lg"
                           >
                             <Edit className="w-4 h-4 mr-1" />
                             Edit

@@ -66,16 +66,12 @@ export default function ManageResourcesPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">
-              Manage Resources
-            </h1>
-            <p className="text-emerald-200">
-              Upload and manage learning resources
-            </p>
+            <h1 className="text-3xl font-bold text-green-800 mb-2">Manage Resources</h1>
+            <p className="text-green-600">Upload and manage learning resources</p>
           </div>
           <ResourceFormDialog
             trigger={
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+              <Button className="bg-green-600 hover:bg-green-500 text-white rounded-lg">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Resource
               </Button>
@@ -86,10 +82,10 @@ export default function ManageResourcesPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card className="bg-emerald-800/30 border-emerald-700/30">
+          <Card className="bg-green-50 border border-green-100 rounded-2xl shadow-sm">
             <CardContent className="p-6">
-              <div className="text-emerald-200 text-sm">Total Resources</div>
-              <div className="text-3xl font-bold text-white mt-2">
+              <div className="text-green-600 text-sm">Total Resources</div>
+              <div className="text-3xl font-bold text-green-800 mt-2">
                 {resources.length}
               </div>
             </CardContent>
@@ -121,9 +117,9 @@ export default function ManageResourcesPage() {
         </div>
 
         {/* Resources List */}
-        <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
+        <Card className="bg-green-50 border border-green-100 rounded-2xl shadow-sm">
           <CardHeader>
-            <CardTitle className="text-white">All Resources</CardTitle>
+            <CardTitle className="text-green-800">All Resources</CardTitle>
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -131,7 +127,7 @@ export default function ManageResourcesPage() {
                 {Array.from({ length: 3 }).map((_, idx) => (
                   <Skeleton
                     key={idx}
-                    className="h-24 w-full bg-emerald-900/20"
+                    className="h-24 w-full bg-green-50"
                   />
                 ))}
               </div>
@@ -140,7 +136,7 @@ export default function ManageResourcesPage() {
                 {resources.map((resource) => (
                   <div
                     key={resource.id}
-                    className="flex items-start justify-between p-4 rounded-lg bg-emerald-900/20 border border-emerald-700/20"
+                    className="flex items-start justify-between p-4 rounded-lg bg-green-50 border border-green-100"
                   >
                     <div className="flex gap-4 flex-1">
                       {resource.thumbnail && (
@@ -152,20 +148,16 @@ export default function ManageResourcesPage() {
                       )}
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-white font-semibold">
-                            {resource.title}
-                          </h3>
+                          <h3 className="text-green-800 font-semibold">{resource.title}</h3>
                           {getCategoryBadge(resource.category)}
                         </div>
-                        <p className="text-emerald-100 text-sm line-clamp-2 mb-2">
-                          {resource.description}
-                        </p>
+                        <p className="text-green-600 text-sm line-clamp-2 mb-2">{resource.description}</p>
                         {resource.tags && resource.tags.length > 0 && (
                           <div className="flex gap-2 flex-wrap">
                             {resource.tags.map((tag, idx) => (
                               <span
                                 key={idx}
-                                className="text-xs bg-emerald-900/40 text-emerald-300 px-2 py-1 rounded"
+                                className="text-xs bg-green-50 text-green-600 px-2 py-1 rounded"
                               >
                                 {tag}
                               </span>
