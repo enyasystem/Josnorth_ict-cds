@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail, User } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const devTeam = [
@@ -82,11 +82,17 @@ export function DevProfile() {
             >
               <CardHeader className="text-center">
                 <div className="mx-auto mb-4">
-                  <img
-                    src={dev.avatar || "/placeholder.svg"}
-                    alt={dev.name}
-                    className="w-24 h-24 rounded-full mx-auto border-3 border-teal-300 group-hover:border-cyan-400 transition-colors"
-                  />
+                  {dev.avatar ? (
+                    <img
+                      src={dev.avatar}
+                      alt={dev.name}
+                      className="w-24 h-24 rounded-full mx-auto border-3 border-teal-300 group-hover:border-cyan-400 transition-colors"
+                    />
+                  ) : (
+                    <div className="w-24 h-24 rounded-full mx-auto border-3 border-teal-300 group-hover:border-cyan-400 transition-colors bg-teal-100 flex items-center justify-center">
+                      <User className="w-12 h-12 text-teal-600" />
+                    </div>
+                  )}
                 </div>
                 <CardTitle className="text-gray-900 text-lg">
                   {dev.name}

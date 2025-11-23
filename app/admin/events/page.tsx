@@ -57,7 +57,9 @@ export default function ManageEventsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-green-800 mb-2">Manage Events</h1>
+            <h1 className="text-3xl font-bold text-green-800 mb-2">
+              Manage Events
+            </h1>
             <p className="text-green-600">Create and manage events</p>
           </div>
           <EventFormDialog
@@ -116,10 +118,7 @@ export default function ManageEventsPage() {
             {isLoading ? (
               <div className="space-y-4">
                 {Array.from({ length: 3 }).map((_, idx) => (
-                  <Skeleton
-                    key={idx}
-                    className="h-32 w-full bg-green-50"
-                  />
+                  <Skeleton key={idx} className="h-32 w-full bg-green-50" />
                 ))}
               </div>
             ) : events.length > 0 ? (
@@ -130,18 +129,28 @@ export default function ManageEventsPage() {
                     className="flex items-start justify-between p-4 rounded-lg bg-green-50 border border-green-100"
                   >
                     <div className="flex gap-4 flex-1">
-                      <img
-                        src={event.image}
-                        alt={event.title}
-                        className="w-24 h-24 rounded-lg object-cover"
-                      />
+                      {event.image ? (
+                        <img
+                          src={event.image}
+                          alt={event.title}
+                          className="w-24 h-24 rounded-lg object-cover"
+                        />
+                      ) : (
+                        <div className="w-24 h-24 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
+                          <Calendar className="w-10 h-10 text-green-600" />
+                        </div>
+                      )}
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-green-800 font-semibold">{event.title}</h3>
+                          <h3 className="text-green-800 font-semibold">
+                            {event.title}
+                          </h3>
                           {getStatusBadge(event.status)}
                         </div>
-                          <p className="text-green-600 text-sm line-clamp-2 mb-2">{event.description}</p>
-                          <div className="flex items-center gap-4 text-green-600 text-xs">
+                        <p className="text-green-600 text-sm line-clamp-2 mb-2">
+                          {event.description}
+                        </p>
+                        <div className="flex items-center gap-4 text-green-600 text-xs">
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
                             {new Date(event.date).toLocaleDateString()}

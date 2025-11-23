@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Reveal } from "./reveal";
 import { useDevelopers, useExcos } from "@/lib/hooks/useTeam";
 import { Skeleton } from "@/components/ui/skeleton";
+import { User } from "lucide-react";
 import type { TeamMember } from "@/lib/types/api";
 
 export function TeamSection() {
@@ -78,11 +79,17 @@ export function TeamSection() {
                 <Reveal key={m.id} index={idx} className="animate-scale-in">
                   <article className="bg-emerald-900/30 border border-emerald-800 p-3 rounded-lg card-hover h-40 overflow-hidden flex flex-col">
                     <div className="flex items-center gap-3">
-                      <img
-                        src={m.img}
-                        alt={`${m.name} photo`}
-                        className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                      />
+                      {m.img ? (
+                        <img
+                          src={m.img}
+                          alt={`${m.name} photo`}
+                          className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-emerald-800/50 flex items-center justify-center flex-shrink-0">
+                          <User className="w-5 h-5 text-emerald-200" />
+                        </div>
+                      )}
                       <div>
                         <h3 className="text-sm font-semibold text-white">
                           {m.name}
@@ -122,11 +129,17 @@ export function TeamSection() {
                 ✕
               </button>
               <div className="flex gap-6 items-start">
-                <img
-                  src={selected.img}
-                  alt={`${selected.name} photo`}
-                  className="w-28 h-28 rounded-lg object-cover"
-                />
+                {selected.img ? (
+                  <img
+                    src={selected.img}
+                    alt={`${selected.name} photo`}
+                    className="w-28 h-28 rounded-lg object-cover"
+                  />
+                ) : (
+                  <div className="w-28 h-28 rounded-lg bg-emerald-800/50 flex items-center justify-center flex-shrink-0">
+                    <User className="w-14 h-14 text-emerald-200" />
+                  </div>
+                )}
                 <div>
                   <h3 className="text-2xl font-bold text-white">
                     {selected.name}

@@ -19,6 +19,10 @@ import { useDevelopers, useExcos } from "@/lib/hooks/useTeam";
 import { useProfiles } from "@/lib/hooks/useProfiles";
 import { useEvents } from "@/lib/hooks/useEvents";
 import { useResources } from "@/lib/hooks/useResources";
+import {
+  Calendar as CalendarIcon,
+  FileText as FileTextIcon,
+} from "lucide-react";
 import type {
   TeamMember,
   Event as EventType,
@@ -636,13 +640,19 @@ export default function App() {
                     variants={imageHoverVariants}
                     initial="rest"
                     whileHover="hover"
-                    className="overflow-hidden rounded-2xl"
+                    className="overflow-hidden rounded-2xl bg-green-100 flex items-center justify-center"
                   >
-                    <img
-                      src={ev.image || "/skills-training-workshop.jpg"}
-                      alt={ev.title}
-                      className="w-full h-56 object-cover"
-                    />
+                    {ev.image ? (
+                      <img
+                        src={ev.image}
+                        alt={ev.title}
+                        className="w-full h-56 object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-56 flex items-center justify-center bg-green-50">
+                        <CalendarIcon className="w-16 h-16 text-green-600" />
+                      </div>
+                    )}
                   </motion.div>
                   <h3 className="text-2xl font-semibold text-green-800 mb-2 mt-4">
                     {ev.title}
@@ -738,18 +748,19 @@ export default function App() {
                     variants={imageHoverVariants}
                     initial="rest"
                     whileHover="hover"
-                    className="overflow-hidden rounded-2xl"
+                    className="overflow-hidden rounded-2xl bg-green-100"
                   >
-                    <img
-                      src={
-                        res.thumbnail ||
-                        res.fileUrl ||
-                        res.url ||
-                        "/digital-platform-interface-technology.jpg"
-                      }
-                      alt={res.title}
-                      className="w-full h-48 object-cover"
-                    />
+                    {res.thumbnail || res.fileUrl ? (
+                      <img
+                        src={res.thumbnail || res.fileUrl}
+                        alt={res.title}
+                        className="w-full h-48 object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-48 flex items-center justify-center bg-green-50">
+                        <FileTextIcon className="w-16 h-16 text-green-600" />
+                      </div>
+                    )}
                   </motion.div>
                   <h3 className="text-2xl font-semibold text-green-800 mb-3 mt-4">
                     {res.title}

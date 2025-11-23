@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Reveal } from "./reveal";
 import { useEvents } from "@/lib/hooks/useEvents";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Calendar } from "lucide-react";
 
 export function EventsSection() {
   const {
@@ -54,12 +55,16 @@ export function EventsSection() {
             : events.map((e, idx) => (
                 <Reveal key={e.id} index={idx} className="animate-fade-in">
                   <article className="bg-emerald-900/30 border border-emerald-800 p-3 rounded-lg card-hover h-40 overflow-hidden flex flex-col">
-                    <div className="w-full h-20 overflow-hidden rounded-md">
-                      <img
-                        src={e.image}
-                        alt={`${e.title} image`}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="w-full h-20 overflow-hidden rounded-md bg-emerald-800/50 flex items-center justify-center">
+                      {e.image ? (
+                        <img
+                          src={e.image}
+                          alt={`${e.title} image`}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <Calendar className="w-8 h-8 text-emerald-200" />
+                      )}
                     </div>
                     <div className="mt-2 flex-1">
                       <h3 className="text-sm font-semibold text-white">

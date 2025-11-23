@@ -1,5 +1,7 @@
 "use client";
 
+import { User } from "lucide-react";
+
 type Props = {
   name: string;
   role: string;
@@ -19,14 +21,23 @@ export default function ProfileCard({ name, role, img, bio, socials }: Props) {
   const x = socials?.x ?? "#";
   const ig = socials?.instagram ?? "#";
 
+  const hasImage =
+    img && img.trim() !== "" && img !== "#" && !img.startsWith("data:");
+
   return (
     <div className="profile-card rounded-3xl bg-white p-6 shadow-md">
       <div className="flex flex-col items-center">
-        <img
-          src={img}
-          alt={name}
-          className="w-32 h-32 mx-auto rounded-full mb-4 object-cover border-4 border-green-100"
-        />
+        {hasImage ? (
+          <img
+            src={img}
+            alt={name}
+            className="w-32 h-32 mx-auto rounded-full mb-4 object-cover border-4 border-green-100"
+          />
+        ) : (
+          <div className="w-32 h-32 mx-auto rounded-full mb-4 border-4 border-green-100 bg-green-50 flex items-center justify-center">
+            <User className="w-16 h-16 text-green-600" />
+          </div>
+        )}
         <h3 className="text-xl font-semibold text-green-800">{name}</h3>
         <p className="text-sm text-muted-foreground">{role}</p>
 

@@ -66,8 +66,12 @@ export default function ManageResourcesPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-green-800 mb-2">Manage Resources</h1>
-            <p className="text-green-600">Upload and manage learning resources</p>
+            <h1 className="text-3xl font-bold text-green-800 mb-2">
+              Manage Resources
+            </h1>
+            <p className="text-green-600">
+              Upload and manage learning resources
+            </p>
           </div>
           <ResourceFormDialog
             trigger={
@@ -125,10 +129,7 @@ export default function ManageResourcesPage() {
             {isLoading ? (
               <div className="space-y-4">
                 {Array.from({ length: 3 }).map((_, idx) => (
-                  <Skeleton
-                    key={idx}
-                    className="h-24 w-full bg-green-50"
-                  />
+                  <Skeleton key={idx} className="h-24 w-full bg-green-50" />
                 ))}
               </div>
             ) : resources.length > 0 ? (
@@ -139,19 +140,27 @@ export default function ManageResourcesPage() {
                     className="flex items-start justify-between p-4 rounded-lg bg-green-50 border border-green-100"
                   >
                     <div className="flex gap-4 flex-1">
-                      {resource.thumbnail && (
+                      {resource.thumbnail ? (
                         <img
                           src={resource.thumbnail}
                           alt={resource.title}
                           className="w-20 h-20 rounded-lg object-cover"
                         />
+                      ) : (
+                        <div className="w-20 h-20 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
+                          <FileText className="w-8 h-8 text-green-600" />
+                        </div>
                       )}
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-green-800 font-semibold">{resource.title}</h3>
+                          <h3 className="text-green-800 font-semibold">
+                            {resource.title}
+                          </h3>
                           {getCategoryBadge(resource.category)}
                         </div>
-                        <p className="text-green-600 text-sm line-clamp-2 mb-2">{resource.description}</p>
+                        <p className="text-green-600 text-sm line-clamp-2 mb-2">
+                          {resource.description}
+                        </p>
                         {resource.tags && resource.tags.length > 0 && (
                           <div className="flex gap-2 flex-wrap">
                             {resource.tags.map((tag, idx) => (

@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { User } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const execMembers = [
@@ -151,11 +152,17 @@ export function TeamToggleSection() {
               <div className="h-1 bg-gradient-to-r from-primary to-accent" />
               <CardHeader className="text-center">
                 <div className="mx-auto mb-4 relative">
-                  <img
-                    src={member.avatar || "/placeholder.svg"}
-                    alt={member.name}
-                    className="w-24 h-24 rounded-full mx-auto border-4 border-secondary group-hover:border-primary transition-all"
-                  />
+                  {member.avatar ? (
+                    <img
+                      src={member.avatar}
+                      alt={member.name}
+                      className="w-24 h-24 rounded-full mx-auto border-4 border-secondary group-hover:border-primary transition-all"
+                    />
+                  ) : (
+                    <div className="w-24 h-24 rounded-full mx-auto border-4 border-secondary group-hover:border-primary transition-all bg-secondary/20 flex items-center justify-center">
+                      <User className="w-12 h-12 text-secondary" />
+                    </div>
+                  )}
                 </div>
                 <CardTitle className="text-foreground text-lg">
                   {member.name}

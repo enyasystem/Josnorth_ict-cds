@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail, User } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const execMembers = [
@@ -78,11 +78,17 @@ export function ExcosProfile() {
             >
               <CardHeader className="text-center">
                 <div className="mx-auto mb-4">
-                  <img
-                    src={member.avatar || "/placeholder.svg"}
-                    alt={member.name}
-                    className="w-24 h-24 rounded-full mx-auto border-3 border-cyan-300 group-hover:border-teal-400 transition-colors"
-                  />
+                  {member.avatar ? (
+                    <img
+                      src={member.avatar}
+                      alt={member.name}
+                      className="w-24 h-24 rounded-full mx-auto border-3 border-cyan-300 group-hover:border-teal-400 transition-colors"
+                    />
+                  ) : (
+                    <div className="w-24 h-24 rounded-full mx-auto border-3 border-cyan-300 group-hover:border-teal-400 transition-colors bg-cyan-100 flex items-center justify-center">
+                      <User className="w-12 h-12 text-cyan-600" />
+                    </div>
+                  )}
                 </div>
                 <CardTitle className="text-gray-900 text-lg">
                   {member.name}

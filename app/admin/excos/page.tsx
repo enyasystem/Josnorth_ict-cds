@@ -3,7 +3,7 @@
 import { AdminLayout } from "@/components/admin-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit, Trash2, Mail, Phone } from "lucide-react";
+import { Plus, Edit, Trash2, Mail, Phone, User } from "lucide-react";
 import { useExcos, useDeleteTeamMember } from "@/lib/hooks/useTeam";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TeamMemberFormDialog } from "@/components/admin/team-member-form-dialog";
@@ -26,7 +26,9 @@ export default function ManageExcosPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-green-800 mb-2">Manage Excos</h1>
+            <h1 className="text-3xl font-bold text-green-800 mb-2">
+              Manage Excos
+            </h1>
             <p className="text-green-600">Manage executive committee members</p>
           </div>
           <TeamMemberFormDialog
@@ -62,10 +64,7 @@ export default function ManageExcosPage() {
             {isLoading ? (
               <div className="space-y-4">
                 {Array.from({ length: 3 }).map((_, idx) => (
-                  <Skeleton
-                    key={idx}
-                    className="h-24 w-full bg-green-50"
-                  />
+                  <Skeleton key={idx} className="h-24 w-full bg-green-50" />
                 ))}
               </div>
             ) : excos.length > 0 ? (
@@ -76,13 +75,21 @@ export default function ManageExcosPage() {
                     className="flex items-center justify-between p-4 rounded-lg bg-green-50 border border-green-100"
                   >
                     <div className="flex items-center gap-4">
-                      <img
-                        src={exco.img}
-                        alt={exco.name}
-                        className="w-16 h-16 rounded-full object-cover"
-                      />
+                      {exco.img ? (
+                        <img
+                          src={exco.img}
+                          alt={exco.name}
+                          className="w-16 h-16 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                          <User className="w-8 h-8 text-green-600" />
+                        </div>
+                      )}
                       <div>
-                        <h3 className="text-green-800 font-semibold">{exco.name}</h3>
+                        <h3 className="text-green-800 font-semibold">
+                          {exco.name}
+                        </h3>
                         <p className="text-green-600 text-sm">{exco.role}</p>
                         <div className="flex items-center gap-4 mt-1">
                           {exco.email && (

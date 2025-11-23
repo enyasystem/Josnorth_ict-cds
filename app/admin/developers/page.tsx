@@ -3,7 +3,7 @@
 import { AdminLayout } from "@/components/admin-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit, Trash2, Mail, Github, Linkedin } from "lucide-react";
+import { Plus, Edit, Trash2, Mail, Github, Linkedin, User } from "lucide-react";
 import { useDevelopers, useDeleteTeamMember } from "@/lib/hooks/useTeam";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TeamMemberFormDialog } from "@/components/admin/team-member-form-dialog";
@@ -64,10 +64,7 @@ export default function ManageDevelopersPage() {
             {isLoading ? (
               <div className="space-y-4">
                 {Array.from({ length: 3 }).map((_, idx) => (
-                  <Skeleton
-                    key={idx}
-                    className="h-24 w-full bg-green-50"
-                  />
+                  <Skeleton key={idx} className="h-24 w-full bg-green-50" />
                 ))}
               </div>
             ) : developers.length > 0 ? (
@@ -78,13 +75,21 @@ export default function ManageDevelopersPage() {
                     className="flex items-center justify-between p-4 rounded-lg bg-green-50 border border-green-100"
                   >
                     <div className="flex items-center gap-4">
-                      <img
-                        src={dev.img}
-                        alt={dev.name}
-                        className="w-16 h-16 rounded-full object-cover"
-                      />
+                      {dev.img ? (
+                        <img
+                          src={dev.img}
+                          alt={dev.name}
+                          className="w-16 h-16 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                          <User className="w-8 h-8 text-green-600" />
+                        </div>
+                      )}
                       <div>
-                        <h3 className="text-green-800 font-semibold">{dev.name}</h3>
+                        <h3 className="text-green-800 font-semibold">
+                          {dev.name}
+                        </h3>
                         <p className="text-green-600 text-sm">{dev.role}</p>
                         <div className="flex items-center gap-4 mt-1">
                           {dev.email && (
@@ -124,7 +129,7 @@ export default function ManageDevelopersPage() {
                           <Button
                             size="sm"
                             variant="outline"
-                              className="border border-green-200 text-green-700 hover:bg-green-600 hover:text-white rounded-lg"
+                            className="border border-green-200 text-green-700 hover:bg-green-600 hover:text-white rounded-lg"
                           >
                             <Edit className="w-4 h-4 mr-1" />
                             Edit
@@ -137,7 +142,7 @@ export default function ManageDevelopersPage() {
                       <Button
                         size="sm"
                         variant="outline"
-                          className="border-red-600 text-red-400 hover:bg-red-700 hover:text-white"
+                        className="border-red-600 text-red-400 hover:bg-red-700 hover:text-white"
                         onClick={() => handleDelete(dev.id)}
                         disabled={deleteTeamMember.isPending}
                       >
