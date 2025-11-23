@@ -5,9 +5,10 @@ import { Footer } from "@/components/footer"
 interface PageLayoutProps {
   children: React.ReactNode
   showDecorations?: boolean
+  showHeader?: boolean
 }
 
-export function PageLayout({ children, showDecorations = true }: PageLayoutProps) {
+export function PageLayout({ children, showDecorations = true, showHeader = true }: PageLayoutProps) {
   return (
     /* Updated to clean, modern background without decorative blobs */
     <div className="min-h-screen bg-background relative overflow-hidden flex flex-col">
@@ -18,7 +19,10 @@ export function PageLayout({ children, showDecorations = true }: PageLayoutProps
         </div>
       )}
 
-      <Header />
+      {typeof window !== 'undefined' && (
+        // allow pages to hide the default header when they render their own
+        showHeader && <Header />
+      )}
       <main className="relative z-10 flex-1">{children}</main>
       <Footer />
     </div>

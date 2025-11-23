@@ -10,7 +10,9 @@ import ScrollChoreographer from "@/components/ui/scroll-choreo"
 import Parallax from "@/components/ui/parallax"
 import { AnimatedParticles } from "@/components/animated-particles"
 import HeroParticles from "@/components/hero/hero-particles"
+import Link from "next/link"
 import { Reveal } from "@/components/reveal"
+import FloatingNav from "@/components/floating-nav"
 import { Typewriter } from "@/components/typewriter"
 import { Footer } from "@/components/footer"
 import { useDevelopers, useExcos } from "@/lib/hooks/useTeam"
@@ -206,64 +208,7 @@ export default function App() {
 
   return (
     <div className="bg-white text-gray-900 font-sans overflow-x-hidden scroll-smooth">
-      <motion.div
-        className="fixed top-0 left-0 h-1 bg-gradient-to-r from-green-400 via-green-600 to-green-800 z-50"
-        style={{ width: `${scrollProgress}%` }}
-        transition={{ duration: 0.3 }}
-      />
-
-      {/* Navbar */}
-      <motion.nav
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0, transition: { duration: 0.7 } }}
-        className={`fixed w-[90%] left-[5%] top-4 z-50 flex justify-between items-center px-8 py-4 transition-all duration-500 rounded-[35px] ${
-          isScrolled
-            ? "bg-white/80 backdrop-blur-2xl border border-green-200 shadow-2xl"
-            : "bg-white/30 backdrop-blur-xl border border-green-200 shadow-xl"
-        }`}
-      >
-        <Logo />
-
-        <div className="hidden md:flex space-x-8 font-semibold text-green-900">
-          <a href="#home" className="hover:text-green-700 transition">
-            Home
-          </a>
-          <a href="#profiles" className="hover:text-green-700 transition">
-            Excos & Devs
-          </a>
-          <a href="#events" className="hover:text-green-700 transition">
-            Events
-          </a>
-          <a href="#resources" className="hover:text-green-700 transition">
-            Resources
-          </a>
-        </div>
-
-        {/* Mobile toggler */}
-        <div className="md:hidden">
-          <button
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-menu"
-            onClick={() => (menuVisible ? closeMenu() : openMenu())}
-            className="p-2 rounded-md text-green-900 bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
-          >
-            {mobileMenuOpen ? (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
-          </button>
-        </div>
-
-        <Button className="hidden md:inline-flex bg-green-600 text-white font-bold px-5 py-2 rounded-full hover:bg-green-500 transition">
-          Join Us
-        </Button>
-      </motion.nav>
+      <FloatingNav />
 
       {/* Mobile menu overlay (backdrop + right panel) */}
       {menuVisible && (
@@ -294,15 +239,15 @@ export default function App() {
             </div>
             <div className="px-6 pt-2">
               <nav className="flex flex-col items-start space-y-3 text-lg font-semibold text-green-900">
-                <a href="#home" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Home</a>
-                <a href="#profiles" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Excos & Devs</a>
-                <a href="#events" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Events</a>
-                <a href="#resources" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Resources</a>
+                <Link href="/" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Home</Link>
+                <Link href="/team" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Excos & Devs</Link>
+                <Link href="/events" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Events</Link>
+                <Link href="/resources" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Resources</Link>
 
                 <div className="mt-3 w-full flex justify-center">
-                  <a href="/join" onClick={closeMenu}>
+                  <Link href="/join" onClick={closeMenu}>
                     <Button className="bg-green-600 text-white font-semibold px-6 py-3 rounded-full hover:bg-green-500 transition">Join Us</Button>
-                  </a>
+                  </Link>
                 </div>
               </nav>
             </div>
