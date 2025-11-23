@@ -14,8 +14,8 @@ export default function Head() {
       {/* Open Graph */}
       <meta property="og:title" content="NYSC Jos North — Biodata Platform" />
       <meta property="og:description" content="Official biodata management platform for NYSC Jos North — register, find resources, and join events." />
-      <meta property="og:image" content="/og-image.svg" />
-      <meta property="og:image:type" content="image/svg+xml" />
+      <meta property="og:image" content="/og-image.png" />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:image:alt" content="NYSC Jos North logo and platform preview" />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
@@ -23,10 +23,10 @@ export default function Head() {
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:image" content="/og-image.svg" />
+      <meta name="twitter:image" content="/og-image.png" />
       <meta name="twitter:image:alt" content="NYSC Jos North logo and platform preview" />
-      {/* WhatsApp and many messengers use Open Graph tags; ensure we also include a plain image link for user agents that prefer PNG/JPEG */}
-      <link rel="image_src" href="/og-image.svg" />
+      {/* WhatsApp and many messengers use Open Graph tags; include a plain PNG link for best compatibility */}
+      <link rel="image_src" href="/og-image.png" />
       <meta name="twitter:title" content="NYSC Jos North — Biodata Platform" />
       <meta name="twitter:description" content="Official biodata management platform for NYSC Jos North — register, find resources, and join events..." />
     </>
