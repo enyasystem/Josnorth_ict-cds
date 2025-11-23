@@ -13,11 +13,11 @@ import {
   List,
 } from "lucide-react";
 import { useAdminStats, useRecentActivities } from "@/lib/hooks/useAdmin";
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AdminDashboard() {
-  const router = useRouter()
+  const router = useRouter();
   const { data: statsResponse, isLoading: statsLoading } = useAdminStats();
   const { data: activitiesResponse, isLoading: activitiesLoading } =
     useRecentActivities(5);
@@ -85,10 +85,7 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {statsLoading
             ? Array.from({ length: 4 }).map((_, idx) => (
-                <Skeleton
-                  key={idx}
-                  className="h-32 rounded-lg bg-green-50"
-                />
+                <Skeleton key={idx} className="h-32 rounded-lg bg-green-50" />
               ))
             : statsCards.map((stat, index) => {
                 const Icon = stat.icon;
@@ -136,10 +133,7 @@ export default function AdminDashboard() {
             {activitiesLoading ? (
               <div className="space-y-3">
                 {Array.from({ length: 3 }).map((_, idx) => (
-                  <Skeleton
-                    key={idx}
-                    className="h-16 w-full bg-green-50"
-                  />
+                  <Skeleton key={idx} className="h-16 w-full bg-green-50" />
                 ))}
               </div>
             ) : recentActivity.length > 0 ? (
@@ -175,9 +169,10 @@ export default function AdminDashboard() {
         {/* Quick Actions and Platform Management */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           {/* Quick Actions */}
-          <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
+          <Card className="bg-green-50 border border-green-100 rounded-2xl shadow-sm">
             <CardHeader className="px-4 sm:px-6">
-              <CardTitle className="text-green-800 text-base sm:text-lg">
+              <CardTitle className="text-green-800 text-base sm:text-lg flex items-center gap-2">
+                <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
                 Quick Actions
               </CardTitle>
             </CardHeader>
@@ -189,8 +184,8 @@ export default function AdminDashboard() {
                   "Create New Event": "/admin/events/new",
                   "Upload Resource": "/admin/resources/new",
                   "Add New Exco": "/admin/excos/new",
-                }
-                const href = routeMap[action.label] ?? "/admin"
+                };
+                const href = routeMap[action.label] ?? "/admin";
                 return (
                   <Button
                     key={index}
@@ -206,9 +201,10 @@ export default function AdminDashboard() {
           </Card>
 
           {/* Platform Management */}
-          <Card className="bg-emerald-800/30 border-emerald-700/30 backdrop-blur-sm">
+          <Card className="bg-green-50 border border-green-100 rounded-2xl shadow-sm">
             <CardHeader className="px-4 sm:px-6">
-              <CardTitle className="text-green-800 text-base sm:text-lg">
+              <CardTitle className="text-green-800 text-base sm:text-lg flex items-center gap-2">
+                <Settings className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
                 Platform Management
               </CardTitle>
             </CardHeader>
@@ -219,8 +215,8 @@ export default function AdminDashboard() {
                   "Customize UI": "/admin/settings",
                   "Manage Team": "/admin/excos",
                   "Manage Resources": "/admin/resources",
-                }
-                const href = mapRoutes[item.label] ?? "/admin"
+                };
+                const href = mapRoutes[item.label] ?? "/admin";
                 return (
                   <Button
                     key={index}
@@ -236,8 +232,6 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
         </div>
-
-       
       </div>
     </AdminLayout>
   );

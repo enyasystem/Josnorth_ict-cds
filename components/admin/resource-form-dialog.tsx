@@ -88,41 +88,34 @@ export function ResourceFormDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-emerald-900/95 border-emerald-700 text-white">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-white">
+          <DialogTitle>
             {mode === "create" ? "Add Resource" : "Edit Resource"}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="title" className="text-emerald-200">
-              Resource Title *
-            </Label>
+            <Label htmlFor="title">Resource Title *</Label>
             <Input
               id="title"
               {...register("title", { required: true })}
-              className="bg-emerald-900/30 border-emerald-700/30 text-white"
               placeholder="e.g., Introduction to Web Development"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-emerald-200">
-              Description *
-            </Label>
+            <Label htmlFor="description">Description *</Label>
             <Textarea
               id="description"
               {...register("description", { required: true })}
-              className="bg-emerald-900/30 border-emerald-700/30 text-white min-h-[80px]"
+              className="min-h-[80px]"
               placeholder="Brief description of the resource"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="category" className="text-emerald-200">
-              Category *
-            </Label>
+            <Label htmlFor="category">Category *</Label>
             <Select
               defaultValue={watch("category") || "document"}
               onValueChange={(value) =>
@@ -132,10 +125,10 @@ export function ResourceFormDialog({
                 )
               }
             >
-              <SelectTrigger className="bg-emerald-900/30 border-emerald-700/30 text-white">
+              <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-emerald-900 border-emerald-700 text-white">
+              <SelectContent>
                 <SelectItem value="document">Document</SelectItem>
                 <SelectItem value="link">Link</SelectItem>
                 <SelectItem value="video">Video</SelectItem>
@@ -145,46 +138,37 @@ export function ResourceFormDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="url" className="text-emerald-200">
-              URL or File URL *
-            </Label>
+            <Label htmlFor="url">URL or File URL *</Label>
             <Input
               id="url"
               {...register("url")}
-              className="bg-emerald-900/30 border-emerald-700/30 text-white"
               placeholder="https://example.com/resource"
             />
-            <p className="text-xs text-emerald-300">
+            <p className="text-xs text-muted-foreground">
               Or use File URL for uploaded files
             </p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="fileUrl" className="text-emerald-200">
-              File URL (Optional)
-            </Label>
+            <Label htmlFor="fileUrl">File URL (Optional)</Label>
             <Input
               id="fileUrl"
               {...register("fileUrl")}
-              className="bg-emerald-900/30 border-emerald-700/30 text-white"
               placeholder="https://example.com/file.pdf"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="thumbnail" className="text-emerald-200">
-              Thumbnail URL (Optional)
-            </Label>
+            <Label htmlFor="thumbnail">Thumbnail URL (Optional)</Label>
             <Input
               id="thumbnail"
               {...register("thumbnail")}
-              className="bg-emerald-900/30 border-emerald-700/30 text-white"
               placeholder="https://example.com/thumbnail.jpg"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-emerald-200">Tags (Optional)</Label>
+            <Label>Tags (Optional)</Label>
             <div className="flex gap-2">
               <Input
                 value={tagInput}
@@ -192,14 +176,9 @@ export function ResourceFormDialog({
                 onKeyPress={(e) =>
                   e.key === "Enter" && (e.preventDefault(), addTag())
                 }
-                className="bg-emerald-900/30 border-emerald-700/30 text-white"
                 placeholder="Add a tag and press Enter"
               />
-              <Button
-                type="button"
-                onClick={addTag}
-                className="bg-emerald-700 hover:bg-emerald-600"
-              >
+              <Button type="button" onClick={addTag} variant="outline">
                 Add
               </Button>
             </div>
@@ -208,13 +187,13 @@ export function ResourceFormDialog({
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-xs bg-emerald-900/40 text-emerald-300 px-2 py-1 rounded flex items-center gap-1"
+                    className="text-xs bg-secondary text-primary px-2 py-1 rounded flex items-center gap-1"
                   >
                     {tag}
                     <button
                       type="button"
                       onClick={() => removeTag(tag)}
-                      className="text-emerald-200 hover:text-white"
+                      className="hover:text-destructive"
                     >
                       ×
                     </button>
@@ -229,13 +208,12 @@ export function ResourceFormDialog({
               type="button"
               variant="outline"
               onClick={() => setOpen(false)}
-              className="border-emerald-700 text-emerald-200 hover:bg-emerald-800"
             >
               Cancel
             </Button>
             <Button
               type="submit"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-white"
               disabled={createResource.isPending || updateResource.isPending}
             >
               {createResource.isPending || updateResource.isPending

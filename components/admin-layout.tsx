@@ -1,35 +1,55 @@
-"use client"
+"use client";
 
-import React, { useEffect, useState } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { BarChart3, Users, Settings, Calendar, FileText, Palette, ExternalLink, LogOut, Menu, ChevronLeft } from "lucide-react"
-import { PageLayout } from "@/components/page-layout"
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import {
+  BarChart3,
+  Users,
+  Settings,
+  Calendar,
+  FileText,
+  Palette,
+  ExternalLink,
+  LogOut,
+  Menu,
+  ChevronLeft,
+} from "lucide-react";
+import { PageLayout } from "@/components/page-layout";
+import { useAuth } from "@/contexts/auth-context";
 
 interface AdminLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export function AdminLayout({ children }: AdminLayoutProps) {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const { logout } = useAuth();
 
   // two pieces of state: sidebar open (desktop/compact) and mobile menu open
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       // default: open on desktop, closed on mobile
-      setSidebarOpen(window.innerWidth >= 768)
+      setSidebarOpen(window.innerWidth >= 768);
 
-      const toggleHandler = () => setSidebarOpen((v) => !v)
-      window.addEventListener("toggle-admin-sidebar", toggleHandler as EventListener)
+      const toggleHandler = () => setSidebarOpen((v) => !v);
+      window.addEventListener(
+        "toggle-admin-sidebar",
+        toggleHandler as EventListener
+      );
 
-      return () => window.removeEventListener("toggle-admin-sidebar", toggleHandler as EventListener)
+      return () =>
+        window.removeEventListener(
+          "toggle-admin-sidebar",
+          toggleHandler as EventListener
+        );
     }
-    return
-  }, [])
+    return;
+  }, []);
 
   const navItems = [
     { href: "/admin", icon: BarChart3, label: "Dashboard" },
@@ -38,54 +58,95 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     { href: "/admin/events", icon: Calendar, label: "Manage Events" },
     { href: "/admin/resources", icon: FileText, label: "Manage Resources" },
     { href: "/admin/settings", icon: Palette, label: "UI Settings" },
-  ]
+  ];
 
   const isActive = (href: string) => {
-    if (href === "/admin") return pathname === "/admin" || pathname === "/admin/"
-    return pathname?.startsWith(href)
-  }
+    if (href === "/admin")
+      return pathname === "/admin" || pathname === "/admin/";
+    return pathname?.startsWith(href);
+  };
 
-  const asideBase = "p-6 border-r transition-transform duration-200 fixed md:static left-0 top-0 h-full"
-  const asideTranslate = sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-  const asideWidth = sidebarOpen ? "md:w-72" : "md:w-20"
-  const asideClass = `${asideBase} ${asideTranslate} ${asideWidth}`
+  const asideBase =
+    "p-6 border-r transition-transform duration-200 fixed md:static left-0 top-0 h-screen overflow-hidden";
+  const asideTranslate = sidebarOpen
+    ? "translate-x-0"
+    : "-translate-x-full md:translate-x-0";
+  const asideWidth = sidebarOpen ? "md:w-72" : "md:w-20";
+  const asideClass = `${asideBase} ${asideTranslate} ${asideWidth}`;
 
   const navElements = navItems.map((item) => {
-    const Icon = item.icon
-    const active = isActive(item.href)
-    const itemClass = sidebarOpen ? 'flex items-center gap-3 px-4 py-3 rounded-lg' : 'flex items-center gap-3 px-2 py-3 justify-center rounded-lg'
-    const labelClass = sidebarOpen ? 'inline' : 'hidden'
-    const itemStyle = {
-      backgroundColor: active ? "var(--color-sidebar-primary)" : "transparent",
-      color: active ? "var(--color-sidebar-primary-foreground)" : "var(--color-sidebar-foreground)",
-    }
+    const Icon = item.icon;
+    const active = isActive(item.href);
+    const itemClass = sidebarOpen
+      ? `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+          active
+            ? "bg-gradient-to-r from-green-600 to-green-700 text-white shadow-md"
+            : "text-green-700 hover:bg-green-50 hover:text-green-800"
+        }`
+      : `flex items-center gap-3 px-2 py-3 justify-center rounded-lg transition-colors ${
+          active
+            ? "bg-gradient-to-br from-green-600 to-green-700 text-white"
+            : "text-green-700 hover:bg-green-50"
+        }`;
+    const labelClass = sidebarOpen ? "inline" : "hidden";
 
     return (
-      <Link key={item.href} href={item.href} aria-current={active ? "page" : undefined} className={itemClass} style={itemStyle} onClick={() => setMobileMenuOpen(false)}>
+      <Link
+        key={item.href}
+        href={item.href}
+        aria-current={active ? "page" : undefined}
+        className={itemClass}
+        onClick={() => setMobileMenuOpen(false)}
+      >
         <Icon className="w-5 h-5" />
         <span className={labelClass}>{item.label}</span>
       </Link>
-    )
-  })
+    );
+  });
 
-  const bottomWrapperClass = sidebarOpen ? 'mt-6' : 'mt-6 flex flex-col items-center'
-  const backLinkClass = sidebarOpen ? 'w-full' : 'p-2'
-  const backInnerClass = sidebarOpen ? 'flex items-center gap-2' : 'flex items-center justify-center'
-  const backLabelClass = sidebarOpen ? 'inline' : 'sr-only'
-  const signClass = sidebarOpen ? 'w-full mt-2' : 'mt-3 p-2'
-  const signLabelClass = sidebarOpen ? 'ml-2 inline' : 'sr-only'
+  const backLinkClass = sidebarOpen ? "w-full" : "p-2";
+  const backInnerClass = sidebarOpen
+    ? "flex items-center gap-2"
+    : "flex items-center justify-center";
+  const backLabelClass = sidebarOpen ? "inline" : "sr-only";
+  const signClass = sidebarOpen ? "w-full mt-2" : "mt-3 p-2";
+  const signLabelClass = sidebarOpen ? "ml-2 inline" : "sr-only";
 
   return (
-    <PageLayout showDecorations={false}>
+    <PageLayout showDecorations={false} showFooter={false}>
       <div className="min-h-[calc(100vh-120px)] flex">
-        <aside className={asideClass} style={{ zIndex: 50, backgroundColor: "var(--color-sidebar)", borderColor: "var(--color-sidebar-border)", color: "var(--color-sidebar-foreground)" }}>
+        <aside
+          className={`${asideClass} bg-white border-r border-green-100 flex flex-col overflow-y-hidden`}
+          style={{ zIndex: 50, height: "100vh" }}
+        >
           <div className="flex items-start justify-end md:justify-end mb-4">
-            <button className="hidden md:inline-flex items-center justify-center p-2 rounded-md hover:bg-muted transition-colors" onClick={() => setSidebarOpen((v) => !v)} aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}>
-              {sidebarOpen ? <ChevronLeft className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            <button
+              className="hidden md:inline-flex items-center justify-center p-2 rounded-md hover:bg-green-50 text-green-700 hover:text-green-800 transition-colors cursor-pointer"
+              onClick={() => setSidebarOpen((v) => !v)}
+              aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+            >
+              {sidebarOpen ? (
+                <ChevronLeft className="w-4 h-4" />
+              ) : (
+                <Menu className="w-4 h-4" />
+              )}
             </button>
-            <Button variant="ghost" size="icon" className="lg:hidden text-foreground hover:text-foreground" onClick={() => setMobileMenuOpen((v) => !v)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden text-green-700 hover:text-green-800 hover:bg-green-50"
+              onClick={() => setMobileMenuOpen((v) => !v)}
+            >
               {mobileMenuOpen ? (
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  className="w-5 h-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M18 6L6 18" />
                   <path d="M6 6l12 12" />
                 </svg>
@@ -96,30 +157,52 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           </div>
 
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: "var(--color-sidebar-primary)" }}>
-              <span style={{ color: "var(--color-sidebar-primary-foreground)", fontWeight: 700 }}>A</span>
+            <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-green-700 rounded-lg flex items-center justify-center shadow-md">
+              <span className="text-white font-bold">A</span>
             </div>
             <div>
-              <h3 className={`font-semibold ${sidebarOpen ? "block" : "hidden"}`} style={{ color: "var(--color-sidebar-foreground)" }}>
+              <h3
+                className={`font-semibold text-green-800 ${
+                  sidebarOpen ? "block" : "hidden"
+                }`}
+              >
                 Admin Panel
               </h3>
-              <p className={`text-sm ${sidebarOpen ? "block" : "hidden"}`} style={{ color: "var(--color-sidebar-accent-foreground, var(--color-sidebar-foreground))" }}>
+              <p
+                className={`text-sm text-green-600 ${
+                  sidebarOpen ? "block" : "hidden"
+                }`}
+              >
                 NYSC Jos North
               </p>
             </div>
           </div>
 
-          <nav className="space-y-2 flex-1">{navElements}</nav>
+          <nav className="space-y-2 flex-1 mb-8 overflow-hidden">
+            {navElements}
+          </nav>
 
-          <div className={bottomWrapperClass}>
-            <Button asChild variant="ghost" className={backLinkClass} style={{ color: "var(--color-sidebar-foreground)" }}>
-              <Link href="/" className={backInnerClass}>
+          <div
+            className={`mt-auto pt-6 pb-6 border-t border-green-100 ${
+              sidebarOpen ? "" : "flex flex-col items-center"
+            }`}
+          >
+            <Button
+              asChild
+              variant="ghost"
+              className={`${backLinkClass} text-green-700 hover:text-green-800 hover:bg-green-50`}
+            >
+              <Link href="/" className={`${backInnerClass} cursor-pointer`}>
                 <ExternalLink className="w-4 h-4" />
                 <span className={backLabelClass}>Back to site</span>
               </Link>
             </Button>
 
-            <Button variant="ghost" className={signClass} style={{ color: "var(--color-sidebar-foreground)" }}>
+            <Button
+              variant="ghost"
+              className={`${signClass} text-green-700 hover:text-green-800 hover:bg-green-50`}
+              onClick={() => logout()}
+            >
               <span className="flex items-center justify-center">
                 <LogOut className="w-4 h-4" />
                 <span className={signLabelClass}>Sign out</span>
@@ -128,16 +211,30 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           </div>
         </aside>
 
-        {mobileMenuOpen && <div className="fixed inset-0 bg-black/40 lg:hidden" style={{ zIndex: 40 }} onClick={() => setMobileMenuOpen(false)} aria-hidden />}
+        {mobileMenuOpen && (
+          <div
+            className="fixed inset-0 bg-black/40 lg:hidden"
+            style={{ zIndex: 40 }}
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden
+          />
+        )}
 
         {!sidebarOpen && (
-          <button className="md:hidden fixed top-4 left-4 p-2 rounded-md bg-white shadow-lg" style={{ zIndex: 60 }} onClick={() => setSidebarOpen(true)} aria-label="Open sidebar">
+          <button
+            className="md:hidden fixed top-4 left-4 p-2 rounded-md bg-white border border-green-200 shadow-lg text-green-700 hover:bg-green-50 transition-colors cursor-pointer"
+            style={{ zIndex: 60 }}
+            onClick={() => setSidebarOpen(true)}
+            aria-label="Open sidebar"
+          >
             <Menu className="w-5 h-5" />
           </button>
         )}
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 w-full lg:w-auto overflow-x-hidden">{children}</main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 w-full lg:w-auto overflow-x-hidden">
+          {children}
+        </main>
       </div>
     </PageLayout>
-  )
+  );
 }

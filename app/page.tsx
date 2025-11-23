@@ -1,59 +1,78 @@
-"use client"
+"use client";
 
-import React, { useEffect, useRef, useState } from "react"
-import { motion } from "framer-motion"
-import { Logo } from "@/components/logo"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
-import ProfileCard from "@/components/profile-card"
-import ScrollChoreographer from "@/components/ui/scroll-choreo"
-import Parallax from "@/components/ui/parallax"
-import { AnimatedParticles } from "@/components/animated-particles"
-import HeroParticles from "@/components/hero/hero-particles"
-import Link from "next/link"
-import { Reveal } from "@/components/reveal"
-import FloatingNav from "@/components/floating-nav"
-import { Typewriter } from "@/components/typewriter"
-import { Footer } from "@/components/footer"
-import { useDevelopers, useExcos } from "@/lib/hooks/useTeam"
-import { useProfiles } from "@/lib/hooks/useProfiles"
-import { useEvents } from "@/lib/hooks/useEvents"
-import { useResources } from "@/lib/hooks/useResources"
-import type { TeamMember, Event as EventType, Resource as ResourceType } from "@/lib/types/api"
+import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { Logo } from "@/components/logo";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import ProfileCard from "@/components/profile-card";
+import ScrollChoreographer from "@/components/ui/scroll-choreo";
+import Parallax from "@/components/ui/parallax";
+import { AnimatedParticles } from "@/components/animated-particles";
+import HeroParticles from "@/components/hero/hero-particles";
+import Link from "next/link";
+import { Reveal } from "@/components/reveal";
+import FloatingNav from "@/components/floating-nav";
+import { Typewriter } from "@/components/typewriter";
+import { Footer } from "@/components/footer";
+import { useDevelopers, useExcos } from "@/lib/hooks/useTeam";
+import { useProfiles } from "@/lib/hooks/useProfiles";
+import { useEvents } from "@/lib/hooks/useEvents";
+import { useResources } from "@/lib/hooks/useResources";
+import type {
+  TeamMember,
+  Event as EventType,
+  Resource as ResourceType,
+} from "@/lib/types/api";
 export default function App() {
-  const [view, setView] = useState("excos")
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [scrollProgress, setScrollProgress] = useState(0)
-  const { data: developersData, isLoading: devLoading } = useDevelopers()
-  const { data: excosData, isLoading: excosLoading } = useExcos()
-  const { data: profilesData, isLoading: profilesLoading } = useProfiles({ limit: 6 })
-  const { data: eventsData, isLoading: eventsLoading } = useEvents({ limit: 3, status: "published" })
-  const { data: resourcesData, isLoading: resourcesLoading } = useResources({ limit: 3 })
+  const [view, setView] = useState("excos");
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const { data: developersData, isLoading: devLoading } = useDevelopers();
+  const { data: excosData, isLoading: excosLoading } = useExcos();
+  const { data: profilesData, isLoading: profilesLoading } = useProfiles({
+    limit: 6,
+  });
+  const { data: eventsData, isLoading: eventsLoading } = useEvents({
+    limit: 3,
+    status: "published",
+  });
+  const { data: resourcesData, isLoading: resourcesLoading } = useResources({
+    limit: 3,
+  });
 
-  const developers: TeamMember[] = developersData?.data ?? []
-  const excos: TeamMember[] = excosData?.data ?? []
-  const profiles: TeamMember[] = profilesData?.data ?? []
-  const events: EventType[] = eventsData?.data ?? []
-  const resources: ResourceType[] = resourcesData?.data ?? []
+  const developers: TeamMember[] = developersData?.data ?? [];
+  const excos: TeamMember[] = excosData?.data ?? [];
+  const profiles: TeamMember[] = profilesData?.data ?? [];
+  const events: EventType[] = eventsData?.data ?? [];
+  const resources: ResourceType[] = resourcesData?.data ?? [];
 
   // Prefer profiles endpoint for the Meet Our Team section when available
-  const currentList = profiles.length > 0 ? profiles : view === "excos" ? excos : developers
-  const currentLoading = profiles.length > 0 ? profilesLoading : view === "excos" ? excosLoading : devLoading
+  const currentList =
+    profiles.length > 0 ? profiles : view === "excos" ? excos : developers;
+  const currentLoading =
+    profiles.length > 0
+      ? profilesLoading
+      : view === "excos"
+      ? excosLoading
+      : devLoading;
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
 
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      setIsScrolled(window.scrollY > 50);
 
-      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight
-      const scrolled = (window.scrollY / windowHeight) * 100
-      setScrollProgress(scrolled)
-    }
+      const windowHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrolled = (window.scrollY / windowHeight) * 100;
+      setScrollProgress(scrolled);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Data is fetched via React Query hooks above (useDevelopers, useExcos, useEvents, useResources)
   // These provide caching, loading and error states. No manual fetch required here.
@@ -61,12 +80,12 @@ export default function App() {
   const fadeUp = {
     hidden: { opacity: 0, y: 60 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-  }
+  };
 
   const scaleIn = {
     hidden: { opacity: 0, scale: 0.95 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.7 } },
-  }
+  };
 
   const floatingVariants = {
     animate: {
@@ -76,7 +95,7 @@ export default function App() {
         repeat: Number.POSITIVE_INFINITY,
       },
     },
-  }
+  };
 
   const gradientTextVariants = {
     animate: {
@@ -86,7 +105,7 @@ export default function App() {
         repeat: Number.POSITIVE_INFINITY,
       },
     },
-  }
+  };
 
   const cardHoverVariants = {
     rest: {
@@ -96,21 +115,22 @@ export default function App() {
       y: 0,
       boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
     },
-    
+
     hover: {
       scale: 1.12,
       y: -25,
-      boxShadow: "0 40px 80px rgba(22, 163, 74, 0.35), 0 0 50px rgba(22, 163, 74, 0.25)",
+      boxShadow:
+        "0 40px 80px rgba(22, 163, 74, 0.35), 0 0 50px rgba(22, 163, 74, 0.25)",
       transition: {
         duration: 0.4,
       },
     },
-  }
+  };
 
   const imageHoverVariants = {
     rest: { scale: 1 },
     hover: { scale: 1.1, transition: { duration: 0.4 } },
-  }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -121,61 +141,61 @@ export default function App() {
         delayChildren: 0.2,
       },
     },
-  }
+  };
 
   // Mobile menu state & behaviors
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   // menuVisible keeps the menu mounted while exit animation plays
-  const [menuVisible, setMenuVisible] = useState(false)
-  const closeTimerRef = useRef<number | null>(null)
+  const [menuVisible, setMenuVisible] = useState(false);
+  const closeTimerRef = useRef<number | null>(null);
 
   function openMenu() {
     if (closeTimerRef.current) {
-      window.clearTimeout(closeTimerRef.current)
-      closeTimerRef.current = null
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
     }
-    setMenuVisible(true)
+    setMenuVisible(true);
     // small delay to allow mount before transition if needed
-    requestAnimationFrame(() => setMobileMenuOpen(true))
+    requestAnimationFrame(() => setMobileMenuOpen(true));
   }
 
   function closeMenu() {
-    setMobileMenuOpen(false)
+    setMobileMenuOpen(false);
     // wait for animation to finish before unmounting
     closeTimerRef.current = window.setTimeout(() => {
-      setMenuVisible(false)
-      closeTimerRef.current = null
-    }, 300)
+      setMenuVisible(false);
+      closeTimerRef.current = null;
+    }, 300);
   }
 
   // Close mobile menu on Escape and lock body scroll when open
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setMobileMenuOpen(false)
+      if (e.key === "Escape") setMobileMenuOpen(false);
     }
 
     if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden"
-      window.addEventListener("keydown", onKey)
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", onKey);
     } else {
-      document.body.style.overflow = ""
+      document.body.style.overflow = "";
     }
 
     return () => {
-      document.body.style.overflow = ""
-      window.removeEventListener("keydown", onKey)
-    }
-  }, [mobileMenuOpen])
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [mobileMenuOpen]);
 
   // cleanup any pending timers on unmount
   useEffect(() => {
     return () => {
       if (closeTimerRef.current) {
-        window.clearTimeout(closeTimerRef.current)
-        closeTimerRef.current = null
+        window.clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
       }
-    }
-  }, [])
+    };
+  }, []);
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -184,7 +204,7 @@ export default function App() {
       y: 0,
       transition: { duration: 0.6 },
     },
-  }
+  };
 
   const subtextVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -196,7 +216,7 @@ export default function App() {
         delay: 0.3,
       },
     },
-  }
+  };
 
   const charVariants = {
     hidden: { opacity: 0, y: 10 },
@@ -208,7 +228,7 @@ export default function App() {
         duration: 0.5,
       },
     }),
-  }
+  };
 
   return (
     <div className="bg-white text-gray-900 font-sans overflow-x-hidden scroll-smooth">
@@ -216,46 +236,93 @@ export default function App() {
 
       {/* Mobile menu overlay (backdrop + right panel) */}
       {menuVisible && (
-        <div id="mobile-menu" role="dialog" aria-modal="true" className="fixed inset-0 z-50 md:hidden">
+        <div
+          id="mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 md:hidden"
+        >
           {/* Backdrop */}
           <div
             onClick={closeMenu}
-            className={`absolute inset-0 bg-black/30 transition-opacity duration-300 ${mobileMenuOpen ? "opacity-100" : "opacity-0"}`}
+            className={`absolute inset-0 bg-black/30 transition-opacity duration-300 ${
+              mobileMenuOpen ? "opacity-100" : "opacity-0"
+            }`}
           />
 
           {/* Right slide-in panel */}
-              <aside
-                className={`absolute right-0 top-16 w-72 sm:w-80 bg-white shadow-2xl ring-1 ring-black/5 transform transition-transform duration-300 ${
-                  mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-                } rounded-2xl overflow-hidden flex flex-col max-h-[72vh] pb-6`}
-                style={{ right: '1rem' }}
-              >
-                <div className="p-3 flex items-center justify-end">
+          <aside
+            className={`absolute right-0 top-16 w-72 sm:w-80 bg-white shadow-2xl ring-1 ring-black/5 transform transition-transform duration-300 ${
+              mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+            } rounded-2xl overflow-hidden flex flex-col max-h-[72vh] pb-6`}
+            style={{ right: "1rem" }}
+          >
+            <div className="p-3 flex items-center justify-end">
               <button
                 aria-label="Close menu"
                 onClick={closeMenu}
                 className="p-2 rounded-md text-green-900 bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-green-500"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
             <div className="px-6 pt-2">
               <nav className="flex flex-col items-start space-y-3 text-lg font-semibold text-green-900">
-                <Link href="/" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Home</Link>
-                <Link href="/team" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Excos & Devs</Link>
-                <Link href="/events" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Events</Link>
-                <Link href="/resources" onClick={closeMenu} className="hover:text-green-700 w-full text-right pr-2">Resources</Link>
+                <Link
+                  href="/"
+                  onClick={closeMenu}
+                  className="hover:text-green-700 w-full text-right pr-2 cursor-pointer"
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/team"
+                  onClick={closeMenu}
+                  className="hover:text-green-700 w-full text-right pr-2 cursor-pointer"
+                >
+                  Excos & Devs
+                </Link>
+                <Link
+                  href="/events"
+                  onClick={closeMenu}
+                  className="hover:text-green-700 w-full text-right pr-2 cursor-pointer"
+                >
+                  Events
+                </Link>
+                <Link
+                  href="/resources"
+                  onClick={closeMenu}
+                  className="hover:text-green-700 w-full text-right pr-2 cursor-pointer"
+                >
+                  Resources
+                </Link>
 
                 <div className="mt-3 w-full flex justify-center">
-                  <Link href="/join" onClick={closeMenu}>
-                    <Button className="bg-green-600 text-white font-semibold px-6 py-3 rounded-full hover:bg-green-500 transition">Join Us</Button>
+                  <Link
+                    href="/join"
+                    onClick={closeMenu}
+                    className="cursor-pointer"
+                  >
+                    <Button className="bg-green-600 text-white font-semibold px-6 py-3 rounded-full hover:bg-green-500 transition">
+                      Join Us
+                    </Button>
                   </Link>
                 </div>
               </nav>
             </div>
-
           </aside>
         </div>
       )}
@@ -267,7 +334,11 @@ export default function App() {
       >
         <ScrollChoreographer />
 
-        <Parallax speed={-0.08} className="absolute inset-0 pointer-events-none" style={{ zIndex: 5 }}>
+        <Parallax
+          speed={-0.08}
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: 5 }}
+        >
           <AnimatedParticles />
         </Parallax>
 
@@ -276,28 +347,47 @@ export default function App() {
         {/* Background Animation */}
         <motion.div
           animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-          transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+          transition={{
+            duration: 20,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "linear",
+          }}
           className="absolute inset-0 bg-gradient-to-tr from-green-50 via-white to-green-100 bg-[length:200%_200%]"
         />
 
         <motion.div
           className="absolute inset-0 opacity-40"
           style={{
-            backgroundImage: "url('/professional-team-collaboration-technology-innovat.jpg')",
+            backgroundImage:
+              "url('/professional-team-collaboration-technology-innovat.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundAttachment: "fixed",
           }}
           animate={{ scale: [1, 1.05, 1] }}
-          transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+          transition={{
+            duration: 20,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "linear",
+          }}
         />
 
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/40 to-white/60 z-0" />
 
         {/* Decorative particles (client-only) - placed after background layers so they are visible */}
-        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 5 }}>
-          <HeroParticles count={30} color="144,238,144" sizeRange={[2, 12]} durationRange={[10, 30]} delayMax={8} reduceOnMobile />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: 5 }}
+        >
+          <HeroParticles
+            count={30}
+            color="144,238,144"
+            sizeRange={[2, 12]}
+            durationRange={[10, 30]}
+            delayMax={8}
+            reduceOnMobile
+          />
         </div>
 
         <Reveal variant="fade-up">
@@ -309,7 +399,7 @@ export default function App() {
             className="relative text-5xl md:text-7xl font-extrabold mb-6 text-green-900 max-w-4xl leading-tight drop-shadow-sm z-10"
           >
             <div className="flex flex-wrap justify-center gap-2 md:gap-3">
-              {['Empowering', 'Corps', 'Members', 'Through'].map((word, i) => (
+              {["Empowering", "Corps", "Members", "Through"].map((word, i) => (
                 <motion.span
                   key={i}
                   custom={i}
@@ -328,7 +418,7 @@ export default function App() {
               animate="animate"
             >
               <Typewriter
-                words={["innovation", "collaboration", "continuous"]}
+                words={["Innovation", "Collaboration"]}
                 className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-green-500 to-green-600"
               />
             </motion.span>
@@ -381,8 +471,12 @@ export default function App() {
           viewport={{ once: true }}
           className="relative flex flex-wrap justify-center gap-4 mt-4 z-10"
         >
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="relative">
-            <Button className="bg-green-600 text-white font-semibold px-8 py-3 text-lg rounded-[35px] shadow-xl hover:bg-green-500 transition transform relative overflow-hidden group">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="relative"
+          >
+            <Button className="bg-green-600 text-white font-semibold px-8 py-2 text-lg rounded-[35px] shadow-xl hover:bg-green-500 transition transform relative overflow-hidden group">
               <span className="relative z-10">Explore Programs</span>
               <motion.div
                 className="absolute inset-0 bg-white/20 rounded-[35px]"
@@ -394,7 +488,7 @@ export default function App() {
           </motion.div>
 
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button className="border-2 border-green-600 text-green-800 font-semibold px-8 py-3 text-lg rounded-[35px] hover:bg-green-100 transition">
+            <Button className="border-2 border-green-600 text-green-800 font-semibold px-8 py-2 text-lg rounded-[35px] hover:bg-green-100 transition">
               Learn More
             </Button>
           </motion.div>
@@ -417,19 +511,31 @@ export default function App() {
         <div className="flex justify-center mb-6 space-x-4">
           <Button
             onClick={() => setView("excos")}
-            className={`${view === "excos" ? "bg-green-600 text-white" : "bg-green-100 text-green-700"} px-6 py-2 rounded-full transition`}
+            className={`${
+              view === "excos"
+                ? "bg-green-600 text-white"
+                : "bg-green-100 text-green-700"
+            } px-6 py-2 rounded-full transition`}
           >
             Excos
           </Button>
           <Button
             onClick={() => setView("devs")}
-            className={`${view === "devs" ? "bg-green-600 text-white" : "bg-green-100 text-green-700"} px-6 py-2 rounded-full transition`}
+            className={`${
+              view === "devs"
+                ? "bg-green-600 text-white"
+                : "bg-green-100 text-green-700"
+            } px-6 py-2 rounded-full transition`}
           >
             Developers
           </Button>
         </div>
 
-        <Reveal variant="fade-up" stagger={80} className="px-8 max-w-6xl mx-auto">
+        <Reveal
+          variant="fade-up"
+          stagger={80}
+          className="px-8 max-w-6xl mx-auto"
+        >
           <motion.div
             key={view}
             variants={containerVariants}
@@ -450,9 +556,18 @@ export default function App() {
                   <ProfileCard
                     name={member.name}
                     role={member.role}
-                    img={member.img || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}`}
+                    img={
+                      member.img ||
+                      `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                        member.name
+                      )}`
+                    }
                     bio={member.bio}
-                    socials={{ github: member.social?.github, linkedin: member.social?.linkedin, x: member.social?.twitter }}
+                    socials={{
+                      github: member.social?.github,
+                      linkedin: member.social?.linkedin,
+                      x: member.social?.twitter,
+                    }}
                   />
                 </div>
               ))
@@ -463,7 +578,10 @@ export default function App() {
             )}
           </motion.div>
         </Reveal>
+      </section>
 
+      {/* Events Section */}
+      <section id="events" className="py-24 bg-white text-center relative">
         <Reveal variant="fade-up">
           <motion.h2
             variants={fadeUp}
@@ -484,13 +602,21 @@ export default function App() {
         >
           {eventsLoading ? (
             Array.from({ length: 3 }).map((_, i) => (
-              <Reveal key={`event-skel-${i}`} variant="fade-up" style={{ transitionDelay: `${i * 80}ms` }}>
+              <Reveal
+                key={`event-skel-${i}`}
+                variant="fade-up"
+                style={{ transitionDelay: `${i * 80}ms` }}
+              >
                 <Skeleton className="h-56 rounded-2xl" />
               </Reveal>
             ))
           ) : events.length > 0 ? (
             events.map((ev, i) => (
-              <Reveal key={ev.id || i} variant="fade-up" style={{ transitionDelay: `${i * 80}ms` }}>
+              <Reveal
+                key={ev.id || i}
+                variant="fade-up"
+                style={{ transitionDelay: `${i * 80}ms` }}
+              >
                 <motion.div
                   variants={itemVariants}
                   initial="rest"
@@ -499,26 +625,33 @@ export default function App() {
                     rotateX: 5,
                     rotateY: -5,
                     y: -20,
-                    boxShadow: "0 30px 60px rgba(22, 163, 74, 0.3), 0 0 40px rgba(22, 163, 74, 0.2)",
+                    boxShadow:
+                      "0 30px 60px rgba(22, 163, 74, 0.3), 0 0 40px rgba(22, 163, 74, 0.2)",
                     transition: { duration: 0.4, ease: "easeInOut" },
                   }}
                   className="bg-green-50 p-6 rounded-3xl overflow-hidden cursor-pointer relative"
                   style={{ perspective: "1000px" }}
                 >
-                <motion.div
-                  variants={imageHoverVariants}
-                  initial="rest"
-                  whileHover="hover"
-                  className="overflow-hidden rounded-2xl"
-                >
-                  <img
-                    src={ev.image || "/skills-training-workshop.jpg"}
-                    alt={ev.title}
-                    className="w-full h-56 object-cover"
-                  />
-                </motion.div>
-                <h3 className="text-2xl font-semibold text-green-800 mb-2 mt-4">{ev.title}</h3>
-                <p className="text-gray-600 mb-4">{ev.excerpt ?? ev.description ?? "Event details coming soon."}</p>
+                  <motion.div
+                    variants={imageHoverVariants}
+                    initial="rest"
+                    whileHover="hover"
+                    className="overflow-hidden rounded-2xl"
+                  >
+                    <img
+                      src={ev.image || "/skills-training-workshop.jpg"}
+                      alt={ev.title}
+                      className="w-full h-56 object-cover"
+                    />
+                  </motion.div>
+                  <h3 className="text-2xl font-semibold text-green-800 mb-2 mt-4">
+                    {ev.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    {ev.excerpt ??
+                      ev.description ??
+                      "Event details coming soon."}
+                  </p>
                 </motion.div>
               </Reveal>
             ))
@@ -536,16 +669,21 @@ export default function App() {
           viewport={{ once: true }}
           className="mt-12"
         >
-          <motion.a href="#events" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button className="bg-green-600 text-white font-semibold px-8 py-3 rounded-full hover:bg-green-500 transition">
-              View All Events
-            </Button>
-          </motion.a>
+          <Link href="/events">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button className="bg-green-600 text-white font-semibold px-8 py-2 rounded-full hover:bg-green-500 transition">
+                View All Events
+              </Button>
+            </motion.div>
+          </Link>
         </motion.div>
       </section>
 
       {/* Resources Section */}
-      <section id="resources" className="py-24 bg-green-50 text-center relative">
+      <section
+        id="resources"
+        className="py-24 bg-green-50 text-center relative"
+      >
         <Reveal variant="fade-up">
           <motion.h2
             variants={fadeUp}
@@ -566,13 +704,21 @@ export default function App() {
         >
           {resourcesLoading ? (
             Array.from({ length: 3 }).map((_, i) => (
-              <Reveal key={`res-skel-${i}`} variant="fade-up" style={{ transitionDelay: `${i * 80}ms` }}>
+              <Reveal
+                key={`res-skel-${i}`}
+                variant="fade-up"
+                style={{ transitionDelay: `${i * 80}ms` }}
+              >
                 <Skeleton className="h-48 rounded-2xl" />
               </Reveal>
             ))
           ) : resources.length > 0 ? (
             resources.map((res, i) => (
-              <Reveal key={res.id || i} variant="fade-up" style={{ transitionDelay: `${i * 80}ms` }}>
+              <Reveal
+                key={res.id || i}
+                variant="fade-up"
+                style={{ transitionDelay: `${i * 80}ms` }}
+              >
                 <motion.div
                   variants={itemVariants}
                   initial="rest"
@@ -581,29 +727,43 @@ export default function App() {
                     rotateX: 5,
                     rotateY: -5,
                     y: -20,
-                    boxShadow: "0 30px 60px rgba(22, 163, 74, 0.3), 0 0 40px rgba(22, 163, 74, 0.2)",
+                    boxShadow:
+                      "0 30px 60px rgba(22, 163, 74, 0.3), 0 0 40px rgba(22, 163, 74, 0.2)",
                     transition: { duration: 0.4, ease: "easeInOut" },
                   }}
                   className="bg-white p-8 rounded-3xl overflow-hidden cursor-pointer relative"
                   style={{ perspective: "1000px" }}
                 >
-                <motion.div
-                  variants={imageHoverVariants}
-                  initial="rest"
-                  whileHover="hover"
-                  className="overflow-hidden rounded-2xl"
-                >
-                  <img
-                    src={res.thumbnail || res.fileUrl || res.url || "/digital-platform-interface-technology.jpg"}
-                    alt={res.title}
-                    className="w-full h-48 object-cover"
-                  />
-                </motion.div>
-                <h3 className="text-2xl font-semibold text-green-800 mb-3 mt-4">{res.title}</h3>
-                <p className="text-gray-600 mb-4">{res.description}</p>
-                <a href={res.url ?? res.fileUrl ?? "#"} target="_blank" rel="noreferrer">
-                  <Button className="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-500 transition">Access</Button>
-                </a>
+                  <motion.div
+                    variants={imageHoverVariants}
+                    initial="rest"
+                    whileHover="hover"
+                    className="overflow-hidden rounded-2xl"
+                  >
+                    <img
+                      src={
+                        res.thumbnail ||
+                        res.fileUrl ||
+                        res.url ||
+                        "/digital-platform-interface-technology.jpg"
+                      }
+                      alt={res.title}
+                      className="w-full h-48 object-cover"
+                    />
+                  </motion.div>
+                  <h3 className="text-2xl font-semibold text-green-800 mb-3 mt-4">
+                    {res.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4">{res.description}</p>
+                  <a
+                    href={res.url ?? res.fileUrl ?? "#"}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Button className="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-500 transition">
+                      Access
+                    </Button>
+                  </a>
                 </motion.div>
               </Reveal>
             ))
@@ -621,16 +781,18 @@ export default function App() {
           viewport={{ once: true }}
           className="mt-12"
         >
-          <motion.a href="#resources" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button className="bg-green-600 text-white font-semibold px-8 py-3 rounded-full hover:bg-green-500 transition">
-              View All Resources
-            </Button>
-          </motion.a>
+          <Link href="/resources">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button className="bg-green-600 text-white font-semibold px-8 py-2 rounded-full hover:bg-green-500 transition">
+                View All Resources
+              </Button>
+            </motion.div>
+          </Link>
         </motion.div>
       </section>
 
       {/* Shared Footer */}
       <Footer />
     </div>
-  )
+  );
 }

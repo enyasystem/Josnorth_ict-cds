@@ -36,7 +36,7 @@ export function TeamSection() {
                 role="tab"
                 aria-selected={tab === "devs"}
                 onClick={() => setTab("devs")}
-                className={`px-3 py-1 rounded-md text-sm ${
+                className={`px-3 py-1 rounded-md text-sm cursor-pointer ${
                   tab === "devs"
                     ? "bg-emerald-500 text-white"
                     : "text-emerald-200"
@@ -48,7 +48,7 @@ export function TeamSection() {
                 role="tab"
                 aria-selected={tab === "excos"}
                 onClick={() => setTab("excos")}
-                className={`px-3 py-1 rounded-md text-sm ${
+                className={`px-3 py-1 rounded-md text-sm cursor-pointer ${
                   tab === "excos"
                     ? "bg-emerald-500 text-white"
                     : "text-emerald-200"
@@ -59,7 +59,9 @@ export function TeamSection() {
             </div>
 
             <Button asChild variant="ghost" className="text-emerald-200">
-              <Link href="/team">View all</Link>
+              <Link href="/team" className="cursor-pointer">
+                View all
+              </Link>
             </Button>
           </div>
         </div>

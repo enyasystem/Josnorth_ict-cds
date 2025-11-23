@@ -1,9 +1,15 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import Link from "next/link"
-import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const eventsAndNews = [
   {
@@ -42,14 +48,14 @@ const eventsAndNews = [
     attendees: 120,
     type: "news",
   },
-]
+];
 
 export function EventsNewsSection() {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    setIsVisible(true)
-  }, [])
+    setIsVisible(true);
+  }, []);
 
   return (
     <section className="py-24 px-6 bg-gradient-to-br from-background via-secondary/20 to-background">
@@ -60,9 +66,12 @@ export function EventsNewsSection() {
             animation: isVisible ? "fadeInUp 0.8s ease-out" : "none",
           }}
         >
-          <h2 className="text-4xl font-bold text-foreground mb-4 text-balance">Events & News</h2>
+          <h2 className="text-4xl font-bold text-foreground mb-4 text-balance">
+            Events & News
+          </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
-            Stay updated with upcoming events and latest news from NYSC Jos North
+            Stay updated with upcoming events and latest news from NYSC Jos
+            North
           </p>
         </div>
 
@@ -72,19 +81,34 @@ export function EventsNewsSection() {
               key={item.id}
               className="bg-card border border-border hover:border-primary hover:shadow-lg transition-all duration-300 group overflow-hidden"
               style={{
-                animation: isVisible ? `fadeInUp 0.8s ease-out ${0.1 + index * 0.1}s both` : "none",
+                animation: isVisible
+                  ? `fadeInUp 0.8s ease-out ${0.1 + index * 0.1}s both`
+                  : "none",
               }}
             >
-              <div className={`h-1 ${item.type === "event" ? "bg-primary" : "bg-accent"}`} />
+              <div
+                className={`h-1 ${
+                  item.type === "event" ? "bg-primary" : "bg-accent"
+                }`}
+              />
               <CardHeader>
                 <div className="flex items-center justify-between mb-2">
                   <span
-                    className={`text-xs font-semibold px-3 py-1 rounded-full ${item.type === "event" ? "bg-secondary text-primary" : "bg-accent/20 text-accent"}`}
+                    className={`text-xs font-semibold px-3 py-1 rounded-full ${
+                      item.type === "event"
+                        ? "bg-secondary text-primary"
+                        : "bg-accent/20 text-accent"
+                    }`}
                   >
                     {item.type === "event" ? "EVENT" : "NEWS"}
                   </span>
                   <div className="flex items-center gap-1 text-muted-foreground text-sm">
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg
+                      className="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -98,14 +122,21 @@ export function EventsNewsSection() {
                 <CardTitle className="text-foreground text-lg group-hover:text-primary transition-colors">
                   {item.title}
                 </CardTitle>
-                <CardDescription className="text-muted-foreground">{item.description}</CardDescription>
+                <CardDescription className="text-muted-foreground">
+                  {item.description}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   {item.type === "event" && (
                     <>
                       <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                        <svg className="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg
+                          className="h-4 w-4 text-primary"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -122,7 +153,12 @@ export function EventsNewsSection() {
                         {item.location}
                       </div>
                       <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                        <svg className="h-4 w-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg
+                          className="h-4 w-4 text-accent"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -135,7 +171,7 @@ export function EventsNewsSection() {
                     </>
                   )}
                   <div className="pt-2 flex justify-end">
-                    <button className="text-primary hover:text-primary/80 flex items-center gap-1 text-sm font-medium group/btn">
+                    <button className="text-primary hover:text-primary/80 flex items-center gap-1 text-sm font-medium group/btn cursor-pointer">
                       Learn more
                       <svg
                         className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform"
@@ -143,7 +179,12 @@ export function EventsNewsSection() {
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
                       </svg>
                     </button>
                   </div>
@@ -154,8 +195,14 @@ export function EventsNewsSection() {
         </div>
 
         <div className="text-center">
-          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Link href="/events">View All Events & News</Link>
+          <Button
+            asChild
+            size="lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+          >
+            <Link href="/events" className="cursor-pointer">
+              View All Events & News
+            </Link>
           </Button>
         </div>
       </div>
@@ -173,5 +220,5 @@ export function EventsNewsSection() {
         }
       `}</style>
     </section>
-  )
+  );
 }

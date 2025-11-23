@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { TbBrandX } from 'react-icons/tb'
-import { SiTiktok } from 'react-icons/si'
+import { TbBrandX } from "react-icons/tb";
+import { SiTiktok } from "react-icons/si";
 
 export function Footer() {
   return (
@@ -17,8 +17,9 @@ export function Footer() {
               <span className="font-bold text-lg">NYSC Jos North</span>
             </div>
             <p className="text-white/70 text-sm leading-relaxed max-w-sm">
-              Empowering corps members to make lasting impact in Jos North communities through skills development and
-              collaborative initiatives.
+              Empowering corps members to make lasting impact in Jos North
+              communities through skills development and collaborative
+              initiatives.
             </p>
           </div>
 
@@ -27,22 +28,34 @@ export function Footer() {
             <h4 className="font-semibold text-white">Quick Links</h4>
             <ul className="space-y-2 text-sm text-white/70">
               <li>
-                <a href="/" className="hover:text-accent transition-colors">
+                <a
+                  href="/"
+                  className="hover:text-accent transition-colors cursor-pointer"
+                >
                   Home
                 </a>
               </li>
               <li>
-                <a href="/events" className="hover:text-accent transition-colors">
+                <a
+                  href="/events"
+                  className="hover:text-accent transition-colors cursor-pointer"
+                >
                   Events
                 </a>
               </li>
               <li>
-                <a href="/resources" className="hover:text-accent transition-colors">
+                <a
+                  href="/resources"
+                  className="hover:text-accent transition-colors cursor-pointer"
+                >
                   Resources
                 </a>
               </li>
               <li>
-                <a href="/team" className="hover:text-accent transition-colors">
+                <a
+                  href="/team"
+                  className="hover:text-accent transition-colors cursor-pointer"
+                >
                   Team
                 </a>
               </li>
@@ -54,7 +67,12 @@ export function Footer() {
             <h4 className="font-semibold text-white">Contact</h4>
             <div className="space-y-3 text-sm text-white/70">
               <div className="flex items-center gap-3">
-                <svg className="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-4 h-4 text-accent"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -65,7 +83,12 @@ export function Footer() {
                 <span>info@nyscjosnorth.ng</span>
               </div>
               <div className="flex items-center gap-3">
-                <svg className="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-4 h-4 text-accent"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -82,7 +105,12 @@ export function Footer() {
                 <span>Jos North LGA, Plateau State</span>
               </div>
               <div className="flex items-center gap-3">
-                <svg className="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-4 h-4 text-accent"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -97,18 +125,28 @@ export function Footer() {
         </div>
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-white/60 text-sm">&copy; 2025 NYSC Jos North CDS. All rights reserved.</p>
+          <p className="text-white/60 text-sm">
+            &copy; 2025 NYSC Jos North CDS. All rights reserved.
+          </p>
           <div className="flex gap-4">
-            <a href="#" className="text-white/60 hover:text-accent transition-colors" aria-label="X">
+            <a
+              href="#"
+              className="text-white/60 hover:text-accent transition-colors cursor-pointer"
+              aria-label="X"
+            >
               <TbBrandX className="w-5 h-5" />
             </a>
 
-            <a href="#" className="text-white/60 hover:text-accent transition-colors" aria-label="TikTok">
+            <a
+              href="#"
+              className="text-white/60 hover:text-accent transition-colors cursor-pointer"
+              aria-label="TikTok"
+            >
               <SiTiktok className="w-5 h-5" />
             </a>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

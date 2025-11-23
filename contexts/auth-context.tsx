@@ -35,11 +35,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const token = localStorage.getItem("auth_token");
       const storedUser = localStorage.getItem("user");
 
-      if (token && storedUser) {
+      if (token) {
         try {
           // Verify token is still valid by fetching current user
-          const response = await authApi.getCurrentUser();
+          const response = await authApi.getUser();
           setUser(response.user);
+          localStorage.setItem("user", JSON.stringify(response.user));
         } catch (error) {
           // Token is invalid, clear storage
           localStorage.removeItem("auth_token");
@@ -97,7 +98,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const updateUser = async (data: Partial<User>) => {
     try {
-      const response = await authApi.updateProfile(data);
+      // Refresh user data from server
+      const response = await authApi.getUser();
       setUser(response.user);
       localStorage.setItem("user", JSON.stringify(response.user));
       toast.success("Profile updated!");

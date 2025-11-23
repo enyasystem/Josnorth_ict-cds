@@ -1,40 +1,43 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { useState, useRef, useEffect } from "react"
-import { usePathname, useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Menu, Plus, Bell, Search, User, Settings } from "lucide-react"
+import Link from "next/link";
+import { useState, useRef, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Menu, Plus, Bell, Search, User, Settings } from "lucide-react";
+import { useAuth } from "@/contexts/auth-context";
 
 export function Header() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [addOpen, setAddOpen] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [notificationsOpen, setNotificationsOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const pathname = usePathname()
-  const router = useRouter()
-  const addRef = useRef<HTMLDivElement | null>(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const pathname = usePathname();
+  const router = useRouter();
+  const addRef = useRef<HTMLDivElement | null>(null);
+  const isAdminRoute = pathname?.startsWith("/admin");
+
+  // Auth context is always available since AppProvider wraps all pages
+  const { user, logout } = useAuth();
   useEffect(() => {
     function onDoc(e: MouseEvent) {
-      if (!addRef.current) return
+      if (!addRef.current) return;
       if (e.target && !addRef.current.contains(e.target as Node)) {
-        setAddOpen(false)
-        setSearchOpen(false)
+        setAddOpen(false);
+        setSearchOpen(false);
       }
     }
-    document.addEventListener("click", onDoc)
-    return () => document.removeEventListener("click", onDoc)
-  }, [])
-
-  const isAdminRoute = pathname?.startsWith("/admin")
+    document.addEventListener("click", onDoc);
+    return () => document.removeEventListener("click", onDoc);
+  }, []);
 
   const navigationLinks = [
     { href: "/", label: "Home" },
     { href: "/events", label: "Events" },
     { href: "/resources", label: "Resources" },
     { href: "/team", label: "Team" },
-  ]
+  ];
 
   const adminNavigation = [
     { href: "/admin", label: "Dashboard" },
@@ -43,21 +46,21 @@ export function Header() {
     { href: "/admin/excos", label: "Excos" },
     { href: "/admin/developers", label: "Developers" },
     { href: "/admin/settings", label: "Settings" },
-  ]
+  ];
 
   const addOptions = [
     { href: "/admin/events/new", label: "Create New Event" },
     { href: "/admin/resources/new", label: "Upload Resource" },
     { href: "/admin/excos/new", label: "Add New Exco" },
     { href: "/admin/developers/new", label: "Add New Developer" },
-  ]
+  ];
 
   const isActiveLink = (href: string) => {
     if (href === "/") {
-      return pathname === "/"
+      return pathname === "/";
     }
-    return pathname.startsWith(href)
-  }
+    return pathname.startsWith(href);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-border shadow-sm">
@@ -65,10 +68,10 @@ export function Header() {
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 min-w-0">
             <button
-              className="md:hidden p-2 rounded-md hover:bg-muted transition-colors"
+              className="md:hidden p-2 rounded-md hover:bg-muted transition-colors cursor-pointer"
               onClick={() => {
                 try {
-                  window.dispatchEvent(new CustomEvent("toggle-admin-sidebar"))
+                  window.dispatchEvent(new CustomEvent("toggle-admin-sidebar"));
                 } catch (e) {}
               }}
               aria-label="Toggle sidebar"
@@ -76,7 +79,10 @@ export function Header() {
               <Menu className="w-5 h-5" />
             </button>
 
-            <Link href="/admin" className="flex items-center gap-3 mr-2">
+            <Link
+              href="/admin"
+              className="flex items-center gap-3 mr-2 cursor-pointer"
+            >
               <div className="w-8 h-8 bg-gradient-to-br from-green-600 to-green-700 rounded-md flex items-center justify-center">
                 <span className="text-white font-semibold">A</span>
               </div>
@@ -85,31 +91,35 @@ export function Header() {
             <div className="truncate">
               <h1 className="text-lg font-semibold text-foreground truncate">
                 {(() => {
-                  const segments = pathname?.split("/").filter(Boolean) || []
-                  if (segments.length <= 1) return "Admin Dashboard"
+                  const segments = pathname?.split("/").filter(Boolean) || [];
+                  if (segments.length <= 1) return "Admin Dashboard";
                   const map: Record<string, string> = {
                     events: "Events",
                     resources: "Resources",
                     excos: "Excos",
                     developers: "Developers",
                     settings: "Settings",
-                  }
-                  const last = segments[segments.length - 1]
-                  return map[last] || last.charAt(0).toUpperCase() + last.slice(1)
+                  };
+                  const last = segments[segments.length - 1];
+                  return (
+                    map[last] || last.charAt(0).toUpperCase() + last.slice(1)
+                  );
                 })()}
               </h1>
-              <p className="text-sm text-muted-foreground truncate hidden md:block">Quick actions and overview for admin</p>
+              <p className="text-sm text-muted-foreground truncate hidden md:block">
+                Quick actions and overview for admin
+              </p>
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2 flex-1 justify-center">
             <div className="relative" ref={addRef}>
               <Button
                 variant="ghost"
                 className="px-3 py-2 flex items-center gap-2"
                 onClick={() => {
-                  setAddOpen((v) => !v)
-                  setSearchOpen(false)
+                  setAddOpen((v) => !v);
+                  setSearchOpen(false);
                 }}
                 aria-expanded={addOpen}
                 aria-haspopup="menu"
@@ -123,10 +133,10 @@ export function Header() {
                   {addOptions.map((opt) => (
                     <button
                       key={opt.href}
-                      className="w-full text-left px-3 py-2 hover:bg-muted text-sm"
+                      className="w-full text-left px-3 py-2 hover:bg-muted text-sm cursor-pointer"
                       onClick={() => {
-                        setAddOpen(false)
-                        router.push(opt.href)
+                        setAddOpen(false);
+                        router.push(opt.href);
                       }}
                     >
                       {opt.label}
@@ -141,8 +151,8 @@ export function Header() {
                 variant="outline"
                 className="px-3 py-2 flex items-center gap-2"
                 onClick={() => {
-                  setSearchOpen((v) => !v)
-                  setAddOpen(false)
+                  setSearchOpen((v) => !v);
+                  setAddOpen(false);
                 }}
                 aria-expanded={searchOpen}
               >
@@ -152,16 +162,18 @@ export function Header() {
               {searchOpen && (
                 <form
                   onSubmit={(e) => {
-                    e.preventDefault()
-                    setSearchOpen(false)
-                    router.push(`/admin?search=${encodeURIComponent(searchQuery)}`)
+                    e.preventDefault();
+                    setSearchOpen(false);
+                    router.push(
+                      `/admin?search=${encodeURIComponent(searchQuery)}`
+                    );
                   }}
                 >
                   <input
                     autoFocus
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="absolute right-0 mt-2 w-64 px-3 py-2 border rounded-md bg-white z-50"
+                    className="absolute right-0 mt-2 w-96 px-3 py-2 border rounded-md bg-white z-50"
                     placeholder="Search admin..."
                   />
                 </form>
@@ -169,13 +181,13 @@ export function Header() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 ml-auto">
             <div className="relative">
               <button
-                className="p-2 rounded-md hover:bg-muted"
+                className="p-2 rounded-md hover:bg-muted cursor-pointer"
                 aria-label="Notifications"
                 onClick={() => {
-                  setNotificationsOpen((v) => !v)
+                  setNotificationsOpen((v) => !v);
                 }}
               >
                 <Bell className="w-5 h-5" />
@@ -183,35 +195,29 @@ export function Header() {
 
               {notificationsOpen && (
                 <div className="absolute right-0 mt-2 w-64 bg-white border border-border rounded-md shadow-lg z-50 p-3">
-                  <p className="text-sm text-muted-foreground">No notifications</p>
+                  <p className="text-sm text-muted-foreground">
+                    No notifications
+                  </p>
                 </div>
               )}
             </div>
 
             <button
-              className="p-2 rounded-md hover:bg-muted"
+              className="p-2 rounded-md hover:bg-muted cursor-pointer"
               aria-label="Settings"
-              onClick={() => router.push('/admin/settings')}
+              onClick={() => router.push("/admin/settings")}
             >
               <Settings className="w-5 h-5" />
             </button>
 
             <button
-              className="flex items-center gap-2 p-1 rounded-md hover:bg-muted"
-              onClick={async () => {
-                try {
-                  await fetch('/api/auth/signout', { method: 'POST' })
-                } catch (e) {
-                  // best effort signout
-                }
-                try {
-                  localStorage?.removeItem('authToken')
-                } catch (e) {}
-                router.push('/')
-              }}
+              className="flex items-center gap-2 p-1 rounded-md hover:bg-muted cursor-pointer"
+              onClick={() => logout()}
             >
               <User className="w-5 h-5" />
-              <span className="hidden md:inline text-sm">Admin</span>
+              <span className="hidden md:inline text-sm">
+                {user?.name || "Admin"}
+              </span>
             </button>
 
             {/* right-side mobile toggler removed on admin routes */}
@@ -219,12 +225,17 @@ export function Header() {
         </div>
       ) : (
         <nav className="flex items-center justify-between max-w-7xl mx-auto px-6 py-4">
-          <Link href="/" className="flex items-center gap-2 group">
+          <Link
+            href="/"
+            className="flex items-center gap-2 group cursor-pointer"
+          >
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-teal-600 to-teal-700 rounded-lg flex items-center justify-center shadow-md">
                 <span className="text-white font-bold text-sm">N</span>
               </div>
-              <span className="text-foreground font-bold text-lg hidden sm:inline">NYSC Jos North</span>
+              <span className="text-foreground font-bold text-lg hidden sm:inline">
+                NYSC Jos North
+              </span>
             </div>
           </Link>
 
@@ -233,7 +244,7 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`transition-all duration-300 font-medium text-sm ${
+                className={`transition-all duration-300 font-medium text-sm cursor-pointer ${
                   isActiveLink(link.href)
                     ? "text-primary border-b-2 border-primary"
                     : "text-muted-foreground hover:text-foreground"
@@ -249,16 +260,36 @@ export function Header() {
 
           <div className="flex items-center gap-2">
             <button
-              className="md:hidden text-foreground hover:bg-secondary p-2 rounded-lg transition-colors"
+              className="md:hidden text-foreground hover:bg-secondary p-2 rounded-lg transition-colors cursor-pointer"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? (
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               ) : (
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                  className="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               )}
             </button>
@@ -274,8 +305,10 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`block py-2 transition-colors font-medium ${
-                  isActiveLink(link.href) ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                className={`block py-2 transition-colors font-medium cursor-pointer ${
+                  isActiveLink(link.href)
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -299,5 +332,5 @@ export function Header() {
         }
       `}</style>
     </header>
-  )
+  );
 }
