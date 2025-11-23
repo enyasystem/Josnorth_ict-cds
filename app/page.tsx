@@ -16,6 +16,7 @@ import FloatingNav from "@/components/floating-nav"
 import { Typewriter } from "@/components/typewriter"
 import { Footer } from "@/components/footer"
 import { useDevelopers, useExcos } from "@/lib/hooks/useTeam"
+import { useProfiles } from "@/lib/hooks/useProfiles"
 import { useEvents } from "@/lib/hooks/useEvents"
 import { useResources } from "@/lib/hooks/useResources"
 import type { TeamMember, Event as EventType, Resource as ResourceType } from "@/lib/types/api"
@@ -25,16 +26,19 @@ export default function App() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const { data: developersData, isLoading: devLoading } = useDevelopers()
   const { data: excosData, isLoading: excosLoading } = useExcos()
+  const { data: profilesData, isLoading: profilesLoading } = useProfiles({ limit: 6 })
   const { data: eventsData, isLoading: eventsLoading } = useEvents({ limit: 3, status: "published" })
   const { data: resourcesData, isLoading: resourcesLoading } = useResources({ limit: 3 })
 
   const developers: TeamMember[] = developersData?.data ?? []
   const excos: TeamMember[] = excosData?.data ?? []
+  const profiles: TeamMember[] = profilesData?.data ?? []
   const events: EventType[] = eventsData?.data ?? []
   const resources: ResourceType[] = resourcesData?.data ?? []
 
-  const currentList = view === "excos" ? excos : developers
-  const currentLoading = view === "excos" ? excosLoading : devLoading
+  // Prefer profiles endpoint for the Meet Our Team section when available
+  const currentList = profiles.length > 0 ? profiles : view === "excos" ? excos : developers
+  const currentLoading = profiles.length > 0 ? profilesLoading : view === "excos" ? excosLoading : devLoading
 
   useEffect(() => {
     window.scrollTo(0, 0)
