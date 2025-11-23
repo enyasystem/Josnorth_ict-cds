@@ -35,7 +35,28 @@ export default function NewExcoPage() {
       router.push('/admin/excos')
     } catch (err: any) {
       console.error('Create failed', err)
-      setErrorMessage(err?.message || 'Failed to create exco. Check console for details.')
+
+      // Prefer server response body when available (axios error shape)
+      const status = err?.response?.status
+      const respData = err?.response?.data
+      const respHeaders = err?.response?.headers
+
+      let detail = ''
+      try {
+        if (respData) {
+          detail = typeof respData === 'object' ? JSON.stringify(respData) : String(respData)
+        } else if (err?.request) {
+          detail = 'No response body; request was sent but no response received.'
+        } else {
+          detail = err?.message || 'Unknown error'
+        }
+      } catch (e) {
+        detail = String(err?.message || 'Unknown error')
+      }
+
+      const headerSnippet = respHeaders ? JSON.stringify(respHeaders) : undefined
+
+      setErrorMessage(`Server error (${status || 'unknown'}): ${detail}${headerSnippet ? '\nHeaders: ' + headerSnippet : ''}`)
     }
   }
 
