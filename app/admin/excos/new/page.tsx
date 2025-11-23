@@ -16,7 +16,13 @@ export default function NewExcoPage() {
   const createMember = useCreateTeamMember()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const { register, handleSubmit, setValue, watch } = useForm<CreateTeamMemberData>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<CreateTeamMemberData>({
     defaultValues: { type: "exco" },
   })
 
@@ -33,7 +39,7 @@ export default function NewExcoPage() {
     }
   }
 
-  const isSubmitting = (createMember as any).isLoading || (createMember as any).isPending || false
+  const isSubmitting = (createMember as any)?.isLoading || false
 
   return (
     <div className="max-w-3xl mx-auto p-6">
@@ -50,13 +56,29 @@ export default function NewExcoPage() {
         )}
         <div className="space-y-2">
           <Label htmlFor="name">Full name *</Label>
-          <Input id="name" {...register('name', { required: true })} placeholder="e.g., Jane Doe" />
+          <Input
+            id="name"
+            {...register('name', { required: 'Name is required', minLength: { value: 2, message: 'Name must be at least 2 characters' } })}
+            placeholder="e.g., Jane Doe"
+            aria-invalid={errors.name ? true : undefined}
+          />
+          {errors.name && (
+            <p className="text-sm text-red-700 mt-1">{errors.name.message}</p>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="role">Role / Position *</Label>
-            <Input id="role" {...register('role', { required: true })} placeholder="e.g., President" />
+            <Input
+              id="role"
+              {...register('role', { required: 'Role is required', minLength: { value: 2, message: 'Provide a valid role' } })}
+              placeholder="e.g., President"
+              aria-invalid={errors.role ? true : undefined}
+            />
+            {errors.role && (
+              <p className="text-sm text-red-700 mt-1">{errors.role.message}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -80,18 +102,43 @@ export default function NewExcoPage() {
 
         <div className="space-y-2">
           <Label htmlFor="img">Image URL</Label>
-          <Input id="img" {...register('img')} placeholder="https://example.com/photo.jpg" />
+          <Input
+            id="img"
+            {...register('img', { pattern: { value: /^(https?:\/\/[^\s]+)$/i, message: 'Enter a valid URL' } })}
+            placeholder="https://example.com/photo.jpg"
+            aria-invalid={errors.img ? true : undefined}
+          />
+          {errors.img && (
+            <p className="text-sm text-red-700 mt-1">{errors.img.message}</p>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" {...register('email')} placeholder="email@example.com" />
+            <Input
+              id="email"
+              type="email"
+              {...register('email', { pattern: { value: /\S+@\S+\.\S+/, message: 'Invalid email address' } })}
+              placeholder="email@example.com"
+              aria-invalid={errors.email ? true : undefined}
+            />
+            {errors.email && (
+              <p className="text-sm text-red-700 mt-1">{errors.email.message}</p>
+            )}
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="phone">Phone</Label>
-            <Input id="phone" {...register('phone')} placeholder="+234 XXX XXX XXXX" />
+            <Input
+              id="phone"
+              {...register('phone', { pattern: { value: /^\+?[0-9\s\-()]{7,}$/, message: 'Invalid phone number' } })}
+              placeholder="+234 XXX XXX XXXX"
+              aria-invalid={errors.phone ? true : undefined}
+            />
+            {errors.phone && (
+              <p className="text-sm text-red-700 mt-1">{errors.phone.message}</p>
+            )}
           </div>
         </div>
 
@@ -107,9 +154,9 @@ export default function NewExcoPage() {
         <div className="flex justify-end gap-2 pt-4">
           <Button variant="outline" onClick={() => router.push('/admin/excos')}>Cancel</Button>
           <Button
-            type="button"
-            onClick={() => handleSubmit(onSubmit)()}
+            type="submit"
             disabled={isSubmitting}
+            className={isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'}
           >
             {isSubmitting ? 'Saving...' : 'Create Exco'}
           </Button>

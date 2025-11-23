@@ -7,42 +7,39 @@ import type {
 } from "@/lib/types/api";
 
 export const teamApi = {
-  // Get all team members
-  getAll: (params?: {
-    type?: "developer" | "exco";
-    page?: number;
-    limit?: number;
-  }) =>
-    apiRequest<PaginatedResponse<TeamMember>>("/team", {
+  // Get all team members (supports optional filters via params)
+  // Matches deployed API: /api/v1/teams
+  getAll: (params?: { type?: "developer" | "exco"; page?: number; limit?: number }) =>
+    apiRequest<PaginatedResponse<TeamMember>>("/v1/teams", {
       params,
     }),
 
-  // Get developers only
-  getDevelopers: () => apiRequest<{ data: TeamMember[] }>("/team/developers"),
+  // Get developers only (filtered by query param)
+  getDevelopers: () => apiRequest<{ data: TeamMember[] }>("/v1/teams", { params: { type: "developer" } }),
 
-  // Get excos only
-  getExcos: () => apiRequest<{ data: TeamMember[] }>("/team/excos"),
+  // Get excos only (filtered by query param)
+  getExcos: () => apiRequest<{ data: TeamMember[] }>("/v1/teams", { params: { type: "exco" } }),
 
   // Get single team member
-  getById: (id: string) => apiRequest<{ data: TeamMember }>(`/team/${id}`),
+  getById: (id: string) => apiRequest<{ data: TeamMember }>(`/v1/teams/${id}`),
 
   // Create team member (admin only)
   create: (data: CreateTeamMemberData) =>
-    apiRequest<{ data: TeamMember }>("/team", {
+    apiRequest<{ data: TeamMember }>("/v1/teams", {
       method: "POST",
       data,
     }),
 
   // Update team member (admin only)
   update: (id: string, data: Partial<CreateTeamMemberData>) =>
-    apiRequest<{ data: TeamMember }>(`/team/${id}`, {
+    apiRequest<{ data: TeamMember }>(`/v1/teams/${id}`, {
       method: "PATCH",
       data,
     }),
 
   // Delete team member (admin only)
   delete: (id: string) =>
-    apiRequest<void>(`/team/${id}`, {
+    apiRequest<void>(`/v1/teams/${id}`, {
       method: "DELETE",
     }),
 };
