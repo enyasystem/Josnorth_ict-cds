@@ -12,6 +12,7 @@ import { AnimatedParticles } from "@/components/animated-particles"
 import HeroParticles from "@/components/hero/hero-particles"
 import { Reveal } from "@/components/reveal"
 import { Typewriter } from "@/components/typewriter"
+import { Footer } from "@/components/footer"
 import { useDevelopers, useExcos } from "@/lib/hooks/useTeam"
 import { useEvents } from "@/lib/hooks/useEvents"
 import { useResources } from "@/lib/hooks/useResources"
@@ -679,10 +680,8 @@ export default function App() {
         </motion.div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-green-900 text-gray-200 py-10 text-center">
-        <p className="text-lg">© {new Date().getFullYear()} Jos North ICT CDS. All rights reserved.</p>
-      </footer>
+      {/* Shared Footer */}
+      <Footer />
     </div>
   )
 }

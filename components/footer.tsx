@@ -1,3 +1,5 @@
+"use client"
+
 export function Footer() {
   return (
     <footer className="relative z-10 mt-auto px-6 py-16 border-t border-border bg-foreground text-white">
