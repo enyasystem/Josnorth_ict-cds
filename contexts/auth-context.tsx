@@ -88,6 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Fetch user data using the token (since API doesn't return user in login response)
       try {
         const userResponse = await authApi.getUser();
+        console.log("User response after login: ", userResponse);
         user = userResponse?.user || (userResponse as any) || null;
       } catch (error) {
         console.error("Failed to fetch user data after login:", error);

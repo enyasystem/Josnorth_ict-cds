@@ -3,15 +3,16 @@ import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 // Normalize the API base URL so it always ends with `/api` (not `/v1`),
 // preventing duplicated paths like `/api/v1/v1/teams` when endpoints include `/v1`.
-let API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://nyscjosnorth.onrender.com/api";
-API_BASE_URL = API_BASE_URL.replace(/\/+$/, "") // remove trailing slashes
+let API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://nyscjosnorth.onrender.com/api";
+API_BASE_URL = API_BASE_URL.replace(/\/+$/, ""); // remove trailing slashes
 // If someone mistakenly set the env var to include `/v1`, convert it to `/api`.
 if (API_BASE_URL.match(/\/v1$/)) {
-  API_BASE_URL = API_BASE_URL.replace(/\/v1$/, '/api')
+  API_BASE_URL = API_BASE_URL.replace(/\/v1$/, "/api");
 }
 // Ensure base url ends with `/api` so endpoints like `/v1/teams` resolve to `/api/v1/teams`.
 if (!API_BASE_URL.match(/\/api$/)) {
-  API_BASE_URL = API_BASE_URL + '/api'
+  API_BASE_URL = API_BASE_URL + "/api";
 }
 
 // Create axios instance
@@ -30,7 +31,8 @@ apiClient.interceptors.request.use(
       const token = localStorage.getItem("auth_token");
       if (token) {
         if (!config.headers) config.headers = {} as any;
-        (config.headers as any).Authorization = `Bearer ${token}`;
+        // Backend expects "Token <key>" format, not "Bearer <token>"
+        (config.headers as any).Authorization = `Token ${token}`;
       }
     }
     return config;
