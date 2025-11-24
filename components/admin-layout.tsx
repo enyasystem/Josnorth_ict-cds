@@ -26,8 +26,11 @@ interface AdminLayoutProps {
 export function AdminLayout({ children }: AdminLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, isLoading, isAuthenticated } = useAuth();
-  const { logout } = useAuth();
+  const { user, isLoading, isAuthenticated, logout } = useAuth();
+
+  // All hooks must be called before any conditional returns
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   // Protect admin routes - require valid token
   useEffect(() => {
@@ -38,29 +41,6 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       }
     }
   }, [isLoading, isAuthenticated, router]);
-
-  // Show loading state while checking auth
-  if (isLoading) {
-    return (
-      <PageLayout showDecorations={false} showFooter={false}>
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-            <p className="text-green-600">Loading...</p>
-          </div>
-        </div>
-      </PageLayout>
-    );
-  }
-
-  // Don't render content if not authenticated
-  if (!isAuthenticated) {
-    return null;
-  }
-
-  // two pieces of state: sidebar open (desktop/compact) and mobile menu open
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -79,8 +59,25 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           toggleHandler as EventListener
         );
     }
-    return;
   }, []);
+
+  // Conditional returns AFTER all hooks are called
+  if (isLoading) {
+    return (
+      <PageLayout showDecorations={false} showFooter={false}>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+            <p className="text-green-600">Loading...</p>
+          </div>
+        </div>
+      </PageLayout>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   const navItems = [
     { href: "/admin", icon: BarChart3, label: "Dashboard" },
