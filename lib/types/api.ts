@@ -5,9 +5,13 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: "admin" | "user" | "exco" | "developer";
+  username?: string; // API returns username
+  role?: "admin" | "user" | "exco" | "developer";
   avatar?: string;
-  createdAt: string;
+  createdAt?: string;
+  first_name?: string;
+  last_name?: string;
+  pk?: number; // API returns pk
 }
 
 export interface LoginCredentials {

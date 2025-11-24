@@ -215,9 +215,16 @@ export function Header() {
               onClick={() => logout()}
             >
               <User className="w-5 h-5" />
-              <span className="hidden md:inline text-sm">
-                {user?.name || "Admin"}
-              </span>
+              <div className="hidden md:flex flex-col items-start">
+                <span className="text-sm font-medium">
+                  {user?.name || user?.username || "Admin"}
+                </span>
+                {user?.email && (
+                  <span className="text-xs text-muted-foreground">
+                    {user.email}
+                  </span>
+                )}
+              </div>
             </button>
 
             {/* right-side mobile toggler removed on admin routes */}

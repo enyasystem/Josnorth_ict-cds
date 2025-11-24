@@ -29,6 +29,60 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
+  // Inactivity timer - 1 hour (3600000 ms)
+  useEffect(() => {
+    let inactivityTimer: NodeJS.Timeout;
+    const INACTIVITY_TIMEOUT = 60 * 60 * 1000; // 1 hour in milliseconds
+
+    const resetTimer = () => {
+      // Clear existing timer
+      if (inactivityTimer) {
+        clearTimeout(inactivityTimer);
+      }
+
+      // Only set timer if user is logged in
+      const token = localStorage.getItem("auth_token");
+      if (token) {
+        inactivityTimer = setTimeout(() => {
+          // Clear token and user data after 1 hour of inactivity
+          localStorage.removeItem("auth_token");
+          localStorage.removeItem("user");
+          setUser(null);
+          toast.error("Session expired due to inactivity");
+          router.push("/login");
+        }, INACTIVITY_TIMEOUT);
+      }
+    };
+
+    // Events that indicate user activity
+    const activityEvents = [
+      "mousedown",
+      "mousemove",
+      "keypress",
+      "scroll",
+      "touchstart",
+      "click",
+    ];
+
+    // Set up activity listeners
+    activityEvents.forEach((event) => {
+      document.addEventListener(event, resetTimer, true);
+    });
+
+    // Initialize timer
+    resetTimer();
+
+    // Cleanup
+    return () => {
+      if (inactivityTimer) {
+        clearTimeout(inactivityTimer);
+      }
+      activityEvents.forEach((event) => {
+        document.removeEventListener(event, resetTimer, true);
+      });
+    };
+  }, [user, router]);
+
   // Check for existing session on mount
   useEffect(() => {
     const initAuth = async () => {
@@ -39,8 +93,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
           // Verify token is still valid by fetching current user
           const response = await authApi.getUser();
-          const user = response?.user || response;
-          if (user && user.email) {
+          const rawUser = response?.user || response;
+
+          if (rawUser && rawUser.email) {
+            // Map API response to User type
+            const user: User = {
+              id: String(rawUser.pk || rawUser.id || ""),
+              email: rawUser.email || "",
+              name:
+                rawUser.name ||
+                rawUser.username ||
+                `${rawUser.first_name || ""} ${
+                  rawUser.last_name || ""
+                }`.trim() ||
+                "User",
+              username: rawUser.username,
+              role: rawUser.role || "admin",
+              first_name: rawUser.first_name,
+              last_name: rawUser.last_name,
+              pk: rawUser.pk,
+            };
             setUser(user);
             localStorage.setItem("user", JSON.stringify(user));
           } else {
@@ -89,7 +161,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       try {
         const userResponse = await authApi.getUser();
         console.log("User response after login: ", userResponse);
-        user = userResponse?.user || (userResponse as any) || null;
+        const rawUser = userResponse?.user || (userResponse as any) || null;
+
+        // Map API response to User type
+        if (rawUser) {
+          user = {
+            id: String(rawUser.pk || rawUser.id || ""),
+            email: rawUser.email || "",
+            name:
+              rawUser.name ||
+              rawUser.username ||
+              `${rawUser.first_name || ""} ${rawUser.last_name || ""}`.trim() ||
+              "User",
+            username: rawUser.username,
+            role: rawUser.role || "admin",
+            first_name: rawUser.first_name,
+            last_name: rawUser.last_name,
+            pk: rawUser.pk,
+          } as User;
+        }
       } catch (error) {
         console.error("Failed to fetch user data after login:", error);
         throw new Error(
@@ -158,8 +248,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       // Refresh user data from server
       const response = await authApi.getUser();
-      const user = response?.user || response;
-      if (user && user.email) {
+      const rawUser = response?.user || response;
+
+      if (rawUser && rawUser.email) {
+        // Map API response to User type
+        const user: User = {
+          id: String(rawUser.pk || rawUser.id || ""),
+          email: rawUser.email || "",
+          name:
+            rawUser.name ||
+            rawUser.username ||
+            `${rawUser.first_name || ""} ${rawUser.last_name || ""}`.trim() ||
+            "User",
+          username: rawUser.username,
+          role: rawUser.role || "admin",
+          first_name: rawUser.first_name,
+          last_name: rawUser.last_name,
+          pk: rawUser.pk,
+        };
         setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
         toast.success("Profile updated!");

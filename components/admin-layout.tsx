@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   BarChart3,
@@ -25,7 +25,38 @@ interface AdminLayoutProps {
 
 export function AdminLayout({ children }: AdminLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, isLoading, isAuthenticated } = useAuth();
   const { logout } = useAuth();
+
+  // Protect admin routes - require valid token
+  useEffect(() => {
+    if (!isLoading) {
+      const token = localStorage.getItem("auth_token");
+      if (!token || !isAuthenticated) {
+        router.push("/login");
+      }
+    }
+  }, [isLoading, isAuthenticated, router]);
+
+  // Show loading state while checking auth
+  if (isLoading) {
+    return (
+      <PageLayout showDecorations={false} showFooter={false}>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+            <p className="text-green-600">Loading...</p>
+          </div>
+        </div>
+      </PageLayout>
+    );
+  }
+
+  // Don't render content if not authenticated
+  if (!isAuthenticated) {
+    return null;
+  }
 
   // two pieces of state: sidebar open (desktop/compact) and mobile menu open
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
