@@ -7,6 +7,8 @@ export function useAdminStats() {
     queryKey: ["admin", "stats"],
     queryFn: () => adminApi.getStats(),
     staleTime: 2 * 60 * 1000, // 2 minutes
+    retry: 1, // Only retry once
+    retryOnMount: false, // Don't retry on mount if it failed
   });
 }
 
@@ -14,7 +16,10 @@ export function useRecentActivities(limit: number = 10) {
   return useQuery({
     queryKey: ["admin", "activities", limit],
     queryFn: () => adminApi.getActivities(limit),
-    refetchInterval: 30000, // Refetch every 30 seconds
+    staleTime: 30 * 1000, // 30 seconds
+    retry: 1, // Only retry once
+    retryOnMount: false, // Don't retry on mount if it failed
+    refetchInterval: false, // Disable auto-refetch since endpoint doesn't exist
   });
 }
 
