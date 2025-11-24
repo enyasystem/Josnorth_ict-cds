@@ -39,8 +39,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
           // Verify token is still valid by fetching current user
           const response = await authApi.getUser();
-          setUser(response.user);
-          localStorage.setItem("user", JSON.stringify(response.user));
+          const user = response?.user || response;
+          if (user && user.email) {
+            setUser(user);
+            localStorage.setItem("user", JSON.stringify(user));
+          } else {
+            // Invalid user data, clear storage
+            localStorage.removeItem("auth_token");
+            localStorage.removeItem("user");
+          }
         } catch (error) {
           // Token is invalid, clear storage
           localStorage.removeItem("auth_token");
@@ -56,13 +63,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (credentials: LoginCredentials) => {
     try {
       const response = await authApi.login(credentials);
+
+      // Validate response structure
+      if (!response || !response.token) {
+        throw new Error("Invalid response from server");
+      }
+
+      // Handle different possible response structures
+      const user = response.user || response;
+      if (!user || !user.email) {
+        throw new Error("User data not found in response");
+      }
+
       localStorage.setItem("auth_token", response.token);
-      localStorage.setItem("user", JSON.stringify(response.user));
-      setUser(response.user);
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser(user);
       toast.success("Login successful!");
 
-      // Redirect based on role
-      if (response.user.role === "admin") {
+      // Redirect based on role (default to admin if role is not specified)
+      const userRole = user.role || "admin";
+      if (userRole === "admin") {
         router.push("/admin");
       } else {
         router.push("/");
@@ -76,9 +96,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (data: RegisterData) => {
     try {
       const response = await authApi.register(data);
+
+      // Validate response structure
+      if (!response || !response.token) {
+        throw new Error("Invalid response from server");
+      }
+
+      // Handle different possible response structures
+      const user = response.user || response;
+      if (!user || !user.email) {
+        throw new Error("User data not found in response");
+      }
+
       localStorage.setItem("auth_token", response.token);
-      localStorage.setItem("user", JSON.stringify(response.user));
-      setUser(response.user);
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser(user);
       toast.success("Registration successful!");
       router.push("/");
     } catch (error: any) {
@@ -100,9 +132,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       // Refresh user data from server
       const response = await authApi.getUser();
-      setUser(response.user);
-      localStorage.setItem("user", JSON.stringify(response.user));
-      toast.success("Profile updated!");
+      const user = response?.user || response;
+      if (user && user.email) {
+        setUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
+        toast.success("Profile updated!");
+      } else {
+        throw new Error("Invalid user data received");
+      }
     } catch (error: any) {
       toast.error(error.message || "Update failed");
       throw error;
