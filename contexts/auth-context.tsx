@@ -62,22 +62,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (credentials: LoginCredentials) => {
     try {
-      const response = await authApi.login(credentials);
+      const response = (await authApi.login(credentials)) as any;
 
-      console.log("Login response: ", response);
+      // Handle case where API returns { key: "token_string" } instead of { token: "...", user: {...} }
+      let token: string;
+      let user: User | null = null;
 
-      // Validate response structure
-      if (!response || !response.token) {
-        throw new Error("Invalid response from server");
+      if (typeof response === "string") {
+        // API returned just the token string
+        token = response;
+      } else if (response?.token) {
+        // API returned an object with token property
+        token = response.token;
+        user = response.user || null;
+      } else if (response?.key) {
+        // API returned an object with key property (token) - this is the actual API response
+        token = response.key;
+      } else {
+        throw new Error("Invalid response from server: token not found");
       }
 
-      // Handle different possible response structures
-      const user = response.user || response;
+      // Store token first
+      localStorage.setItem("auth_token", token);
+
+      // Fetch user data using the token (since API doesn't return user in login response)
+      try {
+        const userResponse = await authApi.getUser();
+        user = userResponse?.user || (userResponse as any) || null;
+      } catch (error) {
+        console.error("Failed to fetch user data after login:", error);
+        throw new Error(
+          "Failed to retrieve user information. Please try again."
+        );
+      }
+
+      // Validate user data
       if (!user || !user.email) {
-        throw new Error("User data not found in response");
+        throw new Error("Invalid user data received from server");
       }
 
-      localStorage.setItem("auth_token", response.token);
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
       toast.success("Login successful!");
