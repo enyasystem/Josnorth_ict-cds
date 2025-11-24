@@ -64,6 +64,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const response = await authApi.login(credentials);
 
+      console.log("Login response: ", response);
+
       // Validate response structure
       if (!response || !response.token) {
         throw new Error("Invalid response from server");
