@@ -34,9 +34,9 @@ export default function AdminDashboard() {
       trend: "up",
     },
     {
-      title: "Active Excos",
-      value: stats?.activeExcos || "0",
-      subtitle: `${stats?.totalExcos || 0} total members`,
+      title: "Profiles",
+      value: stats?.totalProfiles || "0",
+      subtitle: "total profiles",
       icon: Users,
       trend: "up",
     },
@@ -47,24 +47,17 @@ export default function AdminDashboard() {
       icon: FileText,
       trend: "up",
     },
-    {
-      title: "Dev Team",
-      value: stats?.totalDevelopers || "0",
-      subtitle: "total developers",
-      icon: TrendingUp,
-      trend: "up",
-    },
   ];
 
   const quickActions = [
     { label: "Create New Event", icon: Plus },
     { label: "Upload Resource", icon: Plus },
-    { label: "Add New Exco", icon: Plus },
+    { label: "Add New Profile", icon: Plus },
   ];
 
   const platformManagement = [
     { label: "Customize UI", icon: Settings },
-    { label: "Manage Team", icon: Users },
+    { label: "Manage Profiles", icon: Users },
     { label: "Manage Resources", icon: List },
   ];
 
@@ -183,7 +176,7 @@ export default function AdminDashboard() {
                 const routeMap: Record<string, string> = {
                   "Create New Event": "/admin/events/new",
                   "Upload Resource": "/admin/resources/new",
-                  "Add New Exco": "/admin/excos/new",
+                  "Add New Profile": "/admin/profiles",
                 };
                 const href = routeMap[action.label] ?? "/admin";
                 return (
@@ -213,7 +206,7 @@ export default function AdminDashboard() {
                 const Icon = item.icon;
                 const mapRoutes: Record<string, string> = {
                   "Customize UI": "/admin/settings",
-                  "Manage Team": "/admin/excos",
+                  "Manage Profiles": "/admin/profiles",
                   "Manage Resources": "/admin/resources",
                 };
                 const href = mapRoutes[item.label] ?? "/admin";

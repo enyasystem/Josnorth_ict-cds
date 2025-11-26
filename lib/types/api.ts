@@ -6,7 +6,7 @@ export interface User {
   email: string;
   name: string;
   username?: string; // API returns username
-  role?: "admin" | "user" | "exco" | "developer";
+  role?: "admin" | "user";
   avatar?: string;
   createdAt?: string;
   first_name?: string;
@@ -66,7 +66,9 @@ export interface TeamMember {
   id: string;
   name: string;
   role: string;
-  type: "developer" | "exco";
+  // legacy 'type' concept is no longer used for new features,
+  // but kept optional for backward compatibility with old data
+  type?: "developer" | "exco";
   bio: string;
   img: string;
   email?: string;
@@ -92,6 +94,38 @@ export interface CreateTeamMemberData {
     linkedin?: string;
     twitter?: string;
   };
+}
+
+// Profile Types
+export interface ProfileEducationItem {
+  school: string;
+  degree: string;
+}
+
+export interface ProfileExperienceItem {
+  role: string;
+  company: string;
+}
+
+export interface CreateProfileData {
+  first_name: string;
+  last_name: string;
+  date_of_birth?: string;
+  occupation?: string;
+  phone?: string;
+  email?: string;
+  ward?: string;
+  lga?: string;
+  bio?: string;
+  skills?: string[];
+  education?: ProfileEducationItem[];
+  experience?: ProfileExperienceItem[];
+}
+
+export interface Profile extends CreateProfileData {
+  id: string;
+  createdAt: string;
+  updatedAt?: string;
 }
 
 // Resources Types
@@ -131,11 +165,10 @@ export interface Committee {
 export interface DashboardStats {
   totalEvents: number;
   publishedEvents: number;
-  activeExcos: number;
-  totalExcos: number;
+  // Profiles-based stats (replaces excos/developers)
+  totalProfiles: number;
   totalResources: number;
   totalDocuments: number;
-  totalDevelopers: number;
 }
 
 export interface Activity {

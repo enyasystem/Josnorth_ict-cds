@@ -218,7 +218,7 @@ export default function FloatingNav() {
                   onClick={closeMenu}
                   className="hover:text-green-700 w-full text-right pr-2 cursor-pointer"
                 >
-                  Excos & Devs
+                  Team Profiles
                 </Link>
                 <Link
                   href="/events"

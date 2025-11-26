@@ -3,7 +3,7 @@ import { apiRequest } from "./client";
 import type { DashboardStats, Activity } from "@/lib/types/api";
 import { eventsApi } from "./events";
 import { resourcesApi } from "./resources";
-import { teamApi } from "./team";
+import { profilesApi } from "./profiles";
 
 export const adminApi = {
   // Get dashboard stats - calculate from existing endpoints
@@ -17,12 +17,11 @@ export const adminApi = {
       if (error.statusCode === 404) {
         try {
           // Fetch data from existing endpoints
-          const [eventsResp, resourcesResp, excosResp, devsResp] =
+          const [eventsResp, resourcesResp, profilesResp] =
             await Promise.allSettled([
               eventsApi.getAll({ limit: 1000 }),
               resourcesApi.getAll({ limit: 1000 }),
-              teamApi.getExcos(),
-              teamApi.getDevelopers(),
+              profilesApi.getAll({ limit: 1000 }),
             ]);
 
           const events =
@@ -33,22 +32,20 @@ export const adminApi = {
             resourcesResp.status === "fulfilled"
               ? resourcesResp.value?.data || []
               : [];
-          const excos =
-            excosResp.status === "fulfilled" ? excosResp.value?.data || [] : [];
-          const developers =
-            devsResp.status === "fulfilled" ? devsResp.value?.data || [] : [];
+          const profiles =
+            profilesResp.status === "fulfilled"
+              ? profilesResp.value?.data || []
+              : [];
 
           const stats: DashboardStats = {
             totalEvents: events.length,
             publishedEvents: events.filter((e: any) => e.status === "published")
               .length,
-            activeExcos: excos.length,
-            totalExcos: excos.length,
+            totalProfiles: profiles.length,
             totalResources: resources.length,
             totalDocuments: resources.filter(
               (r: any) => r.category === "document"
             ).length,
-            totalDevelopers: developers.length,
           };
 
           return { data: stats };
@@ -58,11 +55,9 @@ export const adminApi = {
             data: {
               totalEvents: 0,
               publishedEvents: 0,
-              activeExcos: 0,
-              totalExcos: 0,
+              totalProfiles: 0,
               totalResources: 0,
               totalDocuments: 0,
-              totalDevelopers: 0,
             },
           };
         }

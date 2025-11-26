@@ -43,16 +43,14 @@ export function Header() {
     { href: "/admin", label: "Dashboard" },
     { href: "/admin/events", label: "Events" },
     { href: "/admin/resources", label: "Resources" },
-    { href: "/admin/excos", label: "Excos" },
-    { href: "/admin/developers", label: "Developers" },
+    { href: "/admin/profiles", label: "Profiles" },
     { href: "/admin/settings", label: "Settings" },
   ];
 
   const addOptions = [
     { href: "/admin/events/new", label: "Create New Event" },
     { href: "/admin/resources/new", label: "Upload Resource" },
-    { href: "/admin/excos/new", label: "Add New Exco" },
-    { href: "/admin/developers/new", label: "Add New Developer" },
+    { href: "/admin/profiles/new", label: "Add New Profile" },
   ];
 
   const isActiveLink = (href: string) => {
@@ -96,8 +94,7 @@ export function Header() {
                   const map: Record<string, string> = {
                     events: "Events",
                     resources: "Resources",
-                    excos: "Excos",
-                    developers: "Developers",
+                    profiles: "Profiles",
                     settings: "Settings",
                   };
                   const last = segments[segments.length - 1];

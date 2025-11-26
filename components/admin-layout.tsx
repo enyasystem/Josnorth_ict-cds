@@ -81,8 +81,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
   const navItems = [
     { href: "/admin", icon: BarChart3, label: "Dashboard" },
-    { href: "/admin/excos", icon: Users, label: "Manage Excos" },
-    { href: "/admin/developers", icon: Settings, label: "Manage Developers" },
+    { href: "/admin/profiles", icon: Users, label: "Manage Profiles" },
     { href: "/admin/events", icon: Calendar, label: "Manage Events" },
     { href: "/admin/resources", icon: FileText, label: "Manage Resources" },
     { href: "/admin/settings", icon: Palette, label: "UI Settings" },

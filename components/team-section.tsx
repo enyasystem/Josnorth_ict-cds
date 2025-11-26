@@ -4,61 +4,24 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Reveal } from "./reveal";
-import { useDevelopers, useExcos } from "@/lib/hooks/useTeam";
+import { useProfiles } from "@/lib/hooks/useProfiles";
 import { Skeleton } from "@/components/ui/skeleton";
 import { User } from "lucide-react";
 import type { TeamMember } from "@/lib/types/api";
 
 export function TeamSection() {
-  const [tab, setTab] = useState<"devs" | "excos">("devs");
   const [selected, setSelected] = useState<TeamMember | null>(null);
+  const { data: profilesResponse, isLoading } = useProfiles({ limit: 12 });
 
-  const { data: devsResponse, isLoading: devsLoading } = useDevelopers();
-  const { data: execsResponse, isLoading: execsLoading } = useExcos();
-
-  const devs = devsResponse?.data || [];
-  const excos = execsResponse?.data || [];
-
-  const list = tab === "devs" ? devs : excos;
-  const isLoading = tab === "devs" ? devsLoading : execsLoading;
+  const profiles = profilesResponse?.data || [];
+  const list = profiles;
 
   return (
     <section className="py-24 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-white">Team</h2>
+          <h2 className="text-2xl font-bold text-white">Profiles</h2>
           <div className="flex items-center gap-3">
-            <div
-              role="tablist"
-              aria-label="Team tabs"
-              className="inline-flex rounded-md bg-emerald-900/30 p-1"
-            >
-              <button
-                role="tab"
-                aria-selected={tab === "devs"}
-                onClick={() => setTab("devs")}
-                className={`px-3 py-1 rounded-md text-sm cursor-pointer ${
-                  tab === "devs"
-                    ? "bg-emerald-500 text-white"
-                    : "text-emerald-200"
-                }`}
-              >
-                Devs
-              </button>
-              <button
-                role="tab"
-                aria-selected={tab === "excos"}
-                onClick={() => setTab("excos")}
-                className={`px-3 py-1 rounded-md text-sm cursor-pointer ${
-                  tab === "excos"
-                    ? "bg-emerald-500 text-white"
-                    : "text-emerald-200"
-                }`}
-              >
-                Excos
-              </button>
-            </div>
-
             <Button asChild variant="ghost" className="text-emerald-200">
               <Link href="/team" className="cursor-pointer">
                 View all

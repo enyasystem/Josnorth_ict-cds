@@ -7,7 +7,6 @@ const FloatingNav = dynamic(() => import("@/components/floating-nav"), {
   ssr: false,
 });
 import { Button } from "@/components/ui/button";
-import { useDevelopers, useExcos } from "@/lib/hooks/useTeam";
 import { useProfiles } from "@/lib/hooks/useProfiles";
 import { Skeleton } from "@/components/ui/skeleton";
 import ProfileCard from "@/components/profile-card";
@@ -16,24 +15,10 @@ import { Reveal } from "@/components/reveal";
 import { motion } from "framer-motion";
 
 export default function TeamPage() {
-  const [view, setView] = useState("excos");
-  const { data: developersData, isLoading: devLoading } = useDevelopers();
-  const { data: excosData, isLoading: excosLoading } = useExcos();
   const { data: profilesData, isLoading: profilesLoading } = useProfiles();
-
-  const developers: TeamMember[] = developersData?.data ?? [];
-  const excos: TeamMember[] = excosData?.data ?? [];
   const profiles: TeamMember[] = profilesData?.data ?? [];
-
-  // Prefer profiles endpoint for the Meet Our Team section when available
-  const currentList =
-    profiles.length > 0 ? profiles : view === "excos" ? excos : developers;
-  const currentLoading =
-    profiles.length > 0
-      ? profilesLoading
-      : view === "excos"
-      ? excosLoading
-      : devLoading;
+  const currentList = profiles;
+  const currentLoading = profilesLoading;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -56,38 +41,11 @@ export default function TeamPage() {
                 Meet Our Team
               </h1>
               <p className="text-xl text-green-600 mb-8 max-w-3xl mx-auto text-pretty">
-                The dedicated developers, designers, and engineers building the
-                future of NYSC Jos North digital platform. Our diverse team
-                brings together expertise in modern web technologies, user
-                experience design, and scalable infrastructure.
+                The dedicated members powering the NYSC Jos North digital
+                platform and community initiatives.
               </p>
             </div>
           </Reveal>
-
-          {profiles.length === 0 && (
-            <div className="flex justify-center mb-6 space-x-4">
-              <Button
-                onClick={() => setView("excos")}
-                className={`${
-                  view === "excos"
-                    ? "bg-green-600 text-white"
-                    : "bg-green-100 text-green-700"
-                } px-6 py-2 rounded-full transition`}
-              >
-                Excos
-              </Button>
-              <Button
-                onClick={() => setView("devs")}
-                className={`${
-                  view === "devs"
-                    ? "bg-green-600 text-white"
-                    : "bg-green-100 text-green-700"
-                } px-6 py-2 rounded-full transition`}
-              >
-                Developers
-              </Button>
-            </div>
-          )}
 
           <Reveal
             variant="fade-up"
