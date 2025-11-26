@@ -25,7 +25,7 @@ export interface PasswordResetConfirmData {
 export const authApi = {
   // Login
   login: async (credentials: LoginCredentials): Promise<LoginResponse> => {
-    return await apiRequest<LoginResponse>("/v1/auth/login", {
+    return await apiRequest<LoginResponse>("/v1/auth/login/", {
       method: "POST",
       data: credentials,
     });
@@ -33,7 +33,7 @@ export const authApi = {
 
   // Register
   register: async (data: RegisterData): Promise<LoginResponse> => {
-    return await apiRequest<LoginResponse>("/v1/auth/register", {
+    return await apiRequest<LoginResponse>("/v1/auth/register/", {
       method: "POST",
       data,
     });
@@ -41,19 +41,19 @@ export const authApi = {
 
   // Get current user
   getUser: async (): Promise<{ user: User }> => {
-    return await apiRequest<{ user: User }>("/v1/auth/user");
+    return await apiRequest<{ user: User }>("/v1/auth/user/");
   },
 
   // Logout
   logout: async (): Promise<void> => {
-    await apiRequest<void>("/v1/auth/logout", {
+    await apiRequest<void>("/v1/auth/logout/", {
       method: "POST",
     });
   },
 
   // Change password
   changePassword: async (data: PasswordChangeData): Promise<void> => {
-    await apiRequest<void>("/v1/auth/password/change", {
+    await apiRequest<void>("/v1/auth/password/change/", {
       method: "POST",
       data,
     });
@@ -61,7 +61,7 @@ export const authApi = {
 
   // Password reset request
   passwordReset: async (data: PasswordResetData): Promise<void> => {
-    await apiRequest<void>("/v1/auth/password/reset", {
+    await apiRequest<void>("/v1/auth/password/reset/", {
       method: "POST",
       data,
     });
@@ -71,7 +71,7 @@ export const authApi = {
   passwordResetConfirm: async (
     data: PasswordResetConfirmData
   ): Promise<void> => {
-    await apiRequest<void>("/v1/auth/password/reset/confirm", {
+    await apiRequest<void>("/v1/auth/password/reset/confirm/", {
       method: "POST",
       data,
     });

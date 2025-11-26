@@ -13,7 +13,8 @@ export const resourcesApi = {
     page?: number;
     limit?: number;
   }) => {
-    const resp: any = await apiRequest<any>("/v1/resources", { params });
+    // Django API expects trailing slash on collection endpoint
+    const resp: any = await apiRequest<any>("/v1/resources/", { params });
     const results: Resource[] = resp?.results ?? [];
     const count: number = resp?.count ?? results.length;
     const page = params?.page ?? 1;
@@ -33,13 +34,13 @@ export const resourcesApi = {
 
   // Get single resource
   getById: async (id: string) => {
-    const resp: any = await apiRequest<any>(`/v1/resources/${id}`);
+    const resp: any = await apiRequest<any>(`/v1/resources/${id}/`);
     return { data: resp };
   },
 
   // Create resource (admin only)
   create: async (data: CreateResourceData) => {
-    const resp: any = await apiRequest<any>("/v1/resources", {
+    const resp: any = await apiRequest<any>("/v1/resources/", {
       method: "POST",
       data,
     });
@@ -48,7 +49,7 @@ export const resourcesApi = {
 
   // Update resource (admin only)
   update: async (id: string, data: Partial<CreateResourceData>) => {
-    const resp: any = await apiRequest<any>(`/v1/resources/${id}`, {
+    const resp: any = await apiRequest<any>(`/v1/resources/${id}/`, {
       method: "PATCH",
       data,
     });
@@ -57,7 +58,7 @@ export const resourcesApi = {
 
   // Delete resource (admin only)
   delete: (id: string) =>
-    apiRequest<void>(`/v1/resources/${id}`, {
+    apiRequest<void>(`/v1/resources/${id}/`, {
       method: "DELETE",
     }),
 };
