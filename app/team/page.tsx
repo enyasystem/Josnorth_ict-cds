@@ -57,7 +57,7 @@ export default function TeamPage() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-24 pb-4"
             >
               {currentLoading ? (
                 Array.from({ length: 6 }).map((_, i) => (

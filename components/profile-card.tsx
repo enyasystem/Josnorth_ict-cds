@@ -25,8 +25,8 @@ export default function ProfileCard({ name, role, img, bio, socials }: Props) {
     img && img.trim() !== "" && img !== "#" && !img.startsWith("data:");
 
   return (
-    <div className="profile-card rounded-3xl bg-white p-6 shadow-md h-80 flex flex-col">
-      <div className="flex flex-col items-center flex-1">
+    <div className="profile-card rounded-3xl bg-white p-6 shadow-md h-[360px] max-w-xs mx-auto flex flex-col justify-between">
+      <div className="flex flex-col items-center">
         {hasImage ? (
           <img
             src={img}
@@ -41,7 +41,10 @@ export default function ProfileCard({ name, role, img, bio, socials }: Props) {
         <h3 className="text-xl font-semibold text-green-800">{name}</h3>
         <p className="text-sm text-muted-foreground">{role}</p>
 
-        <div className="profile-socials" aria-label={`${name} social links`}>
+        <div
+          className="profile-socials mt-3 flex items-center gap-3"
+          aria-label={`${name} social links`}
+        >
           <a
             href={gh}
             aria-label="GitHub"
@@ -92,7 +95,7 @@ export default function ProfileCard({ name, role, img, bio, socials }: Props) {
           </a>
         </div>
 
-        <p className="text-gray-600 mt-4 text-center">
+        <p className="text-gray-600 mt-4 text-center text-sm line-clamp-3">
           {bio ?? "Active in community projects and developer initiatives."}
         </p>
 
