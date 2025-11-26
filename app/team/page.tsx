@@ -53,7 +53,6 @@ export default function TeamPage() {
             className="px-8 max-w-6xl mx-auto"
           >
             <motion.div
-              key={view}
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
