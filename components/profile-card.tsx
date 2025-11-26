@@ -25,8 +25,8 @@ export default function ProfileCard({ name, role, img, bio, socials }: Props) {
     img && img.trim() !== "" && img !== "#" && !img.startsWith("data:");
 
   return (
-    <div className="profile-card rounded-3xl bg-white p-6 shadow-md">
-      <div className="flex flex-col items-center">
+    <div className="profile-card rounded-3xl bg-white p-6 shadow-md h-80 flex flex-col">
+      <div className="flex flex-col items-center flex-1">
         {hasImage ? (
           <img
             src={img}

@@ -15,13 +15,13 @@ import { Reveal } from "@/components/reveal";
 import FloatingNav from "@/components/floating-nav";
 import { Typewriter } from "@/components/typewriter";
 import { Footer } from "@/components/footer";
-import { useDevelopers, useExcos } from "@/lib/hooks/useTeam";
 import { useProfiles } from "@/lib/hooks/useProfiles";
 import { useEvents } from "@/lib/hooks/useEvents";
 import { useResources } from "@/lib/hooks/useResources";
 import {
   Calendar as CalendarIcon,
   FileText as FileTextIcon,
+  Clock as ClockIcon,
 } from "lucide-react";
 import type {
   TeamMember,
@@ -29,11 +29,8 @@ import type {
   Resource as ResourceType,
 } from "@/lib/types/api";
 export default function App() {
-  const [view, setView] = useState("excos");
   const [isScrolled, setIsScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const { data: developersData, isLoading: devLoading } = useDevelopers();
-  const { data: excosData, isLoading: excosLoading } = useExcos();
   const { data: profilesData, isLoading: profilesLoading } = useProfiles({
     limit: 6,
   });
@@ -45,21 +42,34 @@ export default function App() {
     limit: 3,
   });
 
-  const developers: TeamMember[] = developersData?.data ?? [];
-  const excos: TeamMember[] = excosData?.data ?? [];
   const profiles: TeamMember[] = profilesData?.data ?? [];
   const events: EventType[] = eventsData?.data ?? [];
   const resources: ResourceType[] = resourcesData?.data ?? [];
 
-  // Prefer profiles endpoint for the Meet Our Team section when available
-  const currentList =
-    profiles.length > 0 ? profiles : view === "excos" ? excos : developers;
-  const currentLoading =
-    profiles.length > 0
-      ? profilesLoading
-      : view === "excos"
-      ? excosLoading
-      : devLoading;
+  // Profiles for the Meet Our Team section
+  const currentList = profiles;
+  const currentLoading = profilesLoading;
+
+  const formatEventDate = (date?: string) => {
+    if (!date) return "Date TBA";
+    try {
+      return new Date(date).toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    } catch {
+      return date;
+    }
+  };
+
+  const formatEventTimeRange = (event: EventType) => {
+    if (!event.startTime && !event.endTime) return "Time TBA";
+    if (event.startTime && event.endTime) {
+      return `${event.startTime} - ${event.endTime}`;
+    }
+    return event.startTime || event.endTime || "Time TBA";
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -512,36 +522,12 @@ export default function App() {
             Meet Our Team
           </motion.h2>
         </Reveal>
-        <div className="flex justify-center mb-6 space-x-4">
-          <Button
-            onClick={() => setView("excos")}
-            className={`${
-              view === "excos"
-                ? "bg-green-600 text-white"
-                : "bg-green-100 text-green-700"
-            } px-6 py-2 rounded-full transition`}
-          >
-            Excos
-          </Button>
-          <Button
-            onClick={() => setView("devs")}
-            className={`${
-              view === "devs"
-                ? "bg-green-600 text-white"
-                : "bg-green-100 text-green-700"
-            } px-6 py-2 rounded-full transition`}
-          >
-            Developers
-          </Button>
-        </div>
-
         <Reveal
           variant="fade-up"
           stagger={80}
           className="px-8 max-w-6xl mx-auto"
         >
           <motion.div
-            key={view}
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -654,14 +640,24 @@ export default function App() {
                       </div>
                     )}
                   </motion.div>
-                  <h3 className="text-2xl font-semibold text-green-800 mb-2 mt-4">
+                  <h3 className="text-2xl font-semibold text-green-800 mb-1 mt-4">
                     {ev.title}
                   </h3>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-gray-600 mb-3">
                     {ev.excerpt ??
                       ev.description ??
                       "Event details coming soon."}
                   </p>
+                  <div className="flex items-center justify-between text-sm text-green-700">
+                    <span className="flex items-center gap-1">
+                      <CalendarIcon className="w-4 h-4 text-green-600" />
+                      {formatEventDate(ev.date)}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <ClockIcon className="w-4 h-4 text-green-600" />
+                      {formatEventTimeRange(ev)}
+                    </span>
+                  </div>
                 </motion.div>
               </Reveal>
             ))

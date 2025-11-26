@@ -56,6 +56,10 @@ export function ResourcesSection() {
             ))
           ) : resources.length > 0 ? (
             resources.map((resource, index) => {
+              const href = resource.fileUrl || resource.url || "";
+              const isExternal = href.startsWith("http");
+              const categoryLabel = resource.category || "Resource";
+
               return (
                 <Card
                   key={resource.id}
@@ -70,10 +74,10 @@ export function ResourcesSection() {
                   <CardHeader>
                     <div className="flex items-center justify-between mb-3">
                       <div className="p-3 bg-secondary rounded-lg group-hover:bg-secondary/80 transition-all text-2xl">
-                        {resource.icon ?? "📄"}
+                        {"📄"}
                       </div>
                       <span className="text-xs font-bold text-primary bg-secondary px-3 py-1 rounded-full">
-                        {resource.type ?? "Resource"}
+                        {categoryLabel}
                       </span>
                     </div>
                     <CardTitle className="text-foreground text-lg group-hover:text-primary transition-colors">
@@ -99,24 +103,38 @@ export function ResourcesSection() {
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                           />
                         </svg>
-                        {resource.downloads ?? "-"}
+                        {resource.category ?? "Resource"}
                       </div>
-                      <button className="text-primary hover:text-primary/80 flex items-center gap-1 font-semibold group/btn transition-all cursor-pointer">
-                        Access
-                        <svg
-                          className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+                      {href ? (
+                        <a
+                          href={href}
+                          target={isExternal ? "_blank" : undefined}
+                          rel={isExternal ? "noopener noreferrer" : undefined}
+                          className="text-primary hover:text-primary/80 flex items-center gap-1 font-semibold group/btn transition-all cursor-pointer"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </button>
+                          Access
+                          <svg
+                            className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </a>
+                      ) : (
+                        <button
+                          className="text-primary/60 flex items-center gap-1 font-semibold cursor-not-allowed"
+                          disabled
+                        >
+                          Access
+                        </button>
+                      )}
                     </div>
                   </CardContent>
                 </Card>

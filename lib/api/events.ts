@@ -6,6 +6,47 @@ import type {
   PaginatedResponse,
 } from "@/lib/types/api";
 
+// Map raw backend event (with start/end) into our frontend Event shape
+function mapEvent(raw: any): Event {
+  const start: string | undefined = raw?.start;
+  const end: string | undefined = raw?.end;
+
+  const date =
+    typeof start === "string" && start.length >= 10 ? start.slice(0, 10) : "";
+
+  const startTime =
+    typeof start === "string" && start.length >= 16
+      ? start.slice(11, 16)
+      : undefined;
+
+  const endTime =
+    typeof end === "string" && end.length >= 16 ? end.slice(11, 16) : undefined;
+
+  const description: string = raw?.description ?? "";
+
+  return {
+    id: String(raw?.id ?? ""),
+    title: raw?.title ?? "",
+    description,
+    excerpt:
+      raw?.excerpt ??
+      (description
+        ? `${String(description).slice(0, 120)}${
+            String(description).length > 120 ? "..." : ""
+          }`
+        : ""),
+    date,
+    startTime,
+    endTime,
+    location: raw?.location ?? "",
+    image: raw?.image ?? "",
+    status: (raw?.status as any) ?? "draft",
+    createdBy: raw?.created_by ?? "",
+    createdAt: raw?.created_at ?? "",
+    updatedAt: raw?.updated_at ?? "",
+  };
+}
+
 export const eventsApi = {
   // Get all events (with optional filters)
   getAll: async (params?: {
@@ -16,7 +57,8 @@ export const eventsApi = {
   }) => {
     // Django API requires trailing slash for list endpoint
     const resp: any = await apiRequest<any>("/v1/events/", { params });
-    const results: Event[] = resp?.results ?? [];
+    const raw: any[] = resp?.results ?? [];
+    const results: Event[] = raw.map(mapEvent);
     const count: number = resp?.count ?? results.length;
     const page = params?.page ?? 1;
     const limit = params?.limit ?? (results.length || count || 1);
@@ -37,7 +79,7 @@ export const eventsApi = {
   getById: async (id: string) => {
     // Detail endpoint should also include trailing slash
     const resp: any = await apiRequest<any>(`/v1/events/${id}/`);
-    return { data: resp };
+    return { data: mapEvent(resp) };
   },
 
   // Create event (admin only)
