@@ -447,7 +447,7 @@ export default function App() {
           className="relative max-w-2xl mb-8 z-10"
         >
           <p className="text-lg md:text-xl text-gray-700 font-medium leading-relaxed">
-            <motion.span
+            {/* <motion.span
               className="inline-block"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -455,7 +455,7 @@ export default function App() {
               viewport={{ once: true }}
             >
               Inspiring innovation, collaboration, and continuous learning
-            </motion.span>
+            </motion.span> */}
             {" in "}
             <motion.span
               className="inline-block text-green-600 font-bold"
