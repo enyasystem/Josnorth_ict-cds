@@ -39,7 +39,7 @@ export default function ProfileCard({ name, role, img, bio, socials }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <div className="profile-card rounded-3xl bg-white p-6 shadow-md h-[360px] max-w-xs mx-auto flex flex-col justify-between">
+      <div className="profile-card rounded-3xl bg-white p-6 shadow-md h-[400px] max-w-xs mx-auto flex flex-col justify-between">
         <div className="flex flex-col items-center">
           {hasImage ? (
             <img
