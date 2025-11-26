@@ -14,7 +14,8 @@ export const eventsApi = {
     status?: "draft" | "published" | "cancelled";
     sort?: string;
   }) => {
-    const resp: any = await apiRequest<any>("/v1/events", { params });
+    // Django API requires trailing slash for list endpoint
+    const resp: any = await apiRequest<any>("/v1/events/", { params });
     const results: Event[] = resp?.results ?? [];
     const count: number = resp?.count ?? results.length;
     const page = params?.page ?? 1;
@@ -34,13 +35,15 @@ export const eventsApi = {
 
   // Get single event
   getById: async (id: string) => {
-    const resp: any = await apiRequest<any>(`/v1/events/${id}`);
+    // Detail endpoint should also include trailing slash
+    const resp: any = await apiRequest<any>(`/v1/events/${id}/`);
     return { data: resp };
   },
 
   // Create event (admin only)
   create: async (data: CreateEventData) => {
-    const resp: any = await apiRequest<any>("/v1/events", {
+    // POST must hit the URL with trailing slash to avoid Django APPEND_SLASH redirect issue
+    const resp: any = await apiRequest<any>("/v1/events/", {
       method: "POST",
       data,
     });
@@ -49,7 +52,7 @@ export const eventsApi = {
 
   // Update event (admin only)
   update: async (id: string, data: Partial<CreateEventData>) => {
-    const resp: any = await apiRequest<any>(`/v1/events/${id}`, {
+    const resp: any = await apiRequest<any>(`/v1/events/${id}/`, {
       method: "PATCH",
       data,
     });
@@ -58,13 +61,13 @@ export const eventsApi = {
 
   // Delete event (admin only)
   delete: (id: string) =>
-    apiRequest<void>(`/v1/events/${id}`, {
+    apiRequest<void>(`/v1/events/${id}/`, {
       method: "DELETE",
     }),
 
   // Publish event
   publish: async (id: string) => {
-    const resp: any = await apiRequest<any>(`/v1/events/${id}/publish`, {
+    const resp: any = await apiRequest<any>(`/v1/events/${id}/publish/`, {
       method: "POST",
     });
     return { data: resp };
@@ -72,7 +75,7 @@ export const eventsApi = {
 
   // Cancel event
   cancel: async (id: string) => {
-    const resp: any = await apiRequest<any>(`/v1/events/${id}/cancel`, {
+    const resp: any = await apiRequest<any>(`/v1/events/${id}/cancel/`, {
       method: "POST",
     });
     return { data: resp };
